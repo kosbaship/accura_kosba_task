@@ -65,26 +65,33 @@ showToast({@required String message, @required bool error}) => Fluttertoast.show
         fontSize: 16.0);
 
 // button
-Widget buildButton({@required String title, @required Function onPressed,}) => FlatButton(
-      onPressed: onPressed,
-      color: kMainColor,
-      textColor: Colors.white,
-      child: Container(
-        height: 50.0,
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 18.0,
-              fontFamily: 'BoltSemiBold',
-            ),
+Widget buildButton({@required String title, @required Function onPressed,}) => Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+  child: FlatButton(
+    onPressed: onPressed,
+    color: kSecondaryColor,
+    textColor: kMainColor,
+    child: Container(
+      height: 50.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: kSecondaryColor,
+          border: Border.all(
+            width: 1,
+            color: kThirdColor,
+          )),
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 20.0,
+            fontFamily: 'Poppins-Regular',
           ),
         ),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
-    );
+    ),
+  ),
+);
 
 // textField
 Widget buildTextField({@required String title, @required IconData icon, TextInputType keyboardType = TextInputType.text, bool obscureText = false, TextEditingController controller, Function onChange,}) => TextFormField(

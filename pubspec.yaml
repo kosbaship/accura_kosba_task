@@ -27,9 +27,9 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: BoltSemiBold
+    - family: Poppins-Medium
       fonts:
-        - asset: assets/fonts/bolt-semibold.ttf
-    - family: BoltRegular
+        - asset: assets/fonts/Poppins-Medium.ttf
+    - family: Poppins-Regular
       fonts:
-        - asset: assets/fonts/bolt-regular.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf

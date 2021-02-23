@@ -1,6 +1,6 @@
 import 'package:accura_kosba_task/layout/cubit/home_cubit.dart';
+import 'package:accura_kosba_task/modules/welcome_screen/welcome_screen.dart';
 import 'package:accura_kosba_task/shared/component.dart';
-import 'package:accura_kosba_task/shared/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,8 +24,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Accura Task',
-          theme: theme(),
-          home: HomeScreen(),
+          home: WelcomeScreen(),
           // home: ManipulateScreen(),
         ),
     );
