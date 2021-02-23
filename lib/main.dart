@@ -4,7 +4,6 @@ import 'package:accura_kosba_task/shared/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'layout/home_screen.dart';
 
 void main() {
 

@@ -1,3 +1,4 @@
+import 'package:accura_kosba_task/modules/doc_assist_setting/doc_assist_setting.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +28,18 @@ class WelcomeScreen extends StatelessWidget {
             ),
             buildButton(
               title: 'Doctor',
-              onPressed: (){},
+              onPressed: (){
+                navigateTo(context: context, goTO: DocAssistSetting());
+              },
             ),
             SizedBox(
               height: 16.0,
             ),
             buildButton(
               title: 'Assistant',
-              onPressed: (){},
+              onPressed: (){
+                navigateTo(context: context, goTO: DocAssistSetting());
+              },
             ),
             SizedBox(
               height: 16.0,
