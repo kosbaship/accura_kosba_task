@@ -25,14 +25,14 @@ class HomeScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 18.0,
                       fontFamily: 'BoltSemiBold',
-                      color: kForthColor),
+                      color: kSecondaryColor),
                 ),
                 fallback: (context) => Text(
                   'Task',
                   style: TextStyle(
                       fontSize: 18.0,
                       fontFamily: 'BoltSemiBold',
-                      color: kForthColor),
+                      color: kSecondaryColor),
                 ),
               ),
               centerTitle: true,
@@ -40,18 +40,18 @@ class HomeScreen extends StatelessWidget {
             body: Center(
               child: ConditionalBuilder(
                   condition: state is! HomeLoadingState,
-                  builder: (context) => ConditionalBuilder(
-                        condition: state is! HomeErrorState,
-                        builder: (context) => buildList(list: listOfPostsData),
-                        fallback: (context) => Center(
-                            child: Text(
-                          "No data found .. !",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                          ),
-                        )),
-                      ),
+                  // builder: (context) => ConditionalBuilder(
+                  //       condition: state is! HomeErrorState,
+                  //       builder: (context) => buildList(list: listOfPostsData),
+                  //       fallback: (context) => Center(
+                  //           child: Text(
+                  //         "No data found .. !",
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 22,
+                  //         ),
+                  //       )),
+                  //     ),
                   fallback: (context) =>
                       Center(child: CircularProgressIndicator())),
             ));

@@ -32,42 +32,42 @@ Widget drawAppBar({@required BuildContext context}) => AppBar(
 );
 
 // card item
-Widget buildList({@required list}) => ListView.separated(
-      shrinkWrap: true,
-      itemCount: list.length,
-      itemBuilder: (BuildContext context, int index) {
-        //=====================================================
-        // here the trick we pass every list map with the index
-        // to the model class
-        return buildItem(Post(list[index]), context);
-        //=====================================================
-      },
-      separatorBuilder: (context, index) => drawDivider(),
-    );
+// Widget buildList({@required list}) => ListView.separated(
+//       shrinkWrap: true,
+//       itemCount: list.length,
+//       itemBuilder: (BuildContext context, int index) {
+//         //=====================================================
+//         // here the trick we pass every list map with the index
+//         // to the model class
+//         return buildItem(Post(list[index]), context);
+//         //=====================================================
+//       },
+//       separatorBuilder: (context, index) => drawDivider(),
+//     );
 
-// card item
-Widget buildItem(Post post, BuildContext context) => Card(
-      elevation: 0,
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-      color: kForthColor,
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          // this a good structure for a list item
-          child: ListTile(
-            // one
-            leading: Text(
-              post.id.toString(),
-            ),
-            //two
-            title: Text(
-              post.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            //three
-            subtitle: Text(post.id.toString()),
-          )),
-    );
+// // card item
+// Widget buildItem(Post post, BuildContext context) => Card(
+//       elevation: 0,
+//       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+//       color: kForthColor,
+//       child: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           // this a good structure for a list item
+//           child: ListTile(
+//             // one
+//             leading: Text(
+//               post.id.toString(),
+//             ),
+//             //two
+//             title: Text(
+//               post.title,
+//               maxLines: 2,
+//               overflow: TextOverflow.ellipsis,
+//             ),
+//             //three
+//             subtitle: Text(post.id.toString()),
+//           )),
+//     );
 
 // toast
 showToast({@required String message, @required bool error}) =>
@@ -77,7 +77,7 @@ showToast({@required String message, @required bool error}) =>
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: error ? kSecondaryColor : kMainColor,
-        textColor: kForthColor,
+        textColor: kSecondaryColor,
         fontSize: 16.0);
 
 // button
@@ -138,7 +138,7 @@ Widget buildTextField({
         labelStyle: TextStyle(
           fontSize: 16.0,
         ),
-        hintStyle: TextStyle(color: kGreyColor, fontSize: 10),
+        hintStyle: TextStyle(color: kTitleDarkColor, fontSize: 10),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(28),
           borderSide: BorderSide(color: kSecondaryColor, width: 2),
@@ -149,55 +149,57 @@ Widget buildTextField({
     );
 
 // alertDialog (loading & error)
-void buildAlertDialog(
-        {@required BuildContext context,
-        @required String title,
-        error = false}) =>
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        contentPadding: EdgeInsets.all(8),
-        backgroundColor: kMainColor,
-        content: Container(
-          color: kForthColor,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    if (!error)
-                      CircularProgressIndicator(
-                        backgroundColor: kForthColor,
-                      ),
-                    if (!error)
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontFamily: 'BoltRegular',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                if (error) SizedBox(height: 20.0),
-                if (error)
-                  buildButton(
-                    onPressed: () => Navigator.pop(context),
-                    title: "Cancel",
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+// void buildAlertDialog(
+//         {@required BuildContext context,
+//         @required String title,
+//         error = false}) =>
+//     showDialog(
+//       context: context,
+//       builder: (context) => AlertDialog(
+//         contentPadding: EdgeInsets.all(8),
+//         backgroundColor: kMainColor,
+//         content: Container(
+//           color: kForthColor,
+//           child: Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Row(
+//                   children: [
+//                     if (!error)
+//                       CircularProgressIndicator(
+//                         backgroundColor: kForthColor,
+//                       ),
+//                     if (!error)
+//                       SizedBox(
+//                         width: 20.0,
+//                       ),
+//                     Expanded(
+//                       child: Text(
+//                         title,
+//                         style: TextStyle(
+//                           fontSize: 18.0,
+//                           fontFamily: 'BoltRegular',
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 if (error) SizedBox(height: 20.0),
+//                 if (error)
+//                   buildButton(
+//                     onPressed: () => Navigator.pop(context),
+//                     title: "Cancel",
+//                   ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+
+
 
 // navigation
 void navigateTo({@required BuildContext context, @required Widget goTO}) =>
@@ -225,3 +227,6 @@ void navigateAndFinish(
           builder: (context) => widget,
         ),
         (Route<dynamic> route) => false);
+
+
+// Widget buildExpandedCard({@required Function startToday, @required String price, @required ImageProvider<Object> image, @required String title, @required String startDate, @required String description, bool initiallyExpanded = false,}) =>
