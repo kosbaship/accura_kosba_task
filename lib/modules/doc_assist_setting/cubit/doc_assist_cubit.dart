@@ -12,7 +12,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
 
   static DocAssistCubit get(context) => BlocProvider.of(context);
 
-  bool switchValue = false;
+  bool _switchValue = false;
   String selectedDay = 'Day';
   DoctorData doctorData = DoctorData();
 
@@ -29,14 +29,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     ).then((response) async{
       doctorData =  DoctorData.fromJson(response.data);
 
-      // toggle the switch according to the api
-      if(doctorData.result.availabilityList[0].isActive == 1){
-        switchValue = true;
-      } else {
-        switchValue = false;
-      }
-
-
       print('\n=========================================================');
       print(doctorData.result.availabilityList.length);
       print(doctorData.result.availabilityList[0].availabilityTimeList[1].wdayDayName);
@@ -48,8 +40,21 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     });
   }
 
+
+  // toggle the switch according to the api
+  getSwitchValueByIndex({index}){
+    if(doctorData.result.availabilityList[index].isActive == 1){
+      _switchValue = true;
+      return _switchValue;
+    } else {
+      _switchValue = false;
+      return _switchValue;
+    }
+  }
+
+
   toggleTheSwitch({@required value}){
-    switchValue = value;
+    _switchValue = value;
     emit(DocAssistSwitchButtonState());
   }
 

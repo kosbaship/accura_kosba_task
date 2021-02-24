@@ -41,11 +41,12 @@ Widget chooseDateRow(
       ],
     );
 
-Widget writeText14({@required title}) => Text(
+Widget writeText14({@required title, maxLines = 1}) => Text(
       title,
-      maxLines: 1,
+      maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
       style: font14,
+  textAlign: TextAlign.center,
     );
 
 Widget chooseDate({
