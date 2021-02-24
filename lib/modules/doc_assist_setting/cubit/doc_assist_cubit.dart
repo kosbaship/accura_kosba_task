@@ -13,7 +13,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   static DocAssistCubit get(context) => BlocProvider.of(context);
 
   bool switchValue = false;
-  String selectedDay = 'Saturday';
+  String selectedDay = 'Day';
   DoctorData doctorData = DoctorData();
 
   getData() {

@@ -390,15 +390,9 @@ Widget buildExpandedCard({
   @required buildSwitchBtnOnChange,
   @required buildTextFieldController,
   @required buildTextFieldValidator,
-  @required buildTDropdownButtonItems,
-  @required buildTDropdownButtonOnChanged,
-  @required dayShiftChooseDateFrom,
-  @required dayShiftChooseDateTo,
-  @required nightShiftChooseDateFrom,
-  @required nightShiftChooseDateTo,
   @required drawCircleIconOnTap,
   @required buildButtonOnPressed,
-  @required List<AvailabilityTimeList> availabilityTimeList,
+  @required list,
   bool initiallyExpanded = false,
 }) =>
     Container(
@@ -527,90 +521,7 @@ Widget buildExpandedCard({
                   ),
                   SizedBox(
                     height: 250,
-                    child: ListView.separated(
-                        itemBuilder: (context, index)  {
-                          String selectedDay = 'Day';
-
-                          // select the day from db
-                          switch (availabilityTimeList[index].wdayDayName) {
-                            case 'saturday':
-                              selectedDay = kSaturday;
-                              break;
-                            case 'sunday':
-                              selectedDay = kSunday;
-                              break;
-                            case 'monday':
-                              selectedDay = kMonday;
-                              break;
-                            case 'tuesday':
-                              selectedDay = kTuesday;
-                              break;
-                            case 'wednesday':
-                              selectedDay = kWednesday;
-                              break;
-                            case 'thursday':
-                              selectedDay = kThursday;
-                              break;
-                            case 'friday':
-                              selectedDay = kFriday;
-                              break;
-                          }
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            buildTDropdownButton(
-                              items: buildTDropdownButtonItems,
-                              onChanged: buildTDropdownButtonOnChanged,
-                              value: selectedDay,
-                            ),
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            // Day Shift
-                            writeText14(title: 'Day Shift'),
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            chooseDateRow(
-                                leftTitle: '${availabilityTimeList[index].wdayFrom}' ?? 'from',
-                                leftOnTap: dayShiftChooseDateFrom,
-                                rightTitle: '${availabilityTimeList[index].wdayTo}' ?? 'to',
-                                rightOnTap: dayShiftChooseDateTo),
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            // Night Shift
-                            Text(
-                              'Night Shift',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: font14,
-                            ),
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            chooseDateRow(
-                                leftTitle: '${availabilityTimeList[index].wdayFrom2}' ?? 'from',
-                                leftOnTap: nightShiftChooseDateFrom,
-                                rightTitle: '${availabilityTimeList[index].wdayTo2}' ?? 'to',
-                                rightOnTap: nightShiftChooseDateTo),
-
-                          ],);
-                        },
-                        separatorBuilder: (context, index) => Column(
-                          children: [
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            drawDivider(),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                          ],
-                        ),
-                        itemCount: availabilityTimeList.length
-                    ),
+                    child: list
                   ),
                   SizedBox(
                     height: 16.0,
