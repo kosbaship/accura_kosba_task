@@ -23,7 +23,7 @@ class APIProvider{
      };
 
      try {
-       return await dio.post(path, data: data);
+       return await dio.post(path, data: data ?? null);
      } catch (e) {
        print('\n=========================================================');
        print(e);
