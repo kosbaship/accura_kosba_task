@@ -1,5 +1,6 @@
 import 'package:accura_kosba_task/network/api_provider.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -88,7 +89,7 @@ Widget chooseDate({
     );
 
 // draw circle icon or image
-Widget drawCircleIcon() => ClipOval(
+Widget drawCircleIcon({@required onTap}) => ClipOval(
       child: Material(
         color: kExpansionTitleColor, // button color
         child: InkWell(
@@ -102,7 +103,7 @@ Widget drawCircleIcon() => ClipOval(
               size: 40.0,
             ),
           ),
-          onTap: () {},
+          onTap: onTap,
         ),
       ),
     );
@@ -226,8 +227,7 @@ Widget buildSaveButton({
         ),
       ),
       shape: RoundedRectangleBorder(
-        borderRadius:
-        BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24),
       ),
     );
 
@@ -381,4 +381,207 @@ void navigateAndFinish(
         ),
         (Route<dynamic> route) => false);
 
-// Widget buildExpandedCard({@required Function startToday, @required String price, @required ImageProvider<Object> image, @required String title, @required String startDate, @required String description, bool initiallyExpanded = false,}) =>
+Widget buildExpandedCard({
+  @required String expansionTitle,
+  @required key,
+  @required buildSwitchBtnValue,
+  @required buildSwitchBtnOnChange,
+  @required buildTextFieldController,
+  @required buildTextFieldValidator,
+  @required buildTDropdownButtonItems,
+  @required buildTDropdownButtonOnChanged,
+  @required buildTDropdownButtonValue,
+  @required dayShiftChooseDateFrom,
+  @required dayShiftChooseDateTo,
+  @required nightShiftChooseDateFrom,
+  @required nightShiftChooseDateTo,
+  @required drawCircleIconOnTap,
+  @required buildButtonOnPressed,
+  bool initiallyExpanded = false,
+}) =>
+    Container(
+      decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              width: 1,
+              color: kExpansionBorderColor,
+            ),
+          )),
+      child: ExpansionTileCard(
+        borderRadius: BorderRadius.all(Radius.circular(0)),
+        finalPadding: EdgeInsets.zero,
+        baseColor: kExpansionBGColor,
+        expandedColor: kExpansionBGColor,
+        initiallyExpanded: initiallyExpanded,
+        elevation: 0.0,
+        title: Text(
+          expansionTitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: font18.copyWith(color: kExpansionTitleColor),
+        ),
+        onExpansionChanged: (value) {},
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14),
+            decoration: BoxDecoration(
+                color: kSecondaryColor,
+                border: Border(
+                    top: BorderSide(
+                  width: 1,
+                  color: kExpansionBorderColor,
+                ))),
+            child: Form(
+              key: key,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // switch button
+                  Text(
+                    'Activation',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: font14,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Off',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: font14.copyWith(
+                          color: kTitleGreyColor,
+                        ),
+                      ),
+                      buildSwitchBtn(
+                        value: buildSwitchBtnValue,
+                        onChanged: buildSwitchBtnOnChange,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  drawDivider(),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  // add price
+                  Text(
+                    'Pricing',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: font14,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'add price',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: font14.copyWith(color: kTitleGreyColor),
+                      ),
+                      Container(
+                        width: 110,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              right: 9,
+                              top: 8.5,
+                              child: Text(
+                                'EGP',
+                                style: font12,
+                              ),
+                            ),
+                            buildTextFormField(
+                              controller: buildTextFieldController,
+                              validator: buildTextFieldValidator,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  drawDivider(),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  // choose day
+                  Text(
+                    'Available',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: font14,
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  buildTDropdownButton(
+                    items: buildTDropdownButtonItems,
+                    onChanged: buildTDropdownButtonOnChanged,
+                    value: buildTDropdownButtonValue,
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  // Day Shift
+                  writeText14(title: 'Day Shift'),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  chooseDateRow(
+                      leftTitle: 'from',
+                      leftOnTap: dayShiftChooseDateFrom,
+                      rightTitle: 'to',
+                      rightOnTap: dayShiftChooseDateTo),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  // Night Shift
+                  Text(
+                    'Night Shift',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: font14,
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  chooseDateRow(
+                      leftTitle: 'from',
+                      leftOnTap: dayShiftChooseDateFrom,
+                      rightTitle: 'to',
+                      rightOnTap: dayShiftChooseDateTo),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      drawCircleIcon(onTap: drawCircleIconOnTap ),
+                      Container(
+                        height: 50.0,
+                        width: 150.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: kSecondaryColor,
+                        ),
+                        child: buildSaveButton(
+                            onPressed: buildButtonOnPressed, title: 'Save Settings'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
