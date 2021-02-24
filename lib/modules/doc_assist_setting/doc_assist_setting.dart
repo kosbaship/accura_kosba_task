@@ -349,7 +349,7 @@ class DocAssistSetting extends StatelessWidget {
                               buildButtonOnPressed: () {
                                 if (_videoFormKey.currentState.validate()) {
                                   print('\n=========================================================');
-                                  print(${DocAssistCubit.get(context).videoSwitch} + '\n');
+                                  print('${DocAssistCubit.get(context).videoSwitch}' + '\n');
                                   print(addPriceVideoController.text + '\n');
                                   print('=========================================================\n\n');
 
