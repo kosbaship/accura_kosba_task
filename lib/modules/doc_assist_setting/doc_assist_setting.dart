@@ -1,5 +1,7 @@
+import 'package:accura_kosba_task/models/get_doctor.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
+import 'package:accura_kosba_task/shared/constants.dart';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +14,7 @@ class DocAssistSetting extends StatelessWidget {
   final addPriceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  final List<String> daysOfTheWeek = [
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday'
-  ];
+  final List<String> daysOfTheWeek = [kSaturday, kSunday, kMonday, kThursday, kWednesday, kThursday, kFriday];
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +23,28 @@ class DocAssistSetting extends StatelessWidget {
       child: BlocConsumer<DocAssistCubit, DocAssistStates>(
           listener: (context, state) {},
           builder: (context, state) {
+
+            DoctorData doctorData = DocAssistCubit.get(context).doctorData;
+
             return Scaffold(
               backgroundColor: kSecondaryColor,
               appBar: drawAppBar(context: context),
               body: ConditionalBuilder(
                 condition: state is! DocAssistLoadingState,
-                builder: (context) => SingleChildScrollView(
+                builder: (context) {
+
+                  // show the price from the db inside the tf
+                  if(addPriceController.text == ''){
+                    addPriceController.text =
+                        doctorData.result.availabilityList[0].priceValue;
+                  }
+
+                  return SingleChildScrollView(
                   child: Column(
                     children: [
                       buildExpandedCard(
                           initiallyExpanded: true,
-                          expansionTitle: 'Clinic',
+                          expansionTitle: '${doctorData.result.availabilityList[0].vendorAppointType}',
                           key: _formKey,
                           buildSwitchBtnValue:
                               DocAssistCubit.get(context).switchValue,
@@ -66,9 +71,13 @@ class DocAssistSetting extends StatelessWidget {
                           },
                           buildTDropdownButtonValue:
                               DocAssistCubit.get(context).selectedDay,
+                          dayShiftChooseDateFromAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayFrom,
                           dayShiftChooseDateFrom: () {},
+                          dayShiftChooseDateToAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayTo,
                           dayShiftChooseDateTo: () {},
+                          nightShiftChooseDateFromAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayFrom2,
                           nightShiftChooseDateFrom: () {},
+                          nightShiftChooseDateToAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayTo2,
                           nightShiftChooseDateTo: () {},
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {
@@ -78,7 +87,8 @@ class DocAssistSetting extends StatelessWidget {
                           }),
                     ],
                   ),
-                ),
+                );
+                },
                 fallback: (context) => Center(child: CircularProgressIndicator(backgroundColor: kMainColor,)),
               ),
             );

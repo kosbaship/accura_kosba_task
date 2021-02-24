@@ -13,12 +13,8 @@ class APIProvider{
 
   );
 
-   static Future<Response> fetchData({
-     @required String path,
-     data}) async {
-     print('\n=========================================================');
-     print('fetchData triggerd');
-     print('=========================================================\n\n');
+   static Future<Response> fetchData({@required String path, data}) async {
+
      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
          (HttpClient client) {
        client.badCertificateCallback =
@@ -29,6 +25,9 @@ class APIProvider{
      try {
        return await dio.post(path, data: data);
      } catch (e) {
+       print('\n=========================================================');
+       print(e);
+       print('=========================================================\n\n');
        return(e);
      }
 

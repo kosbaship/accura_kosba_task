@@ -392,9 +392,13 @@ Widget buildExpandedCard({
   @required buildTDropdownButtonOnChanged,
   @required buildTDropdownButtonValue,
   @required dayShiftChooseDateFrom,
+  @required dayShiftChooseDateFromAvailableHour,
   @required dayShiftChooseDateTo,
+  @required dayShiftChooseDateToAvailableHour,
   @required nightShiftChooseDateFrom,
+  @required nightShiftChooseDateFromAvailableHour,
   @required nightShiftChooseDateTo,
+  @required nightShiftChooseDateToAvailableHour,
   @required drawCircleIconOnTap,
   @required buildButtonOnPressed,
   bool initiallyExpanded = false,
@@ -448,7 +452,7 @@ Widget buildExpandedCard({
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Off',
+                        buildSwitchBtnValue ? 'on' : 'Off',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: font14.copyWith(
@@ -537,9 +541,9 @@ Widget buildExpandedCard({
                     height: 4.0,
                   ),
                   chooseDateRow(
-                      leftTitle: 'from',
+                      leftTitle: '$dayShiftChooseDateFromAvailableHour' ?? 'from',
                       leftOnTap: dayShiftChooseDateFrom,
-                      rightTitle: 'to',
+                      rightTitle: '$dayShiftChooseDateToAvailableHour' ?? 'to',
                       rightOnTap: dayShiftChooseDateTo),
                   SizedBox(
                     height: 16.0,
@@ -555,10 +559,10 @@ Widget buildExpandedCard({
                     height: 4.0,
                   ),
                   chooseDateRow(
-                      leftTitle: 'from',
-                      leftOnTap: dayShiftChooseDateFrom,
-                      rightTitle: 'to',
-                      rightOnTap: dayShiftChooseDateTo),
+                      leftTitle: '$nightShiftChooseDateFromAvailableHour' ?? 'from',
+                      leftOnTap: nightShiftChooseDateFrom,
+                      rightTitle: '$nightShiftChooseDateToAvailableHour' ?? 'to',
+                      rightOnTap: nightShiftChooseDateTo),
                   SizedBox(
                     height: 16.0,
                   ),

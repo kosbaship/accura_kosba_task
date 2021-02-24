@@ -9,8 +9,7 @@ class DoctorData {
   DoctorData.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     subMessage = json['sub_message'];
-    result =
-        json['return'] != null ? new Return.fromJson(json['return']) : null;
+    result = json['return'] != null ? new Return.fromJson(json['return']) : null;
     message = json['message'];
   }
 
