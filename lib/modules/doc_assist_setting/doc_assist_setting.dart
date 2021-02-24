@@ -37,7 +37,11 @@ class DocAssistSetting extends StatelessWidget {
     return BlocProvider(
       create: (context) => DocAssistCubit()..getData(),
       child: BlocConsumer<DocAssistCubit, DocAssistStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if(state is DocAssistSwitchButtonState){
+
+            }
+          },
           builder: (context, state) {
             DoctorData doctorData = DocAssistCubit.get(context).doctorData;
 
@@ -73,11 +77,10 @@ class DocAssistSetting extends StatelessWidget {
                               expansionTitle:
                                   '${doctorData.result.availabilityList[0].vendorAppointType}',
                               key: _clinicFormKey,
-                              buildSwitchBtnValue: DocAssistCubit.get(context)
-                                  .getSwitchValueByIndex(index: 0),
+                              buildSwitchBtnValue: DocAssistCubit.get(context).clinicSwitch,
                               buildSwitchBtnOnChange: (value) {
                                 DocAssistCubit.get(context)
-                                    .toggleTheSwitch(value: value);
+                                    .toggleTheSwitch(value: value, index: 0);
                               },
                               buildTextFieldController:
                                   addPriceClinicController,
@@ -215,11 +218,10 @@ class DocAssistSetting extends StatelessWidget {
                               expansionTitle:
                                   '${doctorData.result.availabilityList[1].vendorAppointType}',
                               key: _videoFormKey,
-                              buildSwitchBtnValue: DocAssistCubit.get(context)
-                                  .getSwitchValueByIndex(index: 1),
+                              buildSwitchBtnValue: DocAssistCubit.get(context).videoSwitch,
                               buildSwitchBtnOnChange: (value) {
                                 DocAssistCubit.get(context)
-                                    .toggleTheSwitch(value: value);
+                                    .toggleTheSwitch(value: value, index: 1);
                               },
                               buildTextFieldController: addPriceVoiceController,
                               buildTextFieldValidator: (value) {
@@ -346,6 +348,11 @@ class DocAssistSetting extends StatelessWidget {
                               drawCircleIconOnTap: () {},
                               buildButtonOnPressed: () {
                                 if (_videoFormKey.currentState.validate()) {
+                                  print('\n=========================================================');
+                                  print(${DocAssistCubit.get(context).videoSwitch} + '\n');
+                                  print(addPriceVideoController.text + '\n');
+                                  print('=========================================================\n\n');
+
                                   print('Saving Data');
                                 }
                               }),
@@ -356,11 +363,10 @@ class DocAssistSetting extends StatelessWidget {
                               expansionTitle:
                                   '${doctorData.result.availabilityList[2].vendorAppointType}',
                               key: _voiceFormKey,
-                              buildSwitchBtnValue: DocAssistCubit.get(context)
-                                  .getSwitchValueByIndex(index: 2),
+                              buildSwitchBtnValue: DocAssistCubit.get(context).voiceSwitch,
                               buildSwitchBtnOnChange: (value) {
                                 DocAssistCubit.get(context)
-                                    .toggleTheSwitch(value: value);
+                                    .toggleTheSwitch(value: value, index: 2);
                               },
                               buildTextFieldController: addPriceVideoController,
                               buildTextFieldValidator: (value) {
@@ -497,11 +503,10 @@ class DocAssistSetting extends StatelessWidget {
                               expansionTitle:
                                   '${doctorData.result.availabilityList[3].vendorAppointType}',
                               key: _spotFormKey,
-                              buildSwitchBtnValue: DocAssistCubit.get(context)
-                                  .getSwitchValueByIndex(index: 3),
+                              buildSwitchBtnValue: DocAssistCubit.get(context).spotSwitch,
                               buildSwitchBtnOnChange: (value) {
                                 DocAssistCubit.get(context)
-                                    .toggleTheSwitch(value: value);
+                                    .toggleTheSwitch(value: value, index: 3);
                               },
                               buildTextFieldController: addPriceSpotController,
                               buildTextFieldValidator: (value) {
