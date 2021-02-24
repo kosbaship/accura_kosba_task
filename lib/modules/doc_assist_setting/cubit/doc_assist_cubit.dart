@@ -1,3 +1,6 @@
+import 'package:accura_kosba_task/network/api_provider.dart';
+import 'package:accura_kosba_task/shared/constants.dart';
+import 'package:accura_kosba_task/shared/end_points.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,23 +14,30 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   bool switchValue = true;
   String selectedDay = 'Saturday';
 
-  // we receive our list normally
-  // List listOfPostsData = [];
-  // getData() {
-  //   emit(DocAssistLoadingState());
-  //
-  //   APIProvider.fetchData(path: kPostsPath).then((listOfPosts) async{
-  //
-  //     listOfPostsData = listOfPosts.data;
-  //
-  //     emit(DocAssistSuccessState());
-  //     print('\n=========================================================');
-  //     print(listOfPostsData[0]['title']);
-  //     print('=========================================================\n\n');
-  //   }).catchError((e) {
-  //     emit(DocAssistErrorState(e.toString()));
-  //   });
-  // }
+
+  getData() {
+    emit(DocAssistLoadingState());
+    print('\n=========================================================');
+    print('Getting Your Data');
+    print('=========================================================\n\n');
+
+    APIProvider.fetchData(
+        path: GET_DOCTOR_END_POINT,
+        data: {
+        kAccessKey: kAccessKeyValue,
+        kAccessPassword: kAccessPasswordValue,
+        kDoctorID: kDoctorIDValue,
+      }
+    ).then((response) async{
+      print('\n=========================================================');
+      print(response.data);
+      print('=========================================================\n\n');
+
+      emit(DocAssistSuccessState());
+    }).catchError((e) {
+      emit(DocAssistErrorState(e.toString()));
+    });
+  }
 
   toggleTheSwitch({@required value}){
     switchValue = value;
