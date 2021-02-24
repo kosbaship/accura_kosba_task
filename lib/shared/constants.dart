@@ -7,10 +7,7 @@ const String kAccessPasswordValue = 'J52Df3e6Wrtt5F2eeeWq220';
 const String kDoctorIDValue = '796';
 
 
-
-
 // days of the week
-
 const String kDay = 'Day';
 const String kSaturday = 'Saturday';
 const String kSunday = 'Sunday';

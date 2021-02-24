@@ -12,8 +12,11 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
 
   static DocAssistCubit get(context) => BlocProvider.of(context);
 
-  String selectedDay = 'Day';
   DoctorData doctorData = DoctorData();
+  String clinicSelectedDay = 'Day';
+  String voiceSelectedDay = 'Day';
+  String videoSelectedDay = 'Day';
+  String spotSelectedDay = 'Day';
   bool clinicSwitch = false;
   bool videoSwitch = false;
   bool voiceSwitch = false;
@@ -36,13 +39,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       videoSwitch = doctorData.result.availabilityList[1].isActive == 1;
       voiceSwitch = doctorData.result.availabilityList[2].isActive == 1;
       spotSwitch = doctorData.result.availabilityList[3].isActive == 1;
-
-      print('\n=========================================================');
-      print(clinicSwitch);
-      print(videoSwitch);
-      print(voiceSwitch);
-      print(spotSwitch);
-      print('=========================================================\n\n');
 
       emit(DocAssistSuccessState());
     }).catchError((e) {
@@ -84,9 +80,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
         }
     ).then((response) async{
 
-      print('\n=========================================================');
-      print(response.data);
-      print('=========================================================\n\n');
       emit(DocAssistSuccessState());
     }).catchError((e) {
       emit(DocAssistErrorState(e.toString()));
@@ -95,36 +88,86 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
 
 
   toggleTheSwitch({@required value, @required index}){
-
     switch (index) {
       case 0:
         clinicSwitch = value;
         break;
-      case 1:
+      case 2:
         videoSwitch = value;
         break;
-      case 2:
+      case 1:
         voiceSwitch = value;
         break;
       case 3:
         spotSwitch = value;
         break;
     }
-    print('\n=========================================================');
-    print(index);
-    print(value);
-    print('clinicSwitch $clinicSwitch');
-    print('videoSwitch $videoSwitch');
-    print('voiceSwitch $voiceSwitch');
-    print('spotSwitch $spotSwitch');
-    print('=========================================================\n\n');
     emit(DocAssistSwitchButtonState());
   }
 
-  selectWeekDay({@required value}){
-
-    selectedDay = value;
+  selectWeekDay({@required value, @required index,}){
+    print('\n=========================================================');
+    print(index);
+    print(value);
+    print('=========================================================\n\n');
+    switch (index) {
+      case 0:
+        clinicSelectedDay = value;
+        break;
+      case 2:
+        videoSelectedDay = value;
+        break;
+      case 1:
+        voiceSelectedDay = value;
+        break;
+      case 3:
+        spotSelectedDay = value;
+        break;
+    }
     emit(DocAssistSelectWeekDayState());
   }
+
+  selectDayFromDB({@required index, @required sectionIndex}){
+    String sectionSelectDay ;
+
+    switch (doctorData.result.availabilityList[0].availabilityTimeList[index].wdayDayName) {
+      case 'saturday':
+        sectionSelectDay = kSaturday;
+        break;
+      case 'sunday':
+        sectionSelectDay = kSunday;
+        break;
+      case 'monday':
+        sectionSelectDay = kMonday;
+        break;
+      case 'tuesday':
+        sectionSelectDay = kTuesday;
+        break;
+      case 'wednesday':
+        sectionSelectDay = kWednesday;
+        break;
+      case 'thursday':
+        sectionSelectDay = kThursday;
+        break;
+      case 'friday':
+        sectionSelectDay = kFriday;
+        break;
+    }
+    if(sectionIndex == 0 ){
+       clinicSelectedDay =  sectionSelectDay;
+    }
+    if(sectionIndex == 1 ){
+      voiceSelectedDay =  sectionSelectDay;
+    }
+    if(sectionIndex == 2 ){
+      videoSelectedDay =  sectionSelectDay;
+    }
+    if(sectionIndex == 3 ){
+      spotSelectedDay =  sectionSelectDay;
+    }
+    emit(DocAssistSelectWeekDayState());
+  }
+
+
 
 }
