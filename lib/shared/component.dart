@@ -1,5 +1,6 @@
-import 'package:accura_kosba_task/models/post.dart';
 import 'package:accura_kosba_task/network/api_provider.dart';
+import 'package:accura_kosba_task/shared/styels.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -17,37 +18,110 @@ Widget drawDivider() => Divider(
       thickness: 1.0,
     );
 
+Widget chooseDateRow(
+        {@required Function leftOnTap,
+        @required String leftTitle,
+        @required String rightTitle,
+        @required Function rightOnTap}) =>
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: chooseDate(title: leftTitle, onTap: leftOnTap),
+        ),
+        SizedBox(
+          width: 16.0,
+        ),
+        Expanded(
+          child: chooseDate(title: rightTitle, onTap: rightOnTap),
+        ),
+      ],
+    );
+
+Widget writeText14({@required title}) => Text(
+      title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: font14,
+    );
+
+Widget chooseDate({
+  @required Function onTap,
+  @required String title,
+}) =>
+    InkWell(
+      splashColor: kTitleGreyColor,
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(24.0),
+            ),
+            color: kSecondaryColor,
+            border: Border.all(
+              width: 1,
+              color: kTitleGreyColor,
+            )),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: font14.copyWith(
+                color: kTitleGreyColor,
+              ),
+            ),
+            ClipOval(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: Image.asset('assets/images/clocicon.png'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
 // draw circle icon or image
 Widget drawCircleIcon() => ClipOval(
-  child: Material(
-    color: kExpansionTitleColor, // button color
-    child: InkWell(
-      splashColor: kMainColor, // inkwell color
-      child: SizedBox(width: 40, height: 40, child: Icon(
-        Icons.add,
-        color: kSecondaryColor,
-        size: 40.0,
-      ),),
-      onTap: () {},
-    ),
-  ),
-);
+      child: Material(
+        color: kExpansionTitleColor, // button color
+        child: InkWell(
+          splashColor: kTitleGreyColor, // inkwell color
+          child: SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(
+              Icons.add,
+              color: kSecondaryColor,
+              size: 40.0,
+            ),
+          ),
+          onTap: () {},
+        ),
+      ),
+    );
 
 // draw simple app bar
 Widget drawAppBar({@required BuildContext context}) => AppBar(
-  leading: IconButton(
-    icon: Icon(Icons.arrow_back_ios_outlined, color: kSecondaryColor),
-    onPressed: () => Navigator.of(context).pop(),
-  ),
-  title: Text(
-    'Setting',
-    style: TextStyle(
-      fontSize: 16.0,
-      fontFamily: 'Poppins-Regular',
-    ),
-  ),
-  centerTitle: true,
-);
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined, color: kSecondaryColor),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      title: Text(
+        'Setting',
+        style: TextStyle(
+          fontSize: 16.0,
+          fontFamily: 'Poppins-Regular',
+        ),
+      ),
+      centerTitle: true,
+    );
 
 // card item
 // Widget buildList({@required list}) => ListView.separated(
@@ -133,38 +207,101 @@ Widget buildButton({
         ),
       ),
     );
-
-// textField
-Widget buildTextField({
+// button
+Widget buildSaveButton({
   @required String title,
-  @required IconData icon,
-  TextInputType keyboardType = TextInputType.text,
-  bool obscureText = false,
-  TextEditingController controller,
-  Function onChange,
+  @required Function onPressed,
 }) =>
-    TextFormField(
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      controller: controller,
-      onChanged: onChange,
-      decoration: InputDecoration(
-        hintText: "Enter your $title",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: Icon(icon),
-        labelText: title,
-        labelStyle: TextStyle(
-          fontSize: 16.0,
-        ),
-        hintStyle: TextStyle(color: kTitleDarkColor, fontSize: 10),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: kSecondaryColor, width: 2),
-          gapPadding: 10,
+    FlatButton(
+      onPressed: onPressed,
+      color: kExpansionTitleColor,
+      textColor: kSecondaryColor,
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 12.0,
+            fontFamily: 'Poppins-Regular',
+          ),
         ),
       ),
-      style: TextStyle(fontSize: 14.0, color: kSecondaryColor),
+      shape: RoundedRectangleBorder(
+        borderRadius:
+        BorderRadius.circular(24),
+      ),
     );
+
+Widget buildSwitchBtn({
+  @required bool value,
+  @required Function onChanged,
+}) =>
+    CupertinoSwitch(
+      activeColor: kExpansionTitleColor,
+      value: value,
+      onChanged: onChanged,
+    );
+
+Widget buildTextFormField(
+        {@required TextEditingController controller,
+        @required validator,
+        keyboardType = TextInputType.number}) =>
+    TextFormField(
+      keyboardType: keyboardType,
+      controller: controller,
+      validator: validator,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 47.0, 0.0),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            const Radius.circular(24.0),
+          ),
+        ),
+      ),
+    );
+
+Widget buildTDropdownButton({
+  @required items,
+  @required onChanged,
+  @required value,
+}) =>
+    Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            const Radius.circular(24.0),
+          ),
+          color: kSecondaryColor,
+          border: Border.all(
+            width: 1,
+            color: kTitleGreyColor,
+          )),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          elevation: 0,
+          isExpanded: true,
+          icon: Icon(
+            Icons.keyboard_arrow_down_outlined,
+            size: 40,
+          ),
+          style: font14.copyWith(
+            color: kTitleGreyColor,
+          ),
+          items: items,
+          onChanged: onChanged,
+          value: value,
+        ),
+      ),
+    );
+
+// textField
+// Widget buildTextField({
+//   @required String title,
+//   @required IconData icon,
+//   TextInputType keyboardType = TextInputType.text,
+//   bool obscureText = false,
+//   TextEditingController controller,
+//   Function onChange,
+// }) =>
 
 // alertDialog (loading & error)
 // void buildAlertDialog(
@@ -217,8 +354,6 @@ Widget buildTextField({
 //       ),
 //     );
 
-
-
 // navigation
 void navigateTo({@required BuildContext context, @required Widget goTO}) =>
     Navigator.push(
@@ -245,6 +380,5 @@ void navigateAndFinish(
           builder: (context) => widget,
         ),
         (Route<dynamic> route) => false);
-
 
 // Widget buildExpandedCard({@required Function startToday, @required String price, @required ImageProvider<Object> image, @required String title, @required String startDate, @required String description, bool initiallyExpanded = false,}) =>

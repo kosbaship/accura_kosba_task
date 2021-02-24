@@ -15,6 +15,16 @@ class DocAssistSetting extends StatelessWidget {
   final addPriceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  final List<String> daysOfTheWeek = [
+    'Saturday',
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -25,195 +35,227 @@ class DocAssistSetting extends StatelessWidget {
             return Scaffold(
               backgroundColor: kSecondaryColor,
               appBar: drawAppBar(context: context),
-              body: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                      top: BorderSide(
-                        width: 1,
-                        color: kExpansionBorderColor,
-                      ),
-                    )),
-                    child: ExpansionTileCard(
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                      finalPadding: EdgeInsets.zero,
-                      baseColor: kExpansionBGColor,
-                      expandedColor: kExpansionBGColor,
-                      initiallyExpanded: true,
-                      elevation: 0.0,
-                      title: Text(
-                        'Clinic',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: font18.copyWith(color: kExpansionTitleColor),
-                      ),
-                      onExpansionChanged: (value) {},
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 14),
-                          decoration: BoxDecoration(
-                              color: kSecondaryColor,
-                              border: Border(
-                                  top: BorderSide(
-                                width: 1,
-                                color: kExpansionBorderColor,
-                              ))),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // switch button
-                                Text(
-                                  'activation',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: font14,
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Off',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14.copyWith(
-                                          color: kTitleGreyColor),
-                                    ),
-                                    ConditionalBuilder(
-                                      condition: state is DocAssistStates,
-                                      builder: (context) => CupertinoSwitch(
-                                        activeColor: kExpansionTitleColor,
-                                        value: DocAssistCubit.get(context)
-                                            .switchValue,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                        top: BorderSide(
+                          width: 1,
+                          color: kExpansionBorderColor,
+                        ),
+                      )),
+                      child: ExpansionTileCard(
+                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                        finalPadding: EdgeInsets.zero,
+                        baseColor: kExpansionBGColor,
+                        expandedColor: kExpansionBGColor,
+                        initiallyExpanded: true,
+                        elevation: 0.0,
+                        title: Text(
+                          'Clinic',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: font18.copyWith(color: kExpansionTitleColor),
+                        ),
+                        onExpansionChanged: (value) {},
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 14),
+                            decoration: BoxDecoration(
+                                color: kSecondaryColor,
+                                border: Border(
+                                    top: BorderSide(
+                                  width: 1,
+                                  color: kExpansionBorderColor,
+                                ))),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // switch button
+                                  Text(
+                                    'Activation',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: font14,
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Off',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: font14.copyWith(
+                                            color: kTitleGreyColor,),
+                                      ),
+                                      buildSwitchBtn(
+                                        value: DocAssistCubit.get(context).switchValue,
                                         onChanged: (value) {
                                           DocAssistCubit.get(context)
                                               .toggleTheSwitch(value: value);
                                         },
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 16.0,
-                                ),
-                                drawDivider(),
-                                SizedBox(
-                                  height: 16.0,
-                                ),
-                                // add price
-                                Text(
-                                  'pricing',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: font14,
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'add price',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14.copyWith(
-                                          color: kTitleGreyColor),
-                                    ),
-                                    Container(
-                                      width: 110,
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            right: 7,
-                                            top: 8,
-                                            child: Text(
-                                              'EGP',
-                                              style: font12,
-                                            ),
-                                          ),
-                                          TextFormField(
-                                            keyboardType: TextInputType.number,
-                                            controller: addPriceController,
-                                            validator: (value) {
-                                              if (value.isEmpty) {
-                                                return 'price';
-                                              }
-                                              return null;
-                                            },
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.fromLTRB(
-                                                      10.0, 0.0, 47.0, 0.0),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  const Radius.circular(24.0),
-                                                ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  drawDivider(),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  // add price
+                                  Text(
+                                    'Pricing',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: font14,
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'add price',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: font14.copyWith(
+                                            color: kTitleGreyColor),
+                                      ),
+                                      Container(
+                                        width: 110,
+                                        child: Stack(
+                                          children: [
+                                            Positioned(
+                                              right: 9,
+                                              top: 8.5,
+                                              child: Text(
+                                                'EGP',
+                                                style: font12,
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 16.0,
-                                ),
-                                drawDivider(),
-                                SizedBox(
-                                  height: 16.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    drawCircleIcon(),
-                                    Container(
-                                      height: 50.0,
-                                      width: 150.0,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: kSecondaryColor,
-                                      ),
-                                      child: FlatButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState
-                                              .validate()) {
-                                            print('Saving Data');
-                                          }
-                                        },
-                                        color: kExpansionTitleColor,
-                                        textColor: kSecondaryColor,
-                                        child: Center(
-                                          child: Text(
-                                            'Save Settings',
-                                            style: TextStyle(
-                                              fontSize: 12.0,
-                                              fontFamily: 'Poppins-Regular',
+                                            buildTextFormField(
+                                              controller: addPriceController,
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  return 'Price';
+                                                }
+                                                return null;
+                                              },
                                             ),
-                                          ),
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  drawDivider(),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  // choose day
+                                  Text(
+                                    'Available',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: font14,
+                                  ),
+                                  SizedBox(
+                                    height: 4.0,
+                                  ),
+                                  buildTDropdownButton(
+                                    items: daysOfTheWeek.map((day) {
+                                      return DropdownMenuItem(
+                                        value: day,
+                                        child: Text(day),
+                                      );
+                                    }).toList(),
+                                    onChanged: (selectedItem) {
+                                      DocAssistCubit.get(context)
+                                          .selectWeekDay(value: selectedItem);
+                                    },
+                                    value: DocAssistCubit.get(context).selectedDay,
+                                  ),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  // Day Shift
+                                  writeText14(title: 'Day Shift'),
+                                  SizedBox(
+                                    height: 4.0,
+                                  ),
+                                  chooseDateRow(
+                                    leftTitle:  'from',
+                                      leftOnTap: (){},
+                                      rightTitle: 'to',
+                                    rightOnTap: (){}
+                                  ),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  // Night Shift
+                                  Text(
+                                    'Night Shift',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: font14,
+                                  ),
+                                  SizedBox(
+                                    height: 4.0,
+                                  ),
+                                  chooseDateRow(
+                                      leftTitle:  'from',
+                                      leftOnTap: (){},
+                                      rightTitle: 'to',
+                                      rightOnTap: (){}
+                                  ),
+                                  SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+
+                                      drawCircleIcon(),
+                                      Container(
+                                        height: 50.0,
+                                        width: 150.0,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(50),
+                                          color: kSecondaryColor,
+                                        ),
+                                        child: buildSaveButton(
+                                            onPressed: () {
+                                              if (_formKey.currentState
+                                                  .validate()) {
+                                                print('Saving Data');
+                                              }
+                                            },
+                                            title: 'Save Settings'
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           }),

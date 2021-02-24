@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'doc_assist_states.dart';
@@ -7,7 +8,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
 
   static DocAssistCubit get(context) => BlocProvider.of(context);
 
-  bool switchValue=true;
+  bool switchValue = true;
+  String selectedDay = 'Saturday';
+
   // we receive our list normally
   // List listOfPostsData = [];
   // getData() {
@@ -26,9 +29,15 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   //   });
   // }
 
-  toggleTheSwitch({value}){
+  toggleTheSwitch({@required value}){
     switchValue = value;
     emit(DocAssistSwitchButtonState());
+  }
+
+  selectWeekDay({@required value}){
+
+    selectedDay = value;
+    emit(DocAssistSelectWeekDayState());
   }
 
 }

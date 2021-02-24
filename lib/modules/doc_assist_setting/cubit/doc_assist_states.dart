@@ -13,3 +13,6 @@ class DocAssistErrorState extends DocAssistStates {
 
 
 class DocAssistSwitchButtonState extends DocAssistStates {}
+
+
+class DocAssistSelectWeekDayState extends DocAssistStates {}
