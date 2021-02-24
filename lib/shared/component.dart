@@ -13,9 +13,27 @@ void initApp() {
 // divider
 Widget drawDivider() => Divider(
       height: 1.0,
-      color: kMainColor,
+      color: kDividerColor,
       thickness: 1.0,
     );
+
+// draw circle icon or image
+Widget drawCircleIcon() => ClipOval(
+  child: Material(
+    color: kExpansionTitleColor, // button color
+    child: InkWell(
+      splashColor: kMainColor, // inkwell color
+      child: SizedBox(width: 40, height: 40, child: Icon(
+        Icons.add,
+        color: kSecondaryColor,
+        size: 40.0,
+      ),),
+      onTap: () {},
+    ),
+  ),
+);
+
+// draw simple app bar
 Widget drawAppBar({@required BuildContext context}) => AppBar(
   leading: IconButton(
     icon: Icon(Icons.arrow_back_ios_outlined, color: kSecondaryColor),
@@ -94,7 +112,7 @@ Widget buildButton({
             color: kSecondaryColor,
             border: Border.all(
               width: 1,
-              color: kThirdColor,
+              color: kButtonBorderColor,
             )),
         child: FlatButton(
           onPressed: onPressed,

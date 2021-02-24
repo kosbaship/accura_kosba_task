@@ -27,6 +27,11 @@ flutter:
 
   uses-material-design: true
 
+  assets:
+    - assets/images/clocicon.png
+    - assets/images/plusicon.png
+
+
   fonts:
     - family: Poppins-Medium
       fonts:

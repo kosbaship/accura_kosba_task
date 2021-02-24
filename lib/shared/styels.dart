@@ -8,6 +8,13 @@ TextStyle font14 = TextStyle(
   letterSpacing: 1.4,
 );
 
+TextStyle font12 = TextStyle(
+  fontSize: 14.0,
+  color: kTextFieldTextColor,
+  fontFamily: 'Poppins-Regular',
+  letterSpacing: 0,
+);
+
 
 TextStyle font18 = TextStyle(
   fontSize: 18.0,

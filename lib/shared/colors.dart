@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 
 const kMainColor =  Color(0xff3354F4);
 const kSecondaryColor = Color(0xffFFFFFF);
-const kThirdColor = Color(0xffD9D9D9);
+const kButtonBorderColor = Color(0xffD9D9D9);
 const kExpansionBGColor = Color(0xffFAFAFA);
 const kExpansionBorderColor = Color(0xFFA2C5FB);
 const kExpansionTitleColor = Color(0xFF3B77D8);
 const kTitleDarkColor = Color(0xFF444444);
+const kTextFieldTextColor = Color(0xFF777777);
+const kTitleGreyColor = Color(0xFF919191);
+const kDividerColor = Color(0xFFEAEAEA);
 
 
 const MaterialColor kMaterialColor = MaterialColor(
