@@ -36,32 +36,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
         switchValue = false;
       }
 
-      // select the day from db
-      switch (doctorData.result.availabilityList[0].availabilityTimeList[0].wdayDayName) {
-        case 'saturday':
-          selectedDay = kSaturday;
-          break;
-        case 'sunday':
-          selectedDay = kSunday;
-          break;
-        case 'monday':
-          selectedDay = kMonday;
-          break;
-        case 'tuesday':
-          selectedDay = kTuesday;
-          break;
-        case 'wednesday':
-          selectedDay = kWednesday;
-          break;
-        case 'thursday':
-          selectedDay = kThursday;
-          break;
-        case 'friday':
-          selectedDay = kFriday;
-          break;
-      }
-
-
 
       print('\n=========================================================');
       print(doctorData.result.availabilityList.length);

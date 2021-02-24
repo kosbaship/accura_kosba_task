@@ -1,3 +1,4 @@
+import 'package:accura_kosba_task/models/get_doctor.dart';
 import 'package:accura_kosba_task/network/api_provider.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'colors.dart';
+import 'constants.dart';
 
 // database initialization
 void initApp() {
@@ -14,9 +16,9 @@ void initApp() {
 
 // divider
 Widget drawDivider() => Divider(
-      height: 1.0,
+      height: 2.0,
       color: kDividerColor,
-      thickness: 1.0,
+      thickness: 2.0,
     );
 
 Widget chooseDateRow(
@@ -390,17 +392,13 @@ Widget buildExpandedCard({
   @required buildTextFieldValidator,
   @required buildTDropdownButtonItems,
   @required buildTDropdownButtonOnChanged,
-  @required buildTDropdownButtonValue,
   @required dayShiftChooseDateFrom,
-  @required dayShiftChooseDateFromAvailableHour,
   @required dayShiftChooseDateTo,
-  @required dayShiftChooseDateToAvailableHour,
   @required nightShiftChooseDateFrom,
-  @required nightShiftChooseDateFromAvailableHour,
   @required nightShiftChooseDateTo,
-  @required nightShiftChooseDateToAvailableHour,
   @required drawCircleIconOnTap,
   @required buildButtonOnPressed,
+  @required List<AvailabilityTimeList> availabilityTimeList,
   bool initiallyExpanded = false,
 }) =>
     Container(
@@ -527,42 +525,93 @@ Widget buildExpandedCard({
                   SizedBox(
                     height: 4.0,
                   ),
-                  buildTDropdownButton(
-                    items: buildTDropdownButtonItems,
-                    onChanged: buildTDropdownButtonOnChanged,
-                    value: buildTDropdownButtonValue,
-                  ),
                   SizedBox(
-                    height: 16.0,
+                    height: 250,
+                    child: ListView.separated(
+                        itemBuilder: (context, index)  {
+                          String selectedDay = 'Day';
+
+                          // select the day from db
+                          switch (availabilityTimeList[index].wdayDayName) {
+                            case 'saturday':
+                              selectedDay = kSaturday;
+                              break;
+                            case 'sunday':
+                              selectedDay = kSunday;
+                              break;
+                            case 'monday':
+                              selectedDay = kMonday;
+                              break;
+                            case 'tuesday':
+                              selectedDay = kTuesday;
+                              break;
+                            case 'wednesday':
+                              selectedDay = kWednesday;
+                              break;
+                            case 'thursday':
+                              selectedDay = kThursday;
+                              break;
+                            case 'friday':
+                              selectedDay = kFriday;
+                              break;
+                          }
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            buildTDropdownButton(
+                              items: buildTDropdownButtonItems,
+                              onChanged: buildTDropdownButtonOnChanged,
+                              value: selectedDay,
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            // Day Shift
+                            writeText14(title: 'Day Shift'),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            chooseDateRow(
+                                leftTitle: '${availabilityTimeList[index].wdayFrom}' ?? 'from',
+                                leftOnTap: dayShiftChooseDateFrom,
+                                rightTitle: '${availabilityTimeList[index].wdayTo}' ?? 'to',
+                                rightOnTap: dayShiftChooseDateTo),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            // Night Shift
+                            Text(
+                              'Night Shift',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                            SizedBox(
+                              height: 4.0,
+                            ),
+                            chooseDateRow(
+                                leftTitle: '${availabilityTimeList[index].wdayFrom2}' ?? 'from',
+                                leftOnTap: nightShiftChooseDateFrom,
+                                rightTitle: '${availabilityTimeList[index].wdayTo2}' ?? 'to',
+                                rightOnTap: nightShiftChooseDateTo),
+
+                          ],);
+                        },
+                        separatorBuilder: (context, index) => Column(
+                          children: [
+                            SizedBox(
+                              height: 8.0,
+                            ),
+                            drawDivider(),
+                            SizedBox(
+                              height: 8.0,
+                            ),
+                          ],
+                        ),
+                        itemCount: availabilityTimeList.length
+                    ),
                   ),
-                  // Day Shift
-                  writeText14(title: 'Day Shift'),
-                  SizedBox(
-                    height: 4.0,
-                  ),
-                  chooseDateRow(
-                      leftTitle: '$dayShiftChooseDateFromAvailableHour' ?? 'from',
-                      leftOnTap: dayShiftChooseDateFrom,
-                      rightTitle: '$dayShiftChooseDateToAvailableHour' ?? 'to',
-                      rightOnTap: dayShiftChooseDateTo),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  // Night Shift
-                  Text(
-                    'Night Shift',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: font14,
-                  ),
-                  SizedBox(
-                    height: 4.0,
-                  ),
-                  chooseDateRow(
-                      leftTitle: '$nightShiftChooseDateFromAvailableHour' ?? 'from',
-                      leftOnTap: nightShiftChooseDateFrom,
-                      rightTitle: '$nightShiftChooseDateToAvailableHour' ?? 'to',
-                      rightOnTap: nightShiftChooseDateTo),
                   SizedBox(
                     height: 16.0,
                   ),

@@ -14,7 +14,7 @@ class DocAssistSetting extends StatelessWidget {
   final addPriceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  final List<String> daysOfTheWeek = [kSaturday, kSunday, kMonday, kThursday, kWednesday, kThursday, kFriday];
+  final List<String> daysOfTheWeek = [kDay, kSaturday, kSunday, kMonday, kThursday, kWednesday, kThursday, kFriday];
 
   @override
   Widget build(BuildContext context) {
@@ -66,18 +66,12 @@ class DocAssistSetting extends StatelessWidget {
                             );
                           }).toList(),
                           buildTDropdownButtonOnChanged: (selectedItem) {
-                            DocAssistCubit.get(context)
-                                .selectWeekDay(value: selectedItem);
+                            DocAssistCubit.get(context).selectWeekDay(value: selectedItem);
                           },
-                          buildTDropdownButtonValue:
-                              DocAssistCubit.get(context).selectedDay,
-                          dayShiftChooseDateFromAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayFrom,
+                          availabilityTimeList: doctorData.result.availabilityList[0].availabilityTimeList,
                           dayShiftChooseDateFrom: () {},
-                          dayShiftChooseDateToAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayTo,
                           dayShiftChooseDateTo: () {},
-                          nightShiftChooseDateFromAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayFrom2,
                           nightShiftChooseDateFrom: () {},
-                          nightShiftChooseDateToAvailableHour: doctorData.result.availabilityList[0].availabilityTimeList[0].wdayTo2,
                           nightShiftChooseDateTo: () {},
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {

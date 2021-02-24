@@ -9,6 +9,7 @@ const String kDoctorIDValue = '796';
 
 // days of the week
 
+const String kDay = 'Day';
 const String kSaturday = 'Saturday';
 const String kSunday = 'Sunday';
 const String kMonday = 'Monday';
