@@ -42,7 +42,10 @@ class DocAssistSetting extends StatelessWidget {
         if (state is DocAssistSwitchButtonState) {}
       }, builder: (context, state) {
         DoctorData doctorData = DocAssistCubit.get(context).doctorData;
-
+        List<AvailabilityTimeList> clinicSelectedList = DocAssistCubit.get(context).clinicSelectedList;
+        List<AvailabilityTimeList> voiceSelectedList = DocAssistCubit.get(context).voiceSelectedList;
+        List<AvailabilityTimeList> videoSelectedList = DocAssistCubit.get(context).videoSelectedList;
+        List<AvailabilityTimeList> spotSelectedList = DocAssistCubit.get(context).spotSelectedList;
         return Scaffold(
           backgroundColor: kSecondaryColor,
           appBar: drawAppBar(context: context),
@@ -71,7 +74,7 @@ class DocAssistSetting extends StatelessWidget {
                   children: [
                     SizedBox(
                       child: buildExpandedCard(
-                          initiallyExpanded: false,
+                          initiallyExpanded: true,
                           expansionTitle:
                               '${doctorData.result.availabilityList[0].vendorAppointType}',
                           key: _clinicFormKey,
@@ -88,79 +91,88 @@ class DocAssistSetting extends StatelessWidget {
                             }
                             return null;
                           },
-                          list: ListView.separated(
-                              itemBuilder: (context, index) {
-                                DocAssistCubit.get(context).selectDayFromDB(index: index, sectionIndex: 0);
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildTDropdownButton(
-                                      items: daysOfTheWeek.map((day) {
-                                        return DropdownMenuItem(
-                                          value: day,
-                                          child: Text(day),
-                                        );
-                                      }).toList(),
-                                      onChanged: (selectedItem) {
-                                        DocAssistCubit.get(context).selectWeekDay(value: selectedItem, index: 0);
-                                      },
-                                      value: DocAssistCubit.get(context).clinicSelectedDay,
-                                    ),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // Day Shift
-                                    writeText14(title: 'Day Shift'),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    chooseDateRow(
-                                        leftTitle:
-                                            '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayFrom}' ??
-                                                'from',
-                                        leftOnTap: () {},
-                                        rightTitle:
-                                            '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayTo}' ??
-                                                'to',
-                                        rightOnTap: () {}),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // Night Shift
-                                    Text(
-                                      'Night Shift',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14,
-                                    ),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    chooseDateRow(
-                                        leftTitle:
-                                            '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayFrom2}' ??
-                                                'from',
-                                        leftOnTap: () {},
-                                        rightTitle:
-                                            '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayTo2}' ??
-                                                'to',
-                                        rightOnTap: () {}),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (context, index) => Column(
+                          list: ConditionalBuilder(
+                            condition: clinicSelectedList.length != 0,
+                            builder: (context) {
+                              return ListView.separated(
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        height: 8.0,
+                                      buildTDropdownButton(
+                                        items: daysOfTheWeek.map((day) {
+                                          return DropdownMenuItem(
+                                            value: day,
+                                            child: Text(day),
+                                          );
+                                        }).toList(),
+                                        onChanged: (selectedItem) {
+                                          DocAssistCubit.get(context).selectWeekDay(value: selectedItem, index: 0);
+                                        },
+                                        value: DocAssistCubit.get(context).clinicSelectedDay,
                                       ),
-                                      drawDivider(),
                                       SizedBox(
-                                        height: 8.0,
+                                        height: 16.0,
                                       ),
+                                      // Day Shift
+                                      writeText14(title: 'Day Shift'),
+                                      SizedBox(
+                                        height: 4.0,
+                                      ),
+                                      chooseDateRow(
+                                          leftTitle:
+                                              '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayFrom}' ??
+                                                  'from',
+                                          leftOnTap: () {},
+                                          rightTitle:
+                                              '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayTo}' ??
+                                                  'to',
+                                          rightOnTap: () {}),
+                                      SizedBox(
+                                        height: 16.0,
+                                      ),
+                                      // Night Shift
+                                      Text(
+                                        'Night Shift',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: font14,
+                                      ),
+                                      SizedBox(
+                                        height: 4.0,
+                                      ),
+                                      chooseDateRow(
+                                          leftTitle:
+                                              '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayFrom2}' ??
+                                                  'from',
+                                          leftOnTap: () {},
+                                          rightTitle:
+                                              '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayTo2}' ??
+                                                  'to',
+                                          rightOnTap: () {}),
                                     ],
-                                  ),
-                              itemCount: doctorData.result.availabilityList[0]
-                                  .availabilityTimeList.length),
+                                  );
+                                },
+                                separatorBuilder: (context, index) => Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        drawDivider(),
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                      ],
+                                    ),
+                                itemCount: clinicSelectedList.length);
+                            },
+                            fallback: (context) => Center(
+                              child: writeText14(
+                                  title:
+                                  'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
+                                  maxLines: 5),
+                            ),
+                          ),
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {
                             if (_clinicFormKey.currentState.validate()) {
@@ -192,81 +204,90 @@ class DocAssistSetting extends StatelessWidget {
                             }
                             return null;
                           },
-                          list: ListView.separated(
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildTDropdownButton(
-                                      items: daysOfTheWeek.map((day) {
-                                        return DropdownMenuItem(
-                                          value: day,
-                                          child: Text(day),
-                                        );
-                                      }).toList(),
-                                      onChanged: (selectedItem) {
-                                        DocAssistCubit.get(context)
-                                            .selectWeekDay(
-                                                value: selectedItem, index: 1);
-                                      },
-                                      value: DocAssistCubit.get(context)
-                                          .voiceSelectedDay,
-                                    ),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // Day Shift
-                                    writeText14(title: 'Day Shift'),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    chooseDateRow(
-                                        leftTitle:
-                                            '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom}' ??
-                                                'from',
-                                        leftOnTap: () {},
-                                        rightTitle:
-                                            '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo}' ??
-                                                'to',
-                                        rightOnTap: () {}),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // Night Shift
-                                    Text(
-                                      'Night Shift',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14,
-                                    ),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    chooseDateRow(
-                                        leftTitle:
-                                            '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom2}' ??
-                                                'from',
-                                        leftOnTap: () {},
-                                        rightTitle:
-                                            '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo2}' ??
-                                                'to',
-                                        rightOnTap: () {}),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (context, index) => Column(
+                          list: ConditionalBuilder(
+                            condition: voiceSelectedList.length != 0,
+                            builder: (context) {
+                              return  ListView.separated(
+                                itemBuilder: (context, index) {
+
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        height: 8.0,
+                                      buildTDropdownButton(
+                                        items: daysOfTheWeek.map((day) {
+                                          return DropdownMenuItem(
+                                            value: day,
+                                            child: Text(day),
+                                          );
+                                        }).toList(),
+                                        onChanged: (selectedItem) {
+                                          DocAssistCubit.get(context)
+                                              .selectWeekDay(
+                                                  value: selectedItem, index: 1);
+                                        },
+                                        value: DocAssistCubit.get(context).voiceSelectedDay,
                                       ),
-                                      drawDivider(),
                                       SizedBox(
-                                        height: 8.0,
+                                        height: 16.0,
                                       ),
+                                      // Day Shift
+                                      writeText14(title: 'Day Shift'),
+                                      SizedBox(
+                                        height: 4.0,
+                                      ),
+                                      chooseDateRow(
+                                          leftTitle:
+                                              '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom}' ??
+                                                  'from',
+                                          leftOnTap: () {},
+                                          rightTitle:
+                                              '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo}' ??
+                                                  'to',
+                                          rightOnTap: () {}),
+                                      SizedBox(
+                                        height: 16.0,
+                                      ),
+                                      // Night Shift
+                                      Text(
+                                        'Night Shift',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: font14,
+                                      ),
+                                      SizedBox(
+                                        height: 4.0,
+                                      ),
+                                      chooseDateRow(
+                                          leftTitle:
+                                              '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom2}' ??
+                                                  'from',
+                                          leftOnTap: () {},
+                                          rightTitle:
+                                              '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo2}' ??
+                                                  'to',
+                                          rightOnTap: () {}),
                                     ],
-                                  ),
-                              itemCount: doctorData.result.availabilityList[1]
-                                  .availabilityTimeList.length),
+                                  );
+                                },
+                                separatorBuilder: (context, index) => Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        drawDivider(),
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                      ],
+                                    ),
+                                itemCount: voiceSelectedList.length);},
+                            fallback: (context) => Center(
+                              child: writeText14(
+                                  title:
+                                  'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
+                                  maxLines: 5),
+                            ),
+                          ),
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {
                             if (_voiceFormKey.currentState.validate()) {
@@ -295,81 +316,90 @@ class DocAssistSetting extends StatelessWidget {
                             }
                             return null;
                           },
-                          list: ListView.separated(
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildTDropdownButton(
-                                      items: daysOfTheWeek.map((day) {
-                                        return DropdownMenuItem(
-                                          value: day,
-                                          child: Text(day),
-                                        );
-                                      }).toList(),
-                                      onChanged: (selectedItem) {
-                                        DocAssistCubit.get(context)
-                                            .selectWeekDay(
-                                                value: selectedItem, index: 2);
-                                      },
-                                      value: DocAssistCubit.get(context)
-                                          .videoSelectedDay,
-                                    ),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // Day Shift
-                                    writeText14(title: 'Day Shift'),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    chooseDateRow(
-                                        leftTitle:
-                                            '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom}' ??
-                                                'from',
-                                        leftOnTap: () {},
-                                        rightTitle:
-                                            '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo}' ??
-                                                'to',
-                                        rightOnTap: () {}),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // Night Shift
-                                    Text(
-                                      'Night Shift',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14,
-                                    ),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    chooseDateRow(
-                                        leftTitle:
-                                            '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom2}' ??
-                                                'from',
-                                        leftOnTap: () {},
-                                        rightTitle:
-                                            '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo2}' ??
-                                                'to',
-                                        rightOnTap: () {}),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (context, index) => Column(
+                          list: ConditionalBuilder(
+                            condition: videoSelectedList.length != 0,
+                            builder: (context) {
+                              return   ListView.separated(
+                                itemBuilder: (context, index) {
+
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        height: 8.0,
+                                      buildTDropdownButton(
+                                        items: daysOfTheWeek.map((day) {
+                                          return DropdownMenuItem(
+                                            value: day,
+                                            child: Text(day),
+                                          );
+                                        }).toList(),
+                                        onChanged: (selectedItem) {
+                                          DocAssistCubit.get(context)
+                                              .selectWeekDay(
+                                                  value: selectedItem, index: 2);
+                                        },
+                                        value: DocAssistCubit.get(context).videoSelectedDay,
                                       ),
-                                      drawDivider(),
                                       SizedBox(
-                                        height: 8.0,
+                                        height: 16.0,
                                       ),
+                                      // Day Shift
+                                      writeText14(title: 'Day Shift'),
+                                      SizedBox(
+                                        height: 4.0,
+                                      ),
+                                      chooseDateRow(
+                                          leftTitle:
+                                              '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom}' ??
+                                                  'from',
+                                          leftOnTap: () {},
+                                          rightTitle:
+                                              '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo}' ??
+                                                  'to',
+                                          rightOnTap: () {}),
+                                      SizedBox(
+                                        height: 16.0,
+                                      ),
+                                      // Night Shift
+                                      Text(
+                                        'Night Shift',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: font14,
+                                      ),
+                                      SizedBox(
+                                        height: 4.0,
+                                      ),
+                                      chooseDateRow(
+                                          leftTitle:
+                                              '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom2}' ??
+                                                  'from',
+                                          leftOnTap: () {},
+                                          rightTitle:
+                                              '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo2}' ??
+                                                  'to',
+                                          rightOnTap: () {}),
                                     ],
-                                  ),
-                              itemCount: doctorData.result.availabilityList[2]
-                                  .availabilityTimeList.length),
+                                  );
+                                },
+                                separatorBuilder: (context, index) => Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        drawDivider(),
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                      ],
+                                    ),
+                                itemCount: videoSelectedList.length);},
+                            fallback: (context) => Center(
+                              child: writeText14(
+                                  title:
+                                  'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
+                                  maxLines: 5),
+                            ),
+                          ),
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {
                             if (_videoFormKey.currentState.validate()) {
@@ -396,10 +426,9 @@ class DocAssistSetting extends StatelessWidget {
                             }
                             return null;
                           },
+
                           list: ConditionalBuilder(
-                            condition: doctorData.result.availabilityList[3]
-                                    .availabilityTimeList.length >
-                                0,
+                            condition: spotSelectedList.length != 0,
                             builder: (context) => ListView.separated(
                                 itemBuilder: (context, index) {
                                   return Column(

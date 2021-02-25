@@ -13,6 +13,10 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   static DocAssistCubit get(context) => BlocProvider.of(context);
 
   DoctorData doctorData = DoctorData();
+  List<AvailabilityTimeList> clinicSelectedList = [];
+  List<AvailabilityTimeList> voiceSelectedList = [];
+  List<AvailabilityTimeList> videoSelectedList = [];
+  List<AvailabilityTimeList> spotSelectedList = [];
   String clinicSelectedDay = 'Day';
   String voiceSelectedDay = 'Day';
   String videoSelectedDay = 'Day';
@@ -39,6 +43,11 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       videoSwitch = doctorData.result.availabilityList[1].isActive == 1;
       voiceSwitch = doctorData.result.availabilityList[2].isActive == 1;
       spotSwitch = doctorData.result.availabilityList[3].isActive == 1;
+      clinicSelectedList =  doctorData.result.availabilityList[0].availabilityTimeList;
+      voiceSelectedList =  doctorData.result.availabilityList[1].availabilityTimeList;
+      videoSelectedList =  doctorData.result.availabilityList[2].availabilityTimeList;
+      spotSelectedList =  doctorData.result.availabilityList[3].availabilityTimeList;
+
 
       emit(DocAssistSuccessState());
     }).catchError((e) {
@@ -130,6 +139,15 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   selectDayFromDB({@required index, @required sectionIndex}){
     String sectionSelectDay ;
 
+    print('\n=========================================================');
+    print(doctorData.result.availabilityList[0].availabilityTimeList[index].wdayDayName);
+    print(index);
+    print(sectionIndex);
+    print(clinicSelectedDay);
+    print(voiceSelectedDay);
+    print(videoSelectedDay);
+    print(spotSelectedDay);
+    print('=========================================================\n\n');
     switch (doctorData.result.availabilityList[0].availabilityTimeList[index].wdayDayName) {
       case 'saturday':
         sectionSelectDay = kSaturday;
@@ -165,9 +183,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     if(sectionIndex == 3 ){
       spotSelectedDay =  sectionSelectDay;
     }
-    emit(DocAssistSelectWeekDayState());
   }
-
-
 
 }

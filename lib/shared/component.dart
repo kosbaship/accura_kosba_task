@@ -1,4 +1,3 @@
-import 'package:accura_kosba_task/models/get_doctor.dart';
 import 'package:accura_kosba_task/network/api_provider.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'colors.dart';
-import 'constants.dart';
 
 // database initialization
 void initApp() {
