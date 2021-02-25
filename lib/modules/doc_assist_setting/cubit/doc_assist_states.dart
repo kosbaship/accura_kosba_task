@@ -15,4 +15,7 @@ class DocAssistErrorState extends DocAssistStates {
 class DocAssistSwitchButtonState extends DocAssistStates {}
 
 
-class DocAssistSelectWeekDayState extends DocAssistStates {}
+class DocAssistClinicSelectWeekDayState extends DocAssistStates {}
+class DocAssistVoiceSelectWeekDayState extends DocAssistStates {}
+class DocAssistVideoSelectWeekDayState extends DocAssistStates {}
+class DocAssistSpotSelectWeekDayState extends DocAssistStates {}
