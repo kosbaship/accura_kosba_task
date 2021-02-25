@@ -208,18 +208,21 @@ class DocAssistSetting extends StatelessWidget {
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {
                             if (_clinicFormKey.currentState.validate()) {
-                              DocAssistCubit.get(context).updateData(
-                                typePrice:
-                                    'clinic_80|video_60|voice_40|spot_200',
-                                disableClinic: 0,
-                                clinicDayListItemValue: 'saturday',
-                                clinicFromMorningTime: '23:00',
-                                clinicToMorningTime: '23:00',
-                                clinicFromNightTime: '23:00',
-                                clinicToNightTime: '23:00',
-                              );
 
-                              print('Saving Data');
+                              DocAssistCubit.get(context).updateClinicData(
+                                  clinicPrice: 19,
+                                  clinicDayListFirst: 'friday',
+                                  clinicFromDayFirst: '23:00',
+                                  clinicToDayFirst: '23:00',
+                                  clinicFromNightFirst: '23:00',
+                                  clinicToNightFirst: '23:00',
+                                  clinicDayListSecond: 'monday',
+                                  clinicFromDaySecond: '23:00',
+                                  clinicToDaySecond: '23:00',
+                                  clinicFromNightSecond: '23:00',
+                                  clinicToNightSecond: '23:00'
+                              );
+                              print('Saving dummy Data');
                             }
                           }),
                     ),

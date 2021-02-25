@@ -57,14 +57,18 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     });
   }
 
-  updateData({
-    @required typePrice,
-    @required disableClinic,
-    @required clinicDayListItemValue,
-    @required clinicFromMorningTime,
-    @required clinicToMorningTime,
-    @required clinicFromNightTime,
-    @required clinicToNightTime,
+  updateClinicData({
+    @required clinicPrice,
+    @required clinicDayListFirst,
+    @required clinicFromDayFirst,
+    @required clinicToDayFirst,
+    @required clinicFromNightFirst,
+    @required clinicToNightFirst,
+    @required clinicDayListSecond,
+    @required clinicFromDaySecond,
+    @required clinicToDaySecond,
+    @required clinicFromNightSecond,
+    @required clinicToNightSecond,
   }) {
     emit(DocAssistLoadingState());
 
@@ -74,13 +78,17 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
           kAccessKey: kAccessKeyValue,
           kAccessPassword: kAccessPasswordValue,
           kDoctorID: kDoctorIDValue,
-          'typesPrices': '$typePrice',
-          'disableClinic': '$disableClinic',
-          'clinicDays[0]': '$clinicDayListItemValue',
-          'clinicFrom[0]': '$clinicFromMorningTime',
-          'clinicTo[0]': '$clinicToMorningTime',
-          'clinicFrom2[0]': '$clinicFromNightTime',
-          'clinicTo2[0]': '$clinicToNightTime',
+          'typesPrices': 'clinic_$clinicPrice',
+          'clinicDays[0]': clinicDayListFirst,
+          'clinicFrom[0]': clinicFromDayFirst,
+          'clinicTo[0]': clinicToDayFirst,
+          'clinicFrom2[0]': clinicFromNightFirst,
+          'clinicTo2[0]': clinicToNightFirst,
+          'clinicDays[1]': clinicDayListSecond,
+          'clinicFrom[1]': clinicFromDaySecond,
+          'clinicTo[1]': clinicToDaySecond,
+          'clinicFrom2[1]': clinicFromNightSecond,
+          'clinicTo2[1]': clinicToNightSecond,
         }
     ).then((response) async{
 
