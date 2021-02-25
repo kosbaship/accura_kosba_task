@@ -96,6 +96,7 @@ class DocAssistSetting extends StatelessWidget {
                             builder: (context) {
                               return ListView.separated(
                                 itemBuilder: (context, index) {
+                                  DocAssistCubit.get(context).clinicSelectedDays[index] = clinicSelectedList[index].wdayDayName;
                                   return Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -109,7 +110,8 @@ class DocAssistSetting extends StatelessWidget {
                                         onChanged: (selectedItem) {
                                           DocAssistCubit.get(context).selectWeekDay(value: selectedItem, index: 0, indexOfListLength: index);
                                         },
-                                        value: DocAssistCubit.get(context).clinicSelectedDays[index],
+                                        value:
+                                        DocAssistCubit.get(context).clinicSelectedDays[index],
                                       ),
                                       SizedBox(
                                         height: 16.0,
@@ -186,11 +188,6 @@ class DocAssistSetting extends StatelessWidget {
                                   clinicFromNightTime: '23:00',
                                   clinicToNightTime: '23:00',);
 
-                              print('\n=========================================================');
-                              print('${DocAssistCubit.get(context).clinicSwitch}' + '\n');
-                              print(addPriceClinicController.text + '\n');
-                              print(DocAssistCubit.get(context).clinicSelectedDay + '\n');
-                              print('=========================================================\n\n');
                               print('Saving Data');
                             }
                           }),

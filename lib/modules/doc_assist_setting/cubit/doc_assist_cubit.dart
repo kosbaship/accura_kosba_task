@@ -18,12 +18,12 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   List<AvailabilityTimeList> videoSelectedList = [];
   List<AvailabilityTimeList> spotSelectedList = [];
 
-  List<String> clinicSelectedDays = ['Day', 'Day', 'Day', 'Day', 'Day'];
-  String clinicSelectedDay = 'Day';
+  List<String> clinicSelectedDays = ['day', 'day', 'day', 'day', 'day'];
+  String clinicSelectedDay = 'day';
 
-  String voiceSelectedDay = 'Day';
-  String videoSelectedDay = 'Day';
-  String spotSelectedDay = 'Day';
+  String voiceSelectedDay = 'day';
+  String videoSelectedDay = 'day';
+  String spotSelectedDay = 'day';
   bool clinicSwitch = false;
   bool videoSwitch = false;
   bool voiceSwitch = false;
@@ -135,53 +135,44 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     emit(DocAssistSelectWeekDayState());
   }
 
-  selectDayFromDB({@required index, @required sectionIndex}){
-    String sectionSelectDay ;
-
-    print('\n=========================================================');
-    print(doctorData.result.availabilityList[0].availabilityTimeList[index].wdayDayName);
-    print(index);
-    print(sectionIndex);
-    print(clinicSelectedDay);
-    print(voiceSelectedDay);
-    print(videoSelectedDay);
-    print(spotSelectedDay);
-    print('=========================================================\n\n');
-    switch (doctorData.result.availabilityList[0].availabilityTimeList[index].wdayDayName) {
-      case 'saturday':
-        sectionSelectDay = kSaturday;
-        break;
-      case 'sunday':
-        sectionSelectDay = kSunday;
-        break;
-      case 'monday':
-        sectionSelectDay = kMonday;
-        break;
-      case 'tuesday':
-        sectionSelectDay = kTuesday;
-        break;
-      case 'wednesday':
-        sectionSelectDay = kWednesday;
-        break;
-      case 'thursday':
-        sectionSelectDay = kThursday;
-        break;
-      case 'friday':
-        sectionSelectDay = kFriday;
-        break;
-    }
-    if(sectionIndex == 0 ){
-       clinicSelectedDay =  sectionSelectDay;
-    }
-    if(sectionIndex == 1 ){
-      voiceSelectedDay =  sectionSelectDay;
-    }
-    if(sectionIndex == 2 ){
-      videoSelectedDay =  sectionSelectDay;
-    }
-    if(sectionIndex == 3 ){
-      spotSelectedDay =  sectionSelectDay;
-    }
-  }
+  // selectDayFromDB({@required index, @required sectionIndex}){
+  //   String sectionSelectDay ;
+  //
+  //   switch (doctorData.result.availabilityList[0].availabilityTimeList[index].wdayDayName) {
+  //     case 'saturday':
+  //       sectionSelectDay = kSaturday;
+  //       break;
+  //     case 'sunday':
+  //       sectionSelectDay = kSunday;
+  //       break;
+  //     case 'monday':
+  //       sectionSelectDay = kMonday;
+  //       break;
+  //     case 'tuesday':
+  //       sectionSelectDay = kTuesday;
+  //       break;
+  //     case 'wednesday':
+  //       sectionSelectDay = kWednesday;
+  //       break;
+  //     case 'thursday':
+  //       sectionSelectDay = kThursday;
+  //       break;
+  //     case 'friday':
+  //       sectionSelectDay = kFriday;
+  //       break;
+  //   }
+  //   if(sectionIndex == 0 ){
+  //      clinicSelectedDay =  sectionSelectDay;
+  //   }
+  //   if(sectionIndex == 1 ){
+  //     voiceSelectedDay =  sectionSelectDay;
+  //   }
+  //   if(sectionIndex == 2 ){
+  //     videoSelectedDay =  sectionSelectDay;
+  //   }
+  //   if(sectionIndex == 3 ){
+  //     spotSelectedDay =  sectionSelectDay;
+  //   }
+  // }
 
 }

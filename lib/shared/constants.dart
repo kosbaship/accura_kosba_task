@@ -8,11 +8,11 @@ const String kDoctorIDValue = '796';
 
 
 // days of the week
-const String kDay = 'Day';
-const String kSaturday = 'Saturday';
-const String kSunday = 'Sunday';
-const String kMonday = 'Monday';
-const String kTuesday = 'Tuesday';
-const String kWednesday = 'Wednesday';
-const String kThursday = 'Thursday';
-const String kFriday = 'Friday';
+const String kDay = 'day';
+const String kSaturday = 'saturday';
+const String kSunday = 'sunday';
+const String kMonday = 'monday';
+const String kTuesday = 'tuesday';
+const String kWednesday = 'wednesday';
+const String kThursday = 'thursday';
+const String kFriday = 'friday';
