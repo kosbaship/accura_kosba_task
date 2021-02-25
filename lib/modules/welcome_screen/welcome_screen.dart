@@ -1,4 +1,5 @@
 import 'package:accura_kosba_task/modules/doc_assist_setting/doc_assist_setting.dart';
+import 'package:accura_kosba_task/modules/pharma/pharma_screen.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
 import 'package:flutter/material.dart';
@@ -46,21 +47,28 @@ class WelcomeScreen extends StatelessWidget {
             ),
             buildButton(
               title: 'Pharmacy',
-              onPressed: (){},
+              onPressed: (){
+                navigateTo(context: context, goTO: PharmacyScreen());
+              },
             ),
             SizedBox(
               height: 16.0,
             ),
             buildButton(
               title: 'Laboratory',
-              onPressed: (){},
+              onPressed: (){
+                navigateTo(context: context, goTO: PharmacyScreen());
+              },
             ),
             SizedBox(
               height: 16.0,
             ),
             buildButton(
               title: 'Ray Center',
-              onPressed: (){},
+              onPressed: (){
+                navigateTo(context: context, goTO: PharmacyScreen());
+
+              },
             ),
             SizedBox(
               height: 16.0,

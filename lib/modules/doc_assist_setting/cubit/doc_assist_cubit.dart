@@ -34,9 +34,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     APIProvider.fetchData(
         path: GET_DOCTOR_END_POINT,
         data: {
-        kAccessKey: kAccessKeyValue,
-        kAccessPassword: kAccessPasswordValue,
-        kDoctorID: kDoctorIDValue,
+        'access_key': 'Jd5522SA523aaaW2e25e5rk',
+        'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+        'doctorId': '796',
       }
     ).then((response) async{
       doctorData =  DoctorData.fromJson(response.data);
@@ -75,9 +75,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     APIProvider.fetchData(
         path: UPDATE_DOCTOR_END_POINT,
         data: {
-          kAccessKey: kAccessKeyValue,
-          kAccessPassword: kAccessPasswordValue,
-          kDoctorID: kDoctorIDValue,
+          'access_key': 'Jd5522SA523aaaW2e25e5rk',
+          'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+          'userId': '796',
           'typesPrices': 'clinic_$clinicPrice',
           'clinicDays[0]': clinicDayListFirst,
           'clinicFrom[0]': clinicFromDayFirst,

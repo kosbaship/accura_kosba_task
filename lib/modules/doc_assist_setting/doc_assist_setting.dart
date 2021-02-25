@@ -37,9 +37,8 @@ class DocAssistSetting extends StatelessWidget {
     return BlocProvider(
       create: (context) => DocAssistCubit()..getData(),
       child: BlocConsumer<DocAssistCubit, DocAssistStates>(
-          listener: (context, state) {
-        if (state is DocAssistSwitchButtonState) {}
-      }, builder: (context, state) {
+          listener: (context, state) {},
+          builder: (context, state) {
         DoctorData doctorData = DocAssistCubit.get(context).doctorData;
         List<AvailabilityTimeList> clinicSelectedList =
             DocAssistCubit.get(context).clinicSelectedList;
