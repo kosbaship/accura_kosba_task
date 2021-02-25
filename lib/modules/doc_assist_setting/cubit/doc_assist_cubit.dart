@@ -17,7 +17,10 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   List<AvailabilityTimeList> voiceSelectedList = [];
   List<AvailabilityTimeList> videoSelectedList = [];
   List<AvailabilityTimeList> spotSelectedList = [];
+
+  List<String> clinicSelectedDays = ['Day', 'Day', 'Day', 'Day', 'Day'];
   String clinicSelectedDay = 'Day';
+
   String voiceSelectedDay = 'Day';
   String videoSelectedDay = 'Day';
   String spotSelectedDay = 'Day';
@@ -56,16 +59,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   }
 
   updateData({
-    @required expansionTitle,
-    @required switchTitle,
-    @required clinicPrice,
-    @required videoPrice,
-    @required voicePrice,
-    @required spotPrice,
+    @required typePrice,
     @required disableClinic,
-    @required clinicDayListIndex,
     @required clinicDayListItemValue,
-    @required clinicDaySectionIndex,
     @required clinicFromMorningTime,
     @required clinicToMorningTime,
     @required clinicFromNightTime,
@@ -79,16 +75,19 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
           kAccessKey: kAccessKeyValue,
           kAccessPassword: kAccessPasswordValue,
           kDoctorID: kDoctorIDValue,
-          'typesPrices': 'clinic_$clinicPrice|video_$videoPrice|voice_$voicePrice|spot_$spotPrice',
-          'disable$switchTitle': '$disableClinic',
-          '$expansionTitle'+'Days[$clinicDayListIndex]': '$clinicDayListItemValue',
-          '$expansionTitle'+'From[$clinicDaySectionIndex]': '$clinicFromMorningTime',
-          '$expansionTitle'+'To[$clinicDaySectionIndex]': '$clinicToMorningTime',
-          '$expansionTitle'+'From2[$clinicDaySectionIndex]': '$clinicFromNightTime',
-          '$expansionTitle'+'To2[$clinicDaySectionIndex]': '$clinicToNightTime',
+          'typesPrices': '$typePrice',
+          'disableClinic': '$disableClinic',
+          'clinicDays[0]': '$clinicDayListItemValue',
+          'clinicFrom[0]': '$clinicFromMorningTime',
+          'clinicTo[0]': '$clinicToMorningTime',
+          'clinicFrom2[0]': '$clinicFromNightTime',
+          'clinicTo2[0]': '$clinicToNightTime',
         }
     ).then((response) async{
 
+      print('\n=========================================================');
+      print(response.data);
+      print('=========================================================\n\n');
       emit(DocAssistSuccessState());
     }).catchError((e) {
       emit(DocAssistErrorState(e.toString()));
@@ -114,14 +113,14 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     emit(DocAssistSwitchButtonState());
   }
 
-  selectWeekDay({@required value, @required index,}){
+  selectWeekDay({@required value, @required index, @required indexOfListLength}){
     print('\n=========================================================');
     print(index);
     print(value);
     print('=========================================================\n\n');
     switch (index) {
       case 0:
-        clinicSelectedDay = value;
+        clinicSelectedDays[indexOfListLength] = value;
         break;
       case 2:
         videoSelectedDay = value;

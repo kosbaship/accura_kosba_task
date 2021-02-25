@@ -107,9 +107,9 @@ class DocAssistSetting extends StatelessWidget {
                                           );
                                         }).toList(),
                                         onChanged: (selectedItem) {
-                                          DocAssistCubit.get(context).selectWeekDay(value: selectedItem, index: 0);
+                                          DocAssistCubit.get(context).selectWeekDay(value: selectedItem, index: 0, indexOfListLength: index);
                                         },
-                                        value: DocAssistCubit.get(context).clinicSelectedDay,
+                                        value: DocAssistCubit.get(context).clinicSelectedDays[index],
                                       ),
                                       SizedBox(
                                         height: 16.0,
@@ -176,10 +176,20 @@ class DocAssistSetting extends StatelessWidget {
                           drawCircleIconOnTap: () {},
                           buildButtonOnPressed: () {
                             if (_clinicFormKey.currentState.validate()) {
+
+                              DocAssistCubit.get(context).updateData(
+                                  typePrice: 'clinic_80|video_60|voice_40|spot_200',
+                                  disableClinic:  0,
+                                  clinicDayListItemValue: 'saturday',
+                                  clinicFromMorningTime: '23:00',
+                                  clinicToMorningTime: '23:00',
+                                  clinicFromNightTime: '23:00',
+                                  clinicToNightTime: '23:00',);
+
                               print('\n=========================================================');
-                              print('${DocAssistCubit.get(context).voiceSwitch}' + '\n');
-                              print(addPriceVoiceController.text + '\n');
-                              print(DocAssistCubit.get(context).voiceSelectedDay + '\n');
+                              print('${DocAssistCubit.get(context).clinicSwitch}' + '\n');
+                              print(addPriceClinicController.text + '\n');
+                              print(DocAssistCubit.get(context).clinicSelectedDay + '\n');
                               print('=========================================================\n\n');
                               print('Saving Data');
                             }
