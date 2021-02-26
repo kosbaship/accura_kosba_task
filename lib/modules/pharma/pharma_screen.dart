@@ -20,9 +20,10 @@ class PharmacyScreen extends StatelessWidget {
       child: BlocConsumer<PharmacyCubit, PharmacyStates>(
         listener: (context, state) {},
         builder: (context, state) {
+
           VendorData vendorData = PharmacyCubit.get(context).vendorData;
           List<AvailabilityList> listOfWorkingTime = PharmacyCubit.get(context).listOfWorkingTime;
-          discountController.text = PharmacyCubit.get(context).discountInitialStart;
+          discountController.text = PharmacyCubit.get(context).discountInitialText;
           UnavailabilityList listOfUnavailableTime = PharmacyCubit.get(context).listOfUnavailableTime;
 
 

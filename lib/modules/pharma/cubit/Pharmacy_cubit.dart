@@ -20,7 +20,7 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
   // get them by the index from the ui
   List<AvailabilityList> listOfWorkingTime = [];
   bool buttonSwitch = false;
-  String discountInitialStart = '';
+  String discountInitialText = '';
   UnavailabilityList listOfUnavailableTime = UnavailabilityList();
 
   getData() {
@@ -34,7 +34,7 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
       vendorData =  VendorData.fromJson(response.data);
 
       buttonSwitch = vendorData.result.receiveOrders == '0' ? false : true ;
-      discountInitialStart = vendorData.result.discount;
+      discountInitialText = vendorData.result.discount;
       listOfWorkingTime = vendorData.result.availabilityList;
       listOfUnavailableTime = vendorData.result.unavailabilityList;
 

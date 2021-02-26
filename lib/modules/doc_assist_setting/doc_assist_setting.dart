@@ -44,23 +44,12 @@ class DocAssistSetting extends StatelessWidget {
           body: ConditionalBuilder(
             condition: state is! DocAssistLoadingState,
             builder: (context) {
-              // show the price from the db inside the tf
-              if (addPriceClinicController.text == '') {
-                addPriceClinicController.text =
-                    doctorData.result.availabilityList[0].priceValue;
-              }
-              if (addPriceVoiceController.text == '') {
-                addPriceVoiceController.text =
-                    doctorData.result.availabilityList[1].priceValue;
-              }
-              if (addPriceVideoController.text == '') {
-                addPriceVideoController.text =
-                    doctorData.result.availabilityList[2].priceValue;
-              }
-              if (addPriceSpotController.text == '') {
-                addPriceSpotController.text =
-                    doctorData.result.availabilityList[3].priceValue;
-              }
+
+              addPriceClinicController.text = DocAssistCubit.get(context).clinicAddPriceInitialText ;
+              addPriceVoiceController.text = DocAssistCubit.get(context).voiceAddPriceInitialText;
+              addPriceVideoController.text = DocAssistCubit.get(context).videoAddPriceInitialText;
+              addPriceSpotController.text = DocAssistCubit.get(context).spotAddPriceInitialText;
+
               return SingleChildScrollView(
                 child: Column(
                   children: [

@@ -14,6 +14,11 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
 
   DoctorData doctorData = DoctorData();
   List<AvailabilityList> availableLists = [];
+  String clinicAddPriceInitialText = '';
+  String voiceAddPriceInitialText = '';
+  String videoAddPriceInitialText = '';
+  String spotAddPriceInitialText = '';
+
   List<AvailabilityTimeList> clinicSelectedList = [];
   List<AvailabilityTimeList> voiceSelectedList = [];
   List<AvailabilityTimeList> videoSelectedList = [];
@@ -44,10 +49,19 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
 
       availableLists = doctorData.result.availabilityList;
 
+      // switch initial value
       clinicSwitch = doctorData.result.availabilityList[kVendorTypeClinic].isActive == 1 ? true : false;
       voiceSwitch = doctorData.result.availabilityList[kVendorTypeVoice].isActive == 1 ? true : false;
       videoSwitch = doctorData.result.availabilityList[kVendorTypeVideo].isActive == 1 ? true : false;
       spotSwitch = doctorData.result.availabilityList[kVendorTypeSpot].isActive == 1 ? true : false;
+
+      // edit text initial value
+      clinicAddPriceInitialText = availableLists[kVendorTypeClinic].priceValue;
+      voiceAddPriceInitialText = availableLists[kVendorTypeVoice].priceValue;
+      videoAddPriceInitialText = availableLists[kVendorTypeVideo].priceValue;
+      spotAddPriceInitialText = availableLists[kVendorTypeSpot].priceValue;
+
+
       clinicSelectedList =  doctorData.result.availabilityList[0].availabilityTimeList;
       voiceSelectedList =  doctorData.result.availabilityList[1].availabilityTimeList;
       videoSelectedList =  doctorData.result.availabilityList[2].availabilityTimeList;
