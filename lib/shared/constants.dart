@@ -9,17 +9,15 @@ const String kThursday = 'thursday';
 const String kFriday = 'friday';
 
 List<String> daysOfTheWeek = [
-  kDay,
-  kSaturday,
-  kSunday,
-  kMonday,
-  kTuesday,
-  kWednesday,
-  kThursday,
-  kFriday
+  kDay, kSaturday, kSunday, kMonday, kTuesday, kWednesday, kThursday, kFriday
 ];
 
 const String kPickDateDayFrom = 'DayFrom';
 const String kPickDateDayTo = 'DayTo';
 const String kPickDateNightFrom = 'NightFrom';
 const String kPickDateNightTo = 'NightTo';
+
+const int kVendorTypeClinic = 0;
+const int kVendorTypeVoice = 1;
+const int kVendorTypeVideo = 2;
+const int kVendorTypeSpot = 3;

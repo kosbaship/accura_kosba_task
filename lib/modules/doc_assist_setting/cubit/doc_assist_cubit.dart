@@ -13,6 +13,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   static DocAssistCubit get(context) => BlocProvider.of(context);
 
   DoctorData doctorData = DoctorData();
+  List<AvailabilityList> availableLists = [];
   List<AvailabilityTimeList> clinicSelectedList = [];
   List<AvailabilityTimeList> voiceSelectedList = [];
   List<AvailabilityTimeList> videoSelectedList = [];
@@ -41,10 +42,12 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     ).then((response) async{
       doctorData =  DoctorData.fromJson(response.data);
 
-      clinicSwitch = doctorData.result.availabilityList[0].isActive == 1;
-      videoSwitch = doctorData.result.availabilityList[1].isActive == 1;
-      voiceSwitch = doctorData.result.availabilityList[2].isActive == 1;
-      spotSwitch = doctorData.result.availabilityList[3].isActive == 1;
+      availableLists = doctorData.result.availabilityList;
+
+      clinicSwitch = doctorData.result.availabilityList[kVendorTypeClinic].isActive == 1 ? true : false;
+      voiceSwitch = doctorData.result.availabilityList[kVendorTypeVoice].isActive == 1 ? true : false;
+      videoSwitch = doctorData.result.availabilityList[kVendorTypeVideo].isActive == 1 ? true : false;
+      spotSwitch = doctorData.result.availabilityList[kVendorTypeSpot].isActive == 1 ? true : false;
       clinicSelectedList =  doctorData.result.availabilityList[0].availabilityTimeList;
       voiceSelectedList =  doctorData.result.availabilityList[1].availabilityTimeList;
       videoSelectedList =  doctorData.result.availabilityList[2].availabilityTimeList;
@@ -102,23 +105,23 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   }
 
 
-  toggleTheSwitch({@required value, @required index}){
-    switch (index) {
-      case 0:
-        clinicSwitch = value;
-        break;
-      case 2:
-        videoSwitch = value;
-        break;
-      case 1:
-        voiceSwitch = value;
-        break;
-      case 3:
-        spotSwitch = value;
-        break;
-    }
-    emit(DocAssistSwitchButtonState());
-  }
+  // toggleTheSwitch({@required value, @required index}){
+  //   switch (index) {
+  //     case 0:
+  //       clinicSwitch = value;
+  //       break;
+  //     case 2:
+  //       videoSwitch = value;
+  //       break;
+  //     case 1:
+  //       voiceSwitch = value;
+  //       break;
+  //     case 3:
+  //       spotSwitch = value;
+  //       break;
+  //   }
+  //   emit(DocAssistSwitchButtonState());
+  // }
 
   selectWeekDay({@required value, @required index, @required indexOfListLength}){
     switch (index) {
@@ -139,6 +142,28 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
         emit(DocAssistSpotSelectWeekDayState());
         break;
     }
+  }
+ 
+  toggleAndSaveSwitch({@required int vendorType, @required bool value}){
+    switch (vendorType) {
+      case kVendorTypeClinic:
+        clinicSwitch = value;
+        clinicSwitch ? availableLists[kVendorTypeClinic].isActive = 1 : availableLists[vendorType].isActive = 0;
+        break;
+      case kVendorTypeVoice:
+        voiceSwitch = value;
+        voiceSwitch ? availableLists[kVendorTypeVoice].isActive = 1 : availableLists[vendorType].isActive = 0;
+        break;
+      case kVendorTypeVideo:
+        videoSwitch = value;
+        videoSwitch ? availableLists[kVendorTypeVideo].isActive = 1 : availableLists[vendorType].isActive = 0;
+        break;
+      case kVendorTypeSpot:
+        spotSwitch = value;
+        spotSwitch ? availableLists[kVendorTypeSpot].isActive = 1 : availableLists[vendorType].isActive = 0;
+        break;
+    }
+    emit(DocAssistSwitchButtonState());
   }
 
 }

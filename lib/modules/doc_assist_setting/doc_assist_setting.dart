@@ -73,8 +73,7 @@ class DocAssistSetting extends StatelessWidget {
                           buildSwitchBtnValue:
                               DocAssistCubit.get(context).clinicSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context)
-                                .toggleTheSwitch(value: value, index: 0);
+                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeClinic, value: value);
                           },
                           buildTextFieldController: addPriceClinicController,
                           buildTextFieldValidator: (value) {
@@ -224,8 +223,8 @@ class DocAssistSetting extends StatelessWidget {
                           buildSwitchBtnValue:
                               DocAssistCubit.get(context).voiceSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context)
-                                .toggleTheSwitch(value: value, index: 1);
+                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVoice, value: value);
+
                           },
                           buildTextFieldController: addPriceVoiceController,
                           buildTextFieldValidator: (value) {
@@ -365,8 +364,8 @@ class DocAssistSetting extends StatelessWidget {
                           buildSwitchBtnValue:
                               DocAssistCubit.get(context).videoSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context)
-                                .toggleTheSwitch(value: value, index: 2);
+                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVideo, value: value);
+
                           },
                           buildTextFieldController: addPriceVideoController,
                           buildTextFieldValidator: (value) {
@@ -506,8 +505,8 @@ class DocAssistSetting extends StatelessWidget {
                           buildSwitchBtnValue:
                               DocAssistCubit.get(context).spotSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context)
-                                .toggleTheSwitch(value: value, index: 3);
+                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeSpot, value: value);
+
                           },
                           buildTextFieldController: addPriceSpotController,
                           buildTextFieldValidator: (value) {
