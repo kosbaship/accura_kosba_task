@@ -55,7 +55,7 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
     emit(PharmacySwitchButtonState());
   }
 
-  selectWeekDay({@required value, @required indexOfListLength}) {
+  selectPharmacyWeekDay({@required value, @required indexOfListLength}) {
     listOfWorkingTime[indexOfListLength].wdayDayName = value;
     emit(PharmacySelectWeekDayState());
   }

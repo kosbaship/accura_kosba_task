@@ -137,26 +137,26 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   //   emit(DocAssistSwitchButtonState());
   // }
 
-  selectWeekDay({@required value, @required index, @required indexOfListLength}){
-    switch (index) {
-      case 0:
-        clinicSelectedDays[indexOfListLength] = value;
-        emit(DocAssistClinicSelectWeekDayState());
-        break;
-      case 1:
-        voiceSelectedDays[indexOfListLength] = value;
-        emit(DocAssistVoiceSelectWeekDayState());
-        break;
-      case 2:
-        videoSelectedDays[indexOfListLength] = value;
-        emit(DocAssistVideoSelectWeekDayState());
-        break;
-      case 3:
-        spotSelectedDays[indexOfListLength]= value;
-        emit(DocAssistSpotSelectWeekDayState());
-        break;
-    }
-  }
+  // selectWeekDay({@required value, @required index, @required indexOfListLength}){
+  //   switch (index) {
+  //     case 0:
+  //       clinicSelectedDays[indexOfListLength] = value;
+  //       emit(DocAssistClinicSelectWeekDayState());
+  //       break;
+  //     case 1:
+  //       voiceSelectedDays[indexOfListLength] = value;
+  //       emit(DocAssistVoiceSelectWeekDayState());
+  //       break;
+  //     case 2:
+  //       videoSelectedDays[indexOfListLength] = value;
+  //       emit(DocAssistVideoSelectWeekDayState());
+  //       break;
+  //     case 3:
+  //       spotSelectedDays[indexOfListLength]= value;
+  //       emit(DocAssistSpotSelectWeekDayState());
+  //       break;
+  //   }
+  // }
  
   toggleAndSaveSwitch({@required int vendorType, @required bool value}){
     switch (vendorType) {
@@ -180,4 +180,24 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     emit(DocAssistSwitchButtonState());
   }
 
+  selectAndSaveDay({@required int vendorType, @required value, @required indexOfListLength}){
+    switch (vendorType) {
+      case kVendorTypeClinic:
+        availableLists[kVendorTypeClinic].availabilityTimeList[indexOfListLength].wdayDayName = value;
+        emit(DocAssistClinicSelectWeekDayState());
+        break;
+      case kVendorTypeVoice:
+        availableLists[kVendorTypeVoice].availabilityTimeList[indexOfListLength].wdayDayName = value;
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeVideo:
+        availableLists[kVendorTypeVideo].availabilityTimeList[indexOfListLength].wdayDayName = value;
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeSpot:
+        availableLists[kVendorTypeSpot].availabilityTimeList[indexOfListLength].wdayDayName = value;
+        emit(DocAssistSpotSelectWeekDayState());
+        break;
+    }
+  }
 }

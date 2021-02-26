@@ -131,7 +131,7 @@ class PharmacyScreen extends StatelessWidget {
                                 onChanged: (selectedItem) {
                                   print(selectedItem);
 
-                                  PharmacyCubit.get(context).selectWeekDay(
+                                  PharmacyCubit.get(context).selectPharmacyWeekDay(
                                       value: selectedItem,
                                       indexOfListLength: index);
                                 },

@@ -78,10 +78,6 @@ class DocAssistSetting extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ConditionalBuilder(
-                                          condition: state
-                                              is! DocAssistClinicSelectWeekDayState,
-                                          builder: (context) =>
                                               buildTDropdownButton(
                                             items: daysOfTheWeek.map((day) {
                                               return DropdownMenuItem(
@@ -91,37 +87,14 @@ class DocAssistSetting extends StatelessWidget {
                                             }).toList(),
                                             onChanged: (selectedItem) {
                                               print(selectedItem);
-
                                               DocAssistCubit.get(context)
-                                                  .selectWeekDay(
+                                                  .selectAndSaveDay(
                                                       value: selectedItem,
-                                                      index: 0,
+                                                      vendorType: kVendorTypeClinic,
                                                       indexOfListLength: index);
                                             },
-                                            value: clinicSelectedList[index]
-                                                .wdayDayName,
+                                            value: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayDayName,
                                           ),
-                                          fallback: (context) =>
-                                              buildTDropdownButton(
-                                            items: daysOfTheWeek.map((day) {
-                                              return DropdownMenuItem(
-                                                value: day,
-                                                child: Text(day),
-                                              );
-                                            }).toList(),
-                                            onChanged: (selectedItem) {
-                                              print(selectedItem);
-
-                                              DocAssistCubit.get(context)
-                                                  .selectWeekDay(
-                                                      value: selectedItem,
-                                                      index: 0,
-                                                      indexOfListLength: index);
-                                            },
-                                            value: DocAssistCubit.get(context)
-                                                .clinicSelectedDays[index],
-                                          ),
-                                        ),
                                         SizedBox(
                                           height: 16.0,
                                         ),
@@ -231,10 +204,6 @@ class DocAssistSetting extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ConditionalBuilder(
-                                          condition: state
-                                              is! DocAssistVoiceSelectWeekDayState,
-                                          builder: (context) =>
                                               buildTDropdownButton(
                                             items: daysOfTheWeek.map((day) {
                                               return DropdownMenuItem(
@@ -242,39 +211,16 @@ class DocAssistSetting extends StatelessWidget {
                                                 child: Text(day),
                                               );
                                             }).toList(),
-                                            onChanged: (selectedItem) {
-                                              print(selectedItem);
-
-                                              DocAssistCubit.get(context)
-                                                  .selectWeekDay(
+                                                onChanged: (selectedItem) {
+                                                  print(selectedItem);
+                                                  DocAssistCubit.get(context)
+                                                      .selectAndSaveDay(
                                                       value: selectedItem,
-                                                      index: 1,
+                                                      vendorType: kVendorTypeVoice,
                                                       indexOfListLength: index);
-                                            },
-                                            value: voiceSelectedList[index]
-                                                .wdayDayName,
-                                          ),
-                                          fallback: (context) =>
-                                              buildTDropdownButton(
-                                            items: daysOfTheWeek.map((day) {
-                                              return DropdownMenuItem(
-                                                value: day,
-                                                child: Text(day),
-                                              );
-                                            }).toList(),
-                                            onChanged: (selectedItem) {
-                                              print(selectedItem);
-
-                                              DocAssistCubit.get(context)
-                                                  .selectWeekDay(
-                                                      value: selectedItem,
-                                                      index: 1,
-                                                      indexOfListLength: index);
-                                            },
-                                            value: DocAssistCubit.get(context)
-                                                .voiceSelectedDays[index],
-                                          ),
-                                        ),
+                                                },
+                                                value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
+                                              ),
                                         SizedBox(
                                           height: 16.0,
                                         ),
@@ -372,10 +318,6 @@ class DocAssistSetting extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ConditionalBuilder(
-                                          condition: state
-                                              is! DocAssistVideoSelectWeekDayState,
-                                          builder: (context) =>
                                               buildTDropdownButton(
                                             items: daysOfTheWeek.map((day) {
                                               return DropdownMenuItem(
@@ -383,39 +325,17 @@ class DocAssistSetting extends StatelessWidget {
                                                 child: Text(day),
                                               );
                                             }).toList(),
-                                            onChanged: (selectedItem) {
-                                              print(selectedItem);
-
-                                              DocAssistCubit.get(context)
-                                                  .selectWeekDay(
+                                                onChanged: (selectedItem) {
+                                                  print(selectedItem);
+                                                  DocAssistCubit.get(context)
+                                                      .selectAndSaveDay(
                                                       value: selectedItem,
-                                                      index: 2,
+                                                      vendorType: kVendorTypeVideo,
                                                       indexOfListLength: index);
-                                            },
-                                            value: videoSelectedList[index]
-                                                .wdayDayName,
-                                          ),
-                                          fallback: (context) =>
-                                              buildTDropdownButton(
-                                            items: daysOfTheWeek.map((day) {
-                                              return DropdownMenuItem(
-                                                value: day,
-                                                child: Text(day),
-                                              );
-                                            }).toList(),
-                                            onChanged: (selectedItem) {
-                                              print(selectedItem);
+                                                },
+                                                value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
 
-                                              DocAssistCubit.get(context)
-                                                  .selectWeekDay(
-                                                      value: selectedItem,
-                                                      index: 2,
-                                                      indexOfListLength: index);
-                                            },
-                                            value: DocAssistCubit.get(context)
-                                                .videoSelectedDays[index],
-                                          ),
-                                        ),
+                                              ),
                                         SizedBox(
                                           height: 16.0,
                                         ),
@@ -512,10 +432,6 @@ class DocAssistSetting extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      ConditionalBuilder(
-                                        condition: state
-                                            is! DocAssistSpotSelectWeekDayState,
-                                        builder: (context) =>
                                             buildTDropdownButton(
                                           items: daysOfTheWeek.map((day) {
                                             return DropdownMenuItem(
@@ -523,39 +439,17 @@ class DocAssistSetting extends StatelessWidget {
                                               child: Text(day),
                                             );
                                           }).toList(),
-                                          onChanged: (selectedItem) {
-                                            print(selectedItem);
-
-                                            DocAssistCubit.get(context)
-                                                .selectWeekDay(
+                                              onChanged: (selectedItem) {
+                                                print(selectedItem);
+                                                DocAssistCubit.get(context)
+                                                    .selectAndSaveDay(
                                                     value: selectedItem,
-                                                    index: 3,
+                                                    vendorType: kVendorTypeSpot,
                                                     indexOfListLength: index);
-                                          },
-                                          value: spotSelectedList[index]
-                                              .wdayDayName,
-                                        ),
-                                        fallback: (context) =>
-                                            buildTDropdownButton(
-                                          items: daysOfTheWeek.map((day) {
-                                            return DropdownMenuItem(
-                                              value: day,
-                                              child: Text(day),
-                                            );
-                                          }).toList(),
-                                          onChanged: (selectedItem) {
-                                            print(selectedItem);
+                                              },
+                                              value: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayDayName,
 
-                                            DocAssistCubit.get(context)
-                                                .selectWeekDay(
-                                                    value: selectedItem,
-                                                    index: 3,
-                                                    indexOfListLength: index);
-                                          },
-                                          value: DocAssistCubit.get(context)
-                                              .spotSelectedDays[index],
-                                        ),
-                                      ),
+                                            ),
                                       SizedBox(
                                         height: 16.0,
                                       ),
