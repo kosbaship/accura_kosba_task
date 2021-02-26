@@ -146,11 +146,21 @@ class PharmacyScreen extends StatelessWidget {
                                   leftTitle:
                                       '${listOfWorkingTime[index].wdayFrom}' ??
                                           'from',
-                                  leftOnTap: () {},
+                                  leftOnTap: () {
+                                    PharmacyCubit.get(context).selectTime(
+                                        context: context,
+                                        index: index,
+                                        type: 1);
+                                  },
                                   rightTitle:
                                       '${listOfWorkingTime[index].wdayTo}' ??
                                           'to',
-                                  rightOnTap: () {}),
+                                  rightOnTap: () {
+                                    PharmacyCubit.get(context).selectTime(
+                                        context: context,
+                                        index: index,
+                                        type: 2);
+                                  }),
                             ),
                             SizedBox(
                               height: 16.0,
@@ -165,11 +175,21 @@ class PharmacyScreen extends StatelessWidget {
                                   leftTitle:
                                       '${listOfWorkingTime[index].wdayFrom2}' ??
                                           'from',
-                                  leftOnTap: () {},
+                                  leftOnTap: () {
+                                    PharmacyCubit.get(context).selectTime(
+                                        context: context,
+                                        index: index,
+                                        type: 3);
+                                  },
                                   rightTitle:
                                       '${listOfWorkingTime[index].wdayTo2}' ??
                                           'to',
-                                  rightOnTap: () {}),
+                                  rightOnTap: () {
+                                    PharmacyCubit.get(context).selectTime(
+                                        context: context,
+                                        index: index,
+                                        type: 4);
+                                  }),
                             ),
                             SizedBox(
                               height: 8,

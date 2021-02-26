@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/get_vendor.dart';
@@ -90,13 +91,46 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
     listOfWorkingTime.removeAt(availableDayID);
     emit(PharmacySelectWeekDayState());
   }
+
+
+
+  Future<Null> selectTime({@required BuildContext context,@required index,@required type}) async {
+    // get the current time
+    TimeOfDay timeOfDay = TimeOfDay.now();
+    // start the picker with the current time
+    timeOfDay = await showTimePicker(context: context, initialTime: timeOfDay);
+    String formattedDate = '${timeOfDay.hour}:${timeOfDay.minute}';
+
+    // save the picked time into the list
+    switch(type){
+      case 1:
+        listOfWorkingTime[index].wdayFrom = formattedDate;
+        break;
+      case 2:
+        listOfWorkingTime[index].wdayTo = formattedDate;
+        break;
+      case 3:
+        listOfWorkingTime[index].wdayFrom2 = formattedDate;
+        break;
+      case 4:
+        listOfWorkingTime[index].wdayFrom2 = formattedDate;
+        break;
+    }
+    emit(PharmacySelectWeekDayState());
+
+    listOfWorkingTime.map((day) {
+      print('=========================================');
+      print(day.wdayId);
+      print(day.wdayAdvId);
+      print(day.wdayDayName);
+      print(day.wdayFrom);
+      print(day.wdayTo);
+      print(day.wdayFrom2);
+      print(day.wdayTo2);
+      print('=========================================');
+    }).toList();
+
+  }
+
 }
-// print('=========================================');
-// print(dayIdIntoInteger.toString());
-// print(vendorData.result.vendorId);
-// print('saturday');
-// print(dayFrom);
-// print(dayTo);
-// print(nightFrom);
-// print(nightTo);
-// print('=========================================');
+
