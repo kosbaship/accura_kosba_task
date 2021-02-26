@@ -15,4 +15,4 @@ class PharmacyErrorState extends PharmacyStates {
 class PharmacySwitchButtonState extends PharmacyStates {}
 
 
-class PharmacyClinicSelectWeekDayState extends PharmacyStates {}
+class PharmacySelectWeekDayState extends PharmacyStates {}

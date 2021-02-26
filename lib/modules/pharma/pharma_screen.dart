@@ -21,6 +21,11 @@ class PharmacyScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           VendorData vendorData = PharmacyCubit.get(context).vendorData;
+          List<AvailabilityList> listOfWorkingTime = PharmacyCubit.get(context).listOfWorkingTime;
+          discountController.text = PharmacyCubit.get(context).discountInitialStart;
+          UnavailabilityList listOfUnavailableTime = PharmacyCubit.get(context).listOfUnavailableTime;
+
+
           return Scaffold(
             backgroundColor: kSecondaryColor,
             appBar: drawAppBar(context: context),
@@ -128,8 +133,7 @@ class PharmacyScreen extends StatelessWidget {
                                       value: selectedItem,
                                       indexOfListLength: index);
                                 },
-                                value: PharmacyCubit.get(context)
-                                    .pharmaSelectedDays[index],
+                                value: listOfWorkingTime[index].wdayDayName,
                               ),
                             ),
                             // day shift
@@ -140,11 +144,11 @@ class PharmacyScreen extends StatelessWidget {
                             SizedBox(
                               child: chooseDateRow(
                                   leftTitle:
-                                      '${vendorData.result.availabilityList[index].wdayFrom}' ??
+                                      '${listOfWorkingTime[index].wdayFrom}' ??
                                           'from',
                                   leftOnTap: () {},
                                   rightTitle:
-                                      '${vendorData.result.availabilityList[index].wdayTo}' ??
+                                      '${listOfWorkingTime[index].wdayTo}' ??
                                           'to',
                                   rightOnTap: () {}),
                             ),
@@ -159,11 +163,11 @@ class PharmacyScreen extends StatelessWidget {
                             SizedBox(
                               child: chooseDateRow(
                                   leftTitle:
-                                      '${vendorData.result.availabilityList[index].wdayFrom2}' ??
+                                      '${listOfWorkingTime[index].wdayFrom2}' ??
                                           'from',
                                   leftOnTap: () {},
                                   rightTitle:
-                                      '${vendorData.result.availabilityList[index].wdayTo2}' ??
+                                      '${listOfWorkingTime[index].wdayTo2}' ??
                                           'to',
                                   rightOnTap: () {}),
                             ),
@@ -171,7 +175,9 @@ class PharmacyScreen extends StatelessWidget {
                               height: 8,
                             ),
                             buildRemoveButton(
-                                onPressed: () {}, title: 'Remove This Day'),
+                                onPressed: () {
+                                  PharmacyCubit.get(context).removeThisDay(availableDayID: index);
+                                }, title: 'Remove This Day'),
                             SizedBox(
                               height: 8,
                             ),
@@ -183,7 +189,17 @@ class PharmacyScreen extends StatelessWidget {
                         ),
                         itemCount: vendorData.result.availabilityList.length,
                       ),
-                      drawCircleIcon(onTap: () {}),
+                      // ===================================
+                      // ================= add available day
+                      // ===================================
+                      drawCircleIcon(onTap: () {
+                        PharmacyCubit.get(context).addAvailableDayToTheList(
+                            dayFrom: '10:00',
+                            dayTo: '10:00',
+                            nightFrom: '10:00',
+                            nightTo: '10:00'
+                        );
+                      }),
                       SizedBox(
                         height: 16.0,
                       ),
@@ -220,7 +236,7 @@ class PharmacyScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      '${vendorData.result.unavailabilityList.from}' ??
+                                      '${listOfUnavailableTime.from}' ??
                                           'start',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -265,8 +281,8 @@ class PharmacyScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      '${vendorData.result.unavailabilityList.from}' ??
-                                          'start',
+                                      '${listOfUnavailableTime.to}' ??
+                                          'end',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: font14.copyWith(
