@@ -21,16 +21,6 @@ class DocAssistSetting extends StatelessWidget {
   final _videoFormKey = GlobalKey<FormState>();
   final _spotFormKey = GlobalKey<FormState>();
 
-  final List<String> daysOfTheWeek = [
-    kDay,
-    kSaturday,
-    kSunday,
-    kMonday,
-    kTuesday,
-    kWednesday,
-    kThursday,
-    kFriday
-  ];
 
   @override
   Widget build(BuildContext context) {

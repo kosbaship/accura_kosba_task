@@ -11,6 +11,7 @@ const kTitleDarkColor = Color(0xFF444444);
 const kTextFieldTextColor = Color(0xFF777777);
 const kTitleGreyColor = Color(0xFF919191);
 const kDividerColor = Color(0xFFEAEAEA);
+const kRemoveColor = Colors.redAccent;
 
 
 const MaterialColor kMaterialColor = MaterialColor(

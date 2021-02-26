@@ -27,7 +27,7 @@ Widget chooseDateRow(
     Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
+        Expanded (
           child: chooseDate(title: leftTitle, onTap: leftOnTap),
         ),
         SizedBox(
@@ -229,6 +229,34 @@ Widget buildSaveButton({
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
+      ),
+    );
+// button
+Widget buildRemoveButton({
+  @required String title,
+  @required Function onPressed,
+}) =>
+    Padding(
+      padding: const EdgeInsets.symmetric( horizontal: 16),
+      child: FlatButton(
+        onPressed: onPressed,
+        color: kRemoveColor,
+        textColor: kSecondaryColor,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 12.0,
+                fontFamily: 'Poppins-Regular',
+              ),
+            ),
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
       ),
     );
 

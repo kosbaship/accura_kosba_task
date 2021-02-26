@@ -7,3 +7,14 @@ const String kTuesday = 'tuesday';
 const String kWednesday = 'wednesday';
 const String kThursday = 'thursday';
 const String kFriday = 'friday';
+
+List<String> daysOfTheWeek = [
+  kDay,
+  kSaturday,
+  kSunday,
+  kMonday,
+  kTuesday,
+  kWednesday,
+  kThursday,
+  kFriday
+];
