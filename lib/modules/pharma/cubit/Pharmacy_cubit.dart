@@ -1,3 +1,4 @@
+import 'package:accura_kosba_task/shared/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,6 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
   // has day and night shift
   // get them by the index from the ui
   List<AvailabilityList> listOfWorkingTime = [];
-  List<AvailabilityList> listFor = [];
   bool buttonSwitch = false;
   String discountInitialStart = '';
   UnavailabilityList listOfUnavailableTime = UnavailabilityList();
@@ -73,8 +73,8 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
       wdayDayName: 'saturday',
       wdayFrom: dayFrom,
       wdayTo: dayTo,
-      wdayTo2: nightFrom,
-      wdayFrom2: nightTo,
+      wdayFrom2: nightFrom,
+      wdayTo2: nightTo ,
     ));
     emit(PharmacySelectWeekDayState());
   }
@@ -94,7 +94,7 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
 
 
 
-  Future<Null> selectTime({@required BuildContext context,@required index,@required type}) async {
+  Future<Null> selectTime({@required BuildContext context,@required int index,@required String type}) async {
     // get the current time
     TimeOfDay timeOfDay = TimeOfDay.now();
     // start the picker with the current time
@@ -103,17 +103,17 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
 
     // save the picked time into the list
     switch(type){
-      case 1:
+      case kPickDateDayFrom:
         listOfWorkingTime[index].wdayFrom = formattedDate;
         break;
-      case 2:
+      case kPickDateDayTo:
         listOfWorkingTime[index].wdayTo = formattedDate;
         break;
-      case 3:
+      case kPickDateNightFrom:
         listOfWorkingTime[index].wdayFrom2 = formattedDate;
         break;
-      case 4:
-        listOfWorkingTime[index].wdayFrom2 = formattedDate;
+      case kPickDateNightTo:
+        listOfWorkingTime[index].wdayTo2 = formattedDate;
         break;
     }
     emit(PharmacySelectWeekDayState());

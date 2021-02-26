@@ -86,6 +86,7 @@ class PharmacyScreen extends StatelessWidget {
                                   ),
                                 ),
                                 buildTextFormField(
+                                  startPadding: 25.0,
                                   controller: discountController,
                                   validator: (value) {
                                     if (value.isEmpty) {
@@ -150,7 +151,7 @@ class PharmacyScreen extends StatelessWidget {
                                     PharmacyCubit.get(context).selectTime(
                                         context: context,
                                         index: index,
-                                        type: 1);
+                                        type: kPickDateDayFrom);
                                   },
                                   rightTitle:
                                       '${listOfWorkingTime[index].wdayTo}' ??
@@ -159,7 +160,7 @@ class PharmacyScreen extends StatelessWidget {
                                     PharmacyCubit.get(context).selectTime(
                                         context: context,
                                         index: index,
-                                        type: 2);
+                                        type: kPickDateDayTo);
                                   }),
                             ),
                             SizedBox(
@@ -179,7 +180,7 @@ class PharmacyScreen extends StatelessWidget {
                                     PharmacyCubit.get(context).selectTime(
                                         context: context,
                                         index: index,
-                                        type: 3);
+                                        type: kPickDateNightFrom);
                                   },
                                   rightTitle:
                                       '${listOfWorkingTime[index].wdayTo2}' ??
@@ -188,7 +189,7 @@ class PharmacyScreen extends StatelessWidget {
                                     PharmacyCubit.get(context).selectTime(
                                         context: context,
                                         index: index,
-                                        type: 4);
+                                        type: kPickDateNightTo);
                                   }),
                             ),
                             SizedBox(
@@ -212,14 +213,35 @@ class PharmacyScreen extends StatelessWidget {
                       // ===================================
                       // ================= add available day
                       // ===================================
-                      drawCircleIcon(onTap: () {
-                        PharmacyCubit.get(context).addAvailableDayToTheList(
-                            dayFrom: '10:00',
-                            dayTo: '10:00',
-                            nightFrom: '10:00',
-                            nightTo: '10:00'
-                        );
-                      }),
+                      Row(
+                        children: [
+                          drawCircleIcon(
+                              onTap: () {
+                            PharmacyCubit.get(context).addAvailableDayToTheList(
+                                dayFrom: '16:00',
+                                dayTo: '12:00',
+                                nightFrom: '12:00',
+                                nightTo: '08:00'
+                            );
+                          }),
+                          InkWell(
+                            onTap: () {
+                              PharmacyCubit.get(context).addAvailableDayToTheList(
+                                  dayFrom: '10:00',
+                                  dayTo: '10:00',
+                                  nightFrom: '10:00',
+                                  nightTo: '10:00'
+                              );
+                            },
+                            child: Text(
+                              '  add another day',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(
                         height: 16.0,
                       ),
@@ -232,96 +254,85 @@ class PharmacyScreen extends StatelessWidget {
                       SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              splashColor: kTitleGreyColor,
-                              onTap: () {},
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(24.0),
-                                    ),
-                                    color: kSecondaryColor,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: kTitleGreyColor,
-                                    )),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '${listOfUnavailableTime.from}' ??
-                                          'start',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14.copyWith(
-                                          color: kTitleGreyColor, fontSize: 6),
-                                    ),
-                                    ClipOval(
-                                      child: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: Image.asset(
-                                            'assets/images/clocicon.png'),
-                                      ),
-                                    ),
-                                  ],
+                      InkWell(
+                        splashColor: kTitleGreyColor,
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(24.0),
+                              ),
+                              color: kSecondaryColor,
+                              border: Border.all(
+                                width: 1,
+                                color: kTitleGreyColor,
+                              )),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${listOfUnavailableTime.from}' ??
+                                    'start',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: font14.copyWith(
+                                    color: kTitleGreyColor),
+                              ),
+                              ClipOval(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: Image.asset(
+                                      'assets/images/clocicon.png'),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 6.0,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              splashColor: kTitleGreyColor,
-                              onTap: () {},
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(24.0),
-                                    ),
-                                    color: kSecondaryColor,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: kTitleGreyColor,
-                                    )),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '${listOfUnavailableTime.to}' ??
-                                          'end',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14.copyWith(
-                                          color: kTitleGreyColor, fontSize: 6),
-                                    ),
-                                    ClipOval(
-                                      child: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: Image.asset(
-                                            'assets/images/clocicon.png'),
-                                      ),
-                                    ),
-                                  ],
+                        ),
+                      ),
+                      SizedBox(height: 8,),
+                      // un available days
+                      InkWell(
+                        splashColor: kTitleGreyColor,
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(24.0),
+                              ),
+                              color: kSecondaryColor,
+                              border: Border.all(
+                                width: 1,
+                                color: kTitleGreyColor,
+                              )),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${listOfUnavailableTime.to}' ??
+                                    'end',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: font14.copyWith(
+                                    color: kTitleGreyColor),
+                              ),
+                              ClipOval(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: Image.asset(
+                                      'assets/images/clocicon.png'),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                       SizedBox(
                         height: 16.0,

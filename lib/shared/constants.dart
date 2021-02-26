@@ -18,3 +18,8 @@ List<String> daysOfTheWeek = [
   kThursday,
   kFriday
 ];
+
+const String kPickDateDayFrom = 'DayFrom';
+const String kPickDateDayTo = 'DayTo';
+const String kPickDateNightFrom = 'NightFrom';
+const String kPickDateNightTo = 'NightTo';

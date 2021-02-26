@@ -273,13 +273,15 @@ Widget buildSwitchBtn({
 Widget buildTextFormField(
         {@required TextEditingController controller,
         @required validator,
-        keyboardType = TextInputType.number}) =>
+        keyboardType = TextInputType.number,
+        double startPadding = 10.0
+        }) =>
     TextFormField(
       keyboardType: keyboardType,
       controller: controller,
       validator: validator,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 47.0, 0.0),
+        contentPadding: EdgeInsets.fromLTRB(startPadding, 0.0, 47.0, 0.0),
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(
             const Radius.circular(24.0),
