@@ -20,11 +20,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   String videoAddPriceInitialText = '';
   String spotAddPriceInitialText = '';
 
-  // List<AvailabilityTimeList> clinicSelectedList = [];
-  // List<AvailabilityTimeList> voiceSelectedList = [];
-  // List<AvailabilityTimeList> videoSelectedList = [];
-  // List<AvailabilityTimeList> spotSelectedList = [];
-
 
   bool clinicSwitch = false;
   bool videoSwitch = false;
@@ -57,12 +52,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       voiceAddPriceInitialText = availableLists[kVendorTypeVoice].priceValue;
       videoAddPriceInitialText = availableLists[kVendorTypeVideo].priceValue;
       spotAddPriceInitialText = availableLists[kVendorTypeSpot].priceValue;
-
-
-      // clinicSelectedList =  doctorData.result.availabilityList[0].availabilityTimeList;
-      // voiceSelectedList =  doctorData.result.availabilityList[1].availabilityTimeList;
-      // videoSelectedList =  doctorData.result.availabilityList[2].availabilityTimeList;
-      // spotSelectedList =  doctorData.result.availabilityList[3].availabilityTimeList;
 
 
       emit(DocAssistSuccessState());
@@ -103,6 +92,138 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
           'clinicTo[1]': clinicToDaySecond,
           'clinicFrom2[1]': clinicFromNightSecond,
           'clinicTo2[1]': clinicToNightSecond,
+        }
+    ).then((response) async{
+
+      print('\n=========================================================');
+      print(response.data);
+      print('=========================================================\n\n');
+      emit(DocAssistSuccessState());
+    }).catchError((e) {
+      emit(DocAssistErrorState(e.toString()));
+    });
+  }
+
+  updateVoiceData({
+    @required voicePrice,
+    @required voiceDayListFirst,
+    @required voiceFromDayFirst,
+    @required voiceToDayFirst,
+    @required voiceFromNightFirst,
+    @required voiceToNightFirst,
+    // @required voiceDayListSecond,
+    // @required voiceFromDaySecond,
+    // @required voiceToDaySecond,
+    // @required voiceFromNightSecond,
+    // @required voiceToNightSecond,
+  }) {
+    emit(DocAssistLoadingState());
+
+    APIProvider.fetchData(
+        path: UPDATE_DOCTOR_END_POINT,
+        data: {
+          'access_key': 'Jd5522SA523aaaW2e25e5rk',
+          'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+          'userId': '796',
+          'typesPrices': 'voice_$voicePrice',
+          'voiceDays[0]': voiceDayListFirst,
+          'voiceFrom[0]': voiceFromDayFirst,
+          'voiceTo[0]': voiceToDayFirst,
+          'voiceFrom2[0]': voiceFromNightFirst,
+          'voiceTo2[0]': voiceToNightFirst,
+          // 'voiceDays[1]': voiceDayListSecond,
+          // 'voiceFrom[1]': voiceFromDaySecond,
+          // 'voiceTo[1]': voiceToDaySecond,
+          // 'voiceFrom2[1]': voiceFromNightSecond,
+          // 'voiceTo2[1]': voiceToNightSecond,
+        }
+    ).then((response) async{
+
+      print('\n=========================================================');
+      print(response.data);
+      print('=========================================================\n\n');
+      emit(DocAssistSuccessState());
+    }).catchError((e) {
+      emit(DocAssistErrorState(e.toString()));
+    });
+  }
+
+  updateVideoData({
+    @required videoPrice,
+    @required videoDayListFirst,
+    @required videoFromDayFirst,
+    @required videoToDayFirst,
+    @required videoFromNightFirst,
+    @required videoToNightFirst,
+    // @required videoDayListSecond,
+    // @required videoFromDaySecond,
+    // @required videoToDaySecond,
+    // @required videoFromNightSecond,
+    // @required videoToNightSecond,
+  }) {
+    emit(DocAssistLoadingState());
+
+    APIProvider.fetchData(
+        path: UPDATE_DOCTOR_END_POINT,
+        data: {
+          'access_key': 'Jd5522SA523aaaW2e25e5rk',
+          'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+          'userId': '796',
+          'typesPrices': 'video_$videoPrice',
+          'videoDays[0]': videoDayListFirst,
+          'videoFrom[0]': videoFromDayFirst,
+          'videoTo[0]': videoToDayFirst,
+          'videoFrom2[0]': videoFromNightFirst,
+          'videoTo2[0]': videoToNightFirst,
+          // 'videoDays[1]': videoDayListSecond,
+          // 'videoFrom[1]': videoFromDaySecond,
+          // 'videoTo[1]': videoToDaySecond,
+          // 'videoFrom2[1]': videoFromNightSecond,
+          // 'videoTo2[1]': videoToNightSecond,
+        }
+    ).then((response) async{
+
+      print('\n=========================================================');
+      print(response.data);
+      print('=========================================================\n\n');
+      emit(DocAssistSuccessState());
+    }).catchError((e) {
+      emit(DocAssistErrorState(e.toString()));
+    });
+  }
+
+  updateSpotData({
+    @required spotPrice,
+    @required spotDayListFirst,
+    @required spotFromDayFirst,
+    @required spotToDayFirst,
+    @required spotFromNightFirst,
+    @required spotToNightFirst,
+    // @required spotDayListSecond,
+    // @required spotFromDaySecond,
+    // @required spotToDaySecond,
+    // @required spotFromNightSecond,
+    // @required spotToNightSecond,
+  }) {
+    emit(DocAssistLoadingState());
+
+    APIProvider.fetchData(
+        path: UPDATE_DOCTOR_END_POINT,
+        data: {
+          'access_key': 'Jd5522SA523aaaW2e25e5rk',
+          'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+          'userId': '796',
+          'typesPrices': 'spot_$spotPrice',
+          'spotDays[0]': spotDayListFirst,
+          'spotFrom[0]': spotFromDayFirst,
+          'spotTo[0]': spotToDayFirst,
+          'spotFrom2[0]': spotFromNightFirst,
+          'spotTo2[0]': spotToNightFirst,
+          // 'spotDays[1]': spotDayListSecond,
+          // 'spotFrom[1]': spotFromDaySecond,
+          // 'spotTo[1]': spotToDaySecond,
+          // 'spotFrom2[1]': spotFromNightSecond,
+          // 'spotTo2[1]': spotToNightSecond,
         }
     ).then((response) async{
 
