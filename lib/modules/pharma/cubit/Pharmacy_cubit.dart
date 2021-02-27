@@ -78,6 +78,8 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
     ));
     emit(PharmacySelectWeekDayState());
   }
+
+
   removeThisDay({@required availableDayID}){
 
     if(listOfWorkingTime.length == 1){

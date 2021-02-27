@@ -29,15 +29,9 @@ class DocAssistSetting extends StatelessWidget {
       child: BlocConsumer<DocAssistCubit, DocAssistStates>(
           listener: (context, state) {},
           builder: (context, state) {
-        DoctorData doctorData = DocAssistCubit.get(context).doctorData;
-        List<AvailabilityTimeList> clinicSelectedList =
-            DocAssistCubit.get(context).clinicSelectedList;
-        List<AvailabilityTimeList> voiceSelectedList =
-            DocAssistCubit.get(context).voiceSelectedList;
-        List<AvailabilityTimeList> videoSelectedList =
-            DocAssistCubit.get(context).videoSelectedList;
-        List<AvailabilityTimeList> spotSelectedList =
-            DocAssistCubit.get(context).spotSelectedList;
+
+        List<AvailabilityList> availableLists = DocAssistCubit.get(context).availableLists;
+
         return Scaffold(
           backgroundColor: kSecondaryColor,
           appBar: drawAppBar(context: context),
@@ -57,7 +51,7 @@ class DocAssistSetting extends StatelessWidget {
                       child: buildExpandedCard(
                           initiallyExpanded: true,
                           expansionTitle:
-                              '${doctorData.result.availabilityList[0].vendorAppointType}',
+                              '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].vendorAppointType}',
                           key: _clinicFormKey,
                           buildSwitchBtnValue:
                               DocAssistCubit.get(context).clinicSwitch,
@@ -72,8 +66,9 @@ class DocAssistSetting extends StatelessWidget {
                             return null;
                           },
                           list: ConditionalBuilder(
-                            condition: clinicSelectedList.length != 0,
+                            condition: availableLists[kVendorTypeClinic].availabilityTimeList.length != 0,
                             builder: (context) => ListView.separated(
+                                shrinkWrap: true,
                                 itemBuilder: (context, index) => Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -105,13 +100,27 @@ class DocAssistSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayFrom}' ??
+                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom}' ??
                                                     'from',
-                                            leftOnTap: () {},
+                                            leftOnTap: () {
+                                              DocAssistCubit.get(context).selectTime(
+                                                  context: context,
+                                                  index: index,
+                                                  type: kPickDateDayFrom,
+                                                  vendorType: kVendorTypeClinic
+                                              );
+                                            },
                                             rightTitle:
-                                                '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayTo}' ??
+                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo}' ??
                                                     'to',
-                                            rightOnTap: () {}),
+                                            rightOnTap: () {
+                                              DocAssistCubit.get(context).selectTime(
+                                                  context: context,
+                                                  index: index,
+                                                  type: kPickDateDayTo,
+                                                  vendorType: kVendorTypeClinic
+                                              );
+                                            }),
                                         SizedBox(
                                           height: 16.0,
                                         ),
@@ -127,13 +136,35 @@ class DocAssistSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayFrom2}' ??
+                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom2}' ??
                                                     'from',
-                                            leftOnTap: () {},
+                                            leftOnTap: () {
+                                              DocAssistCubit.get(context).selectTime(
+                                                  context: context,
+                                                  index: index,
+                                                  type: kPickDateNightFrom,
+                                              vendorType: kVendorTypeClinic
+                                              );
+                                            },
                                             rightTitle:
-                                                '${doctorData.result.availabilityList[0].availabilityTimeList[index].wdayTo2}' ??
+                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo2}' ??
                                                     'to',
-                                            rightOnTap: () {}),
+                                            rightOnTap: () {
+                                              DocAssistCubit.get(context).selectTime(
+                                                  context: context,
+                                                  index: index,
+                                                  type: kPickDateNightTo,
+                                                  vendorType: kVendorTypeClinic
+                                              );
+                                            }),
+
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        buildRemoveButton(
+                                            onPressed: () {
+                                              DocAssistCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeClinic);
+                                            }, title: 'Remove This Day'),
                                       ],
                                     ),
                                 separatorBuilder: (context, index) => Column(
@@ -147,7 +178,7 @@ class DocAssistSetting extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                itemCount: clinicSelectedList.length),
+                                itemCount: availableLists[kVendorTypeClinic].availabilityTimeList.length),
                             fallback: (context) => Center(
                               child: writeText14(
                                   title:
@@ -155,7 +186,9 @@ class DocAssistSetting extends StatelessWidget {
                                   maxLines: 5),
                             ),
                           ),
-                          drawCircleIconOnTap: () {},
+                          drawCircleIconOnTap: () {
+                            DocAssistCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeClinic);
+                          },
                           buildButtonOnPressed: () {
                             if (_clinicFormKey.currentState.validate()) {
 
@@ -176,369 +209,375 @@ class DocAssistSetting extends StatelessWidget {
                             }
                           }),
                     ),
-                    SizedBox(
-                      child: buildExpandedCard(
-                          initiallyExpanded: false,
-                          expansionTitle:
-                              '${doctorData.result.availabilityList[1].vendorAppointType}',
-                          key: _voiceFormKey,
-                          buildSwitchBtnValue:
-                              DocAssistCubit.get(context).voiceSwitch,
-                          buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVoice, value: value);
-
-                          },
-                          buildTextFieldController: addPriceVoiceController,
-                          buildTextFieldValidator: (value) {
-                            if (value.isEmpty) {
-                              return 'Price';
-                            }
-                            return null;
-                          },
-                          list: ConditionalBuilder(
-                            condition: voiceSelectedList.length != 0,
-                            builder: (context) {
-                              return ListView.separated(
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                              buildTDropdownButton(
-                                            items: daysOfTheWeek.map((day) {
-                                              return DropdownMenuItem(
-                                                value: day,
-                                                child: Text(day),
-                                              );
-                                            }).toList(),
-                                                onChanged: (selectedItem) {
-                                                  print(selectedItem);
-                                                  DocAssistCubit.get(context)
-                                                      .selectAndSaveDay(
-                                                      value: selectedItem,
-                                                      vendorType: kVendorTypeVoice,
-                                                      indexOfListLength: index);
-                                                },
-                                                value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
-                                              ),
-                                        SizedBox(
-                                          height: 16.0,
-                                        ),
-                                        // Day Shift
-                                        writeText14(title: 'Day Shift'),
-                                        SizedBox(
-                                          height: 4.0,
-                                        ),
-                                        chooseDateRow(
-                                            leftTitle:
-                                                '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom}' ??
-                                                    'from',
-                                            leftOnTap: () {},
-                                            rightTitle:
-                                                '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo}' ??
-                                                    'to',
-                                            rightOnTap: () {}),
-                                        SizedBox(
-                                          height: 16.0,
-                                        ),
-                                        // Night Shift
-                                        Text(
-                                          'Night Shift',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: font14,
-                                        ),
-                                        SizedBox(
-                                          height: 4.0,
-                                        ),
-                                        chooseDateRow(
-                                            leftTitle:
-                                                '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom2}' ??
-                                                    'from',
-                                            leftOnTap: () {},
-                                            rightTitle:
-                                                '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo2}' ??
-                                                    'to',
-                                            rightOnTap: () {}),
-                                      ],
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) => Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 8.0,
-                                          ),
-                                          drawDivider(),
-                                          SizedBox(
-                                            height: 8.0,
-                                          ),
-                                        ],
-                                      ),
-                                  itemCount: voiceSelectedList.length);
-                            },
-                            fallback: (context) => Center(
-                              child: writeText14(
-                                  title:
-                                      'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
-                                  maxLines: 5),
-                            ),
-                          ),
-                          drawCircleIconOnTap: () {},
-                          buildButtonOnPressed: () {
-                            if (_voiceFormKey.currentState.validate()) {
-                              print('Saving Data');
-                            }
-                          }),
-                    ),
-                    SizedBox(
-                      child: buildExpandedCard(
-                          initiallyExpanded: false,
-                          expansionTitle:
-                              '${doctorData.result.availabilityList[2].vendorAppointType}',
-                          key: _videoFormKey,
-                          buildSwitchBtnValue:
-                              DocAssistCubit.get(context).videoSwitch,
-                          buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVideo, value: value);
-
-                          },
-                          buildTextFieldController: addPriceVideoController,
-                          buildTextFieldValidator: (value) {
-                            if (value.isEmpty) {
-                              return 'Price';
-                            }
-                            return null;
-                          },
-                          list: ConditionalBuilder(
-                            condition: videoSelectedList.length != 0,
-                            builder: (context) {
-                              return ListView.separated(
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                              buildTDropdownButton(
-                                            items: daysOfTheWeek.map((day) {
-                                              return DropdownMenuItem(
-                                                value: day,
-                                                child: Text(day),
-                                              );
-                                            }).toList(),
-                                                onChanged: (selectedItem) {
-                                                  print(selectedItem);
-                                                  DocAssistCubit.get(context)
-                                                      .selectAndSaveDay(
-                                                      value: selectedItem,
-                                                      vendorType: kVendorTypeVideo,
-                                                      indexOfListLength: index);
-                                                },
-                                                value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
-
-                                              ),
-                                        SizedBox(
-                                          height: 16.0,
-                                        ),
-                                        // Day Shift
-                                        writeText14(title: 'Day Shift'),
-                                        SizedBox(
-                                          height: 4.0,
-                                        ),
-                                        chooseDateRow(
-                                            leftTitle:
-                                                '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom}' ??
-                                                    'from',
-                                            leftOnTap: () {},
-                                            rightTitle:
-                                                '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo}' ??
-                                                    'to',
-                                            rightOnTap: () {}),
-                                        SizedBox(
-                                          height: 16.0,
-                                        ),
-                                        // Night Shift
-                                        Text(
-                                          'Night Shift',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: font14,
-                                        ),
-                                        SizedBox(
-                                          height: 4.0,
-                                        ),
-                                        chooseDateRow(
-                                            leftTitle:
-                                                '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom2}' ??
-                                                    'from',
-                                            leftOnTap: () {},
-                                            rightTitle:
-                                                '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo2}' ??
-                                                    'to',
-                                            rightOnTap: () {}),
-                                      ],
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) => Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 8.0,
-                                          ),
-                                          drawDivider(),
-                                          SizedBox(
-                                            height: 8.0,
-                                          ),
-                                        ],
-                                      ),
-                                  itemCount: videoSelectedList.length);
-                            },
-                            fallback: (context) => Center(
-                              child: writeText14(
-                                  title:
-                                      'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
-                                  maxLines: 5),
-                            ),
-                          ),
-                          drawCircleIconOnTap: () {},
-                          buildButtonOnPressed: () {
-                            if (_videoFormKey.currentState.validate()) {
-                              print('Saving Data');
-                            }
-                          }),
-                    ),
-                    SizedBox(
-                      child: buildExpandedCard(
-                          initiallyExpanded: false,
-                          expansionTitle:
-                              '${doctorData.result.availabilityList[3].vendorAppointType}',
-                          key: _spotFormKey,
-                          buildSwitchBtnValue:
-                              DocAssistCubit.get(context).spotSwitch,
-                          buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeSpot, value: value);
-
-                          },
-                          buildTextFieldController: addPriceSpotController,
-                          buildTextFieldValidator: (value) {
-                            if (value.isEmpty) {
-                              return 'Price';
-                            }
-                            return null;
-                          },
-                          list: ConditionalBuilder(
-                            condition: spotSelectedList.length != 0,
-                            builder: (context) => ListView.separated(
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                            buildTDropdownButton(
-                                          items: daysOfTheWeek.map((day) {
-                                            return DropdownMenuItem(
-                                              value: day,
-                                              child: Text(day),
-                                            );
-                                          }).toList(),
-                                              onChanged: (selectedItem) {
-                                                print(selectedItem);
-                                                DocAssistCubit.get(context)
-                                                    .selectAndSaveDay(
-                                                    value: selectedItem,
-                                                    vendorType: kVendorTypeSpot,
-                                                    indexOfListLength: index);
-                                              },
-                                              value: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayDayName,
-
-                                            ),
-                                      SizedBox(
-                                        height: 16.0,
-                                      ),
-                                      // Day Shift
-                                      writeText14(title: 'Day Shift'),
-                                      SizedBox(
-                                        height: 4.0,
-                                      ),
-                                      chooseDateRow(
-                                          leftTitle: doctorData
-                                                      .result
-                                                      .availabilityList[3]
-                                                      .availabilityTimeList
-                                                      .length ==
-                                                  0
-                                              ? 'from'
-                                              : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayFrom}',
-                                          leftOnTap: () {},
-                                          rightTitle: doctorData
-                                                      .result
-                                                      .availabilityList[3]
-                                                      .availabilityTimeList
-                                                      .length ==
-                                                  0
-                                              ? 'to'
-                                              : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayTo}',
-                                          rightOnTap: () {}),
-                                      SizedBox(
-                                        height: 16.0,
-                                      ),
-                                      // Night Shift
-                                      Text(
-                                        'Night Shift',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: font14,
-                                      ),
-                                      SizedBox(
-                                        height: 4.0,
-                                      ),
-                                      chooseDateRow(
-                                          leftTitle: doctorData
-                                                      .result
-                                                      .availabilityList[3]
-                                                      .availabilityTimeList
-                                                      .length ==
-                                                  0
-                                              ? 'from'
-                                              : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayFrom2}',
-                                          leftOnTap: () {},
-                                          rightTitle: doctorData
-                                                      .result
-                                                      .availabilityList[3]
-                                                      .availabilityTimeList
-                                                      .length ==
-                                                  0
-                                              ? 'to'
-                                              : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayTo2}',
-                                          rightOnTap: () {}),
-                                    ],
-                                  );
-                                },
-                                separatorBuilder: (context, index) => Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-                                        drawDivider(),
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-                                      ],
-                                    ),
-                                itemCount: doctorData.result.availabilityList[3]
-                                    .availabilityTimeList.length),
-                            fallback: (context) => Center(
-                              child: writeText14(
-                                  title:
-                                      'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
-                                  maxLines: 5),
-                            ),
-                          ),
-                          drawCircleIconOnTap: () {},
-                          buildButtonOnPressed: () {
-                            if (_spotFormKey.currentState.validate()) {
-                              print('Saving Data');
-                            }
-                          }),
-                    ),
+                    // SizedBox(
+                    //   child: buildExpandedCard(
+                    //       initiallyExpanded: false,
+                    //       expansionTitle:
+                    //           '${doctorData.result.availabilityList[1].vendorAppointType}',
+                    //       key: _voiceFormKey,
+                    //       buildSwitchBtnValue:
+                    //           DocAssistCubit.get(context).voiceSwitch,
+                    //       buildSwitchBtnOnChange: (value) {
+                    //         DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVoice, value: value);
+                    //
+                    //       },
+                    //       buildTextFieldController: addPriceVoiceController,
+                    //       buildTextFieldValidator: (value) {
+                    //         if (value.isEmpty) {
+                    //           return 'Price';
+                    //         }
+                    //         return null;
+                    //       },
+                    //       list: ConditionalBuilder(
+                    //         condition: availableLists[kVendorTypeVoice].availabilityTimeList.length != 0,
+                    //         builder: (context) {
+                    //           return ListView.separated(
+                    //               itemBuilder: (context, index) {
+                    //                 return Column(
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.start,
+                    //                   children: [
+                    //                           buildTDropdownButton(
+                    //                         items: daysOfTheWeek.map((day) {
+                    //                           return DropdownMenuItem(
+                    //                             value: day,
+                    //                             child: Text(day),
+                    //                           );
+                    //                         }).toList(),
+                    //                             onChanged: (selectedItem) {
+                    //                               print(selectedItem);
+                    //                               DocAssistCubit.get(context)
+                    //                                   .selectAndSaveDay(
+                    //                                   value: selectedItem,
+                    //                                   vendorType: kVendorTypeVoice,
+                    //                                   indexOfListLength: index);
+                    //                             },
+                    //                             value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
+                    //                           ),
+                    //                     SizedBox(
+                    //                       height: 16.0,
+                    //                     ),
+                    //                     // Day Shift
+                    //                     writeText14(title: 'Day Shift'),
+                    //                     SizedBox(
+                    //                       height: 4.0,
+                    //                     ),
+                    //                     chooseDateRow(
+                    //                         leftTitle:
+                    //                             '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom}' ??
+                    //                                 'from',
+                    //                         leftOnTap: () {},
+                    //                         rightTitle:
+                    //                             '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo}' ??
+                    //                                 'to',
+                    //                         rightOnTap: () {}),
+                    //                     SizedBox(
+                    //                       height: 16.0,
+                    //                     ),
+                    //                     // Night Shift
+                    //                     Text(
+                    //                       'Night Shift',
+                    //                       maxLines: 1,
+                    //                       overflow: TextOverflow.ellipsis,
+                    //                       style: font14,
+                    //                     ),
+                    //                     SizedBox(
+                    //                       height: 4.0,
+                    //                     ),
+                    //                     chooseDateRow(
+                    //                         leftTitle:
+                    //                             '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayFrom2}' ??
+                    //                                 'from',
+                    //                         leftOnTap: () {},
+                    //                         rightTitle:
+                    //                             '${doctorData.result.availabilityList[1].availabilityTimeList[index].wdayTo2}' ??
+                    //                                 'to',
+                    //                         rightOnTap: () {}),
+                    //                   ],
+                    //                 );
+                    //               },
+                    //               separatorBuilder: (context, index) => Column(
+                    //                     children: [
+                    //                       SizedBox(
+                    //                         height: 8.0,
+                    //                       ),
+                    //                       drawDivider(),
+                    //                       SizedBox(
+                    //                         height: 8.0,
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //               itemCount: availableLists[kVendorTypeVoice].availabilityTimeList.length);
+                    //         },
+                    //         fallback: (context) => Center(
+                    //           child: writeText14(
+                    //               title:
+                    //                   'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
+                    //               maxLines: 5),
+                    //         ),
+                    //       ),
+                    //       drawCircleIconOnTap: () {},
+                    //       buildButtonOnPressed: () {
+                    //         if (_voiceFormKey.currentState.validate()) {
+                    //           print('Saving Data');
+                    //         }
+                    //       }),
+                    // ),
+                    // SizedBox(
+                    //   child: buildExpandedCard(
+                    //       initiallyExpanded: false,
+                    //       expansionTitle:
+                    //           '${doctorData.result.availabilityList[2].vendorAppointType}',
+                    //       key: _videoFormKey,
+                    //       buildSwitchBtnValue:
+                    //           DocAssistCubit.get(context).videoSwitch,
+                    //       buildSwitchBtnOnChange: (value) {
+                    //         DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVideo, value: value);
+                    //
+                    //       },
+                    //       buildTextFieldController: addPriceVideoController,
+                    //       buildTextFieldValidator: (value) {
+                    //         if (value.isEmpty) {
+                    //           return 'Price';
+                    //         }
+                    //         return null;
+                    //       },
+                    //       list: ConditionalBuilder(
+                    //         condition: availableLists[kVendorTypeVideo].availabilityTimeList.length != 0,
+                    //         builder: (context) {
+                    //           return ListView.separated(
+                    //               itemBuilder: (context, index) {
+                    //                 return Column(
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.start,
+                    //                   children: [
+                    //                           buildTDropdownButton(
+                    //                         items: daysOfTheWeek.map((day) {
+                    //                           return DropdownMenuItem(
+                    //                             value: day,
+                    //                             child: Text(day),
+                    //                           );
+                    //                         }).toList(),
+                    //                             onChanged: (selectedItem) {
+                    //                               print(selectedItem);
+                    //                               DocAssistCubit.get(context)
+                    //                                   .selectAndSaveDay(
+                    //                                   value: selectedItem,
+                    //                                   vendorType: kVendorTypeVideo,
+                    //                                   indexOfListLength: index);
+                    //                             },
+                    //                             value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
+                    //
+                    //                           ),
+                    //                     SizedBox(
+                    //                       height: 16.0,
+                    //                     ),
+                    //                     // Day Shift
+                    //                     writeText14(title: 'Day Shift'),
+                    //                     SizedBox(
+                    //                       height: 4.0,
+                    //                     ),
+                    //                     chooseDateRow(
+                    //                         leftTitle:
+                    //                             '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom}' ??
+                    //                                 'from',
+                    //                         leftOnTap: () {},
+                    //                         rightTitle:
+                    //                             '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo}' ??
+                    //                                 'to',
+                    //                         rightOnTap: () {}),
+                    //                     SizedBox(
+                    //                       height: 16.0,
+                    //                     ),
+                    //                     // Night Shift
+                    //                     Text(
+                    //                       'Night Shift',
+                    //                       maxLines: 1,
+                    //                       overflow: TextOverflow.ellipsis,
+                    //                       style: font14,
+                    //                     ),
+                    //                     SizedBox(
+                    //                       height: 4.0,
+                    //                     ),
+                    //                     chooseDateRow(
+                    //                         leftTitle:
+                    //                             '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayFrom2}' ??
+                    //                                 'from',
+                    //                         leftOnTap: () {},
+                    //                         rightTitle:
+                    //                             '${doctorData.result.availabilityList[2].availabilityTimeList[index].wdayTo2}' ??
+                    //                                 'to',
+                    //                         rightOnTap: () {}),
+                    //                   ],
+                    //                 );
+                    //               },
+                    //               separatorBuilder: (context, index) => Column(
+                    //                     children: [
+                    //                       SizedBox(
+                    //                         height: 8.0,
+                    //                       ),
+                    //                       drawDivider(),
+                    //                       SizedBox(
+                    //                         height: 8.0,
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //               itemCount: availableLists[kVendorTypeVideo].availabilityTimeList.length);
+                    //         },
+                    //         fallback: (context) => Center(
+                    //           child: writeText14(
+                    //               title:
+                    //                   'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
+                    //               maxLines: 5),
+                    //         ),
+                    //       ),
+                    //       drawCircleIconOnTap: () {},
+                    //       buildButtonOnPressed: () {
+                    //         if (_videoFormKey.currentState.validate()) {
+                    //           print('Saving Data');
+                    //         }
+                    //       }),
+                    // ),
+                    // SizedBox(
+                    //   child: buildExpandedCard(
+                    //       initiallyExpanded: false,
+                    //       expansionTitle:
+                    //           '${doctorData.result.availabilityList[3].vendorAppointType}',
+                    //       key: _spotFormKey,
+                    //       buildSwitchBtnValue:
+                    //           DocAssistCubit.get(context).spotSwitch,
+                    //       buildSwitchBtnOnChange: (value) {
+                    //         DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeSpot, value: value);
+                    //
+                    //       },
+                    //       buildTextFieldController: addPriceSpotController,
+                    //       buildTextFieldValidator: (value) {
+                    //         if (value.isEmpty) {
+                    //           return 'Price';
+                    //         }
+                    //         return null;
+                    //       },
+                    //       list: ConditionalBuilder(
+                    //         condition: availableLists[kVendorTypeSpot].availabilityTimeList.length != 0,
+                    //         builder: (context) => ListView.separated(
+                    //             itemBuilder: (context, index) {
+                    //               return Column(
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.start,
+                    //                 children: [
+                    //                         buildTDropdownButton(
+                    //                       items: daysOfTheWeek.map((day) {
+                    //                         return DropdownMenuItem(
+                    //                           value: day,
+                    //                           child: Text(day),
+                    //                         );
+                    //                       }).toList(),
+                    //                           onChanged: (selectedItem) {
+                    //                             print(selectedItem);
+                    //                             DocAssistCubit.get(context)
+                    //                                 .selectAndSaveDay(
+                    //                                 value: selectedItem,
+                    //                                 vendorType: kVendorTypeSpot,
+                    //                                 indexOfListLength: index);
+                    //                           },
+                    //                           value: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayDayName,
+                    //
+                    //                         ),
+                    //                   SizedBox(
+                    //                     height: 16.0,
+                    //                   ),
+                    //                   // Day Shift
+                    //                   writeText14(title: 'Day Shift'),
+                    //                   SizedBox(
+                    //                     height: 4.0,
+                    //                   ),
+                    //                   chooseDateRow(
+                    //                       leftTitle: doctorData
+                    //                                   .result
+                    //                                   .availabilityList[3]
+                    //                                   .availabilityTimeList
+                    //                                   .length ==
+                    //                               0
+                    //                           ? 'from'
+                    //                           : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayFrom}',
+                    //                       leftOnTap: () {},
+                    //                       rightTitle: doctorData
+                    //                                   .result
+                    //                                   .availabilityList[3]
+                    //                                   .availabilityTimeList
+                    //                                   .length ==
+                    //                               0
+                    //                           ? 'to'
+                    //                           : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayTo}',
+                    //                       rightOnTap: () {}),
+                    //                   SizedBox(
+                    //                     height: 16.0,
+                    //                   ),
+                    //                   // Night Shift
+                    //                   Text(
+                    //                     'Night Shift',
+                    //                     maxLines: 1,
+                    //                     overflow: TextOverflow.ellipsis,
+                    //                     style: font14,
+                    //                   ),
+                    //                   SizedBox(
+                    //                     height: 4.0,
+                    //                   ),
+                    //                   chooseDateRow(
+                    //                       leftTitle: doctorData
+                    //                                   .result
+                    //                                   .availabilityList[3]
+                    //                                   .availabilityTimeList
+                    //                                   .length ==
+                    //                               0
+                    //                           ? 'from'
+                    //                           : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayFrom2}',
+                    //                       leftOnTap: () {},
+                    //                       rightTitle: doctorData
+                    //                                   .result
+                    //                                   .availabilityList[3]
+                    //                                   .availabilityTimeList
+                    //                                   .length ==
+                    //                               0
+                    //                           ? 'to'
+                    //                           : '${doctorData.result.availabilityList[3].availabilityTimeList[index].wdayTo2}',
+                    //                       rightOnTap: () {}),
+                    //                 ],
+                    //               );
+                    //             },
+                    //             separatorBuilder: (context, index) => Column(
+                    //                   children: [
+                    //                     SizedBox(
+                    //                       height: 8.0,
+                    //                     ),
+                    //                     drawDivider(),
+                    //                     SizedBox(
+                    //                       height: 8.0,
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //             itemCount: availableLists[kVendorTypeSpot].availabilityTimeList.length
+                    //         ),
+                    //
+                    //
+                    //
+                    //
+                    //
+                    //
+                    //         fallback: (context) => Center(
+                    //           child: writeText14(
+                    //               title:
+                    //                   'Add your\navailable time\nfrom the plus icon\nin the bottom left\ncorner',
+                    //               maxLines: 5),
+                    //         ),
+                    //       ),
+                    //       drawCircleIconOnTap: () {},
+                    //       buildButtonOnPressed: () {
+                    //         if (_spotFormKey.currentState.validate()) {
+                    //           print('Saving Data');
+                    //         }
+                    //       }),
+                    // ),
                   ],
                 ),
               );

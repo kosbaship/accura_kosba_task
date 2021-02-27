@@ -549,7 +549,7 @@ Widget buildExpandedCard({
                     height: 4.0,
                   ),
                   SizedBox(
-                    height: 250,
+                    height: 315,
                     child: list
                   ),
                   SizedBox(
@@ -558,7 +558,20 @@ Widget buildExpandedCard({
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      drawCircleIcon(onTap: drawCircleIconOnTap ),
+                      Row(
+                        children: [
+                          drawCircleIcon(onTap: drawCircleIconOnTap ),
+                          InkWell(
+                            onTap: drawCircleIconOnTap,
+                            child: Text(
+                              ' add day',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                          ),
+                        ],
+                      ),
                       Container(
                         height: 50.0,
                         width: 150.0,

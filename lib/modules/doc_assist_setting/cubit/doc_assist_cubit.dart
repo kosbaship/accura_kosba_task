@@ -3,6 +3,7 @@ import 'package:accura_kosba_task/network/api_provider.dart';
 import 'package:accura_kosba_task/shared/constants.dart';
 import 'package:accura_kosba_task/shared/end_points.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'doc_assist_states.dart';
@@ -19,15 +20,11 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   String videoAddPriceInitialText = '';
   String spotAddPriceInitialText = '';
 
-  List<AvailabilityTimeList> clinicSelectedList = [];
-  List<AvailabilityTimeList> voiceSelectedList = [];
-  List<AvailabilityTimeList> videoSelectedList = [];
-  List<AvailabilityTimeList> spotSelectedList = [];
+  // List<AvailabilityTimeList> clinicSelectedList = [];
+  // List<AvailabilityTimeList> voiceSelectedList = [];
+  // List<AvailabilityTimeList> videoSelectedList = [];
+  // List<AvailabilityTimeList> spotSelectedList = [];
 
-  List<String> clinicSelectedDays = ['day', 'day', 'day', 'day', 'day', 'day', 'day'];
-  List<String> voiceSelectedDays = ['day', 'day', 'day', 'day', 'day', 'day', 'day'];
-  List<String> videoSelectedDays = ['day', 'day', 'day', 'day', 'day', 'day', 'day'];
-  List<String> spotSelectedDays = ['day', 'day', 'day', 'day', 'day', 'day', 'day'];
 
   bool clinicSwitch = false;
   bool videoSwitch = false;
@@ -62,10 +59,10 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       spotAddPriceInitialText = availableLists[kVendorTypeSpot].priceValue;
 
 
-      clinicSelectedList =  doctorData.result.availabilityList[0].availabilityTimeList;
-      voiceSelectedList =  doctorData.result.availabilityList[1].availabilityTimeList;
-      videoSelectedList =  doctorData.result.availabilityList[2].availabilityTimeList;
-      spotSelectedList =  doctorData.result.availabilityList[3].availabilityTimeList;
+      // clinicSelectedList =  doctorData.result.availabilityList[0].availabilityTimeList;
+      // voiceSelectedList =  doctorData.result.availabilityList[1].availabilityTimeList;
+      // videoSelectedList =  doctorData.result.availabilityList[2].availabilityTimeList;
+      // spotSelectedList =  doctorData.result.availabilityList[3].availabilityTimeList;
 
 
       emit(DocAssistSuccessState());
@@ -117,46 +114,6 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       emit(DocAssistErrorState(e.toString()));
     });
   }
-
-
-  // toggleTheSwitch({@required value, @required index}){
-  //   switch (index) {
-  //     case 0:
-  //       clinicSwitch = value;
-  //       break;
-  //     case 2:
-  //       videoSwitch = value;
-  //       break;
-  //     case 1:
-  //       voiceSwitch = value;
-  //       break;
-  //     case 3:
-  //       spotSwitch = value;
-  //       break;
-  //   }
-  //   emit(DocAssistSwitchButtonState());
-  // }
-
-  // selectWeekDay({@required value, @required index, @required indexOfListLength}){
-  //   switch (index) {
-  //     case 0:
-  //       clinicSelectedDays[indexOfListLength] = value;
-  //       emit(DocAssistClinicSelectWeekDayState());
-  //       break;
-  //     case 1:
-  //       voiceSelectedDays[indexOfListLength] = value;
-  //       emit(DocAssistVoiceSelectWeekDayState());
-  //       break;
-  //     case 2:
-  //       videoSelectedDays[indexOfListLength] = value;
-  //       emit(DocAssistVideoSelectWeekDayState());
-  //       break;
-  //     case 3:
-  //       spotSelectedDays[indexOfListLength]= value;
-  //       emit(DocAssistSpotSelectWeekDayState());
-  //       break;
-  //   }
-  // }
  
   toggleAndSaveSwitch({@required int vendorType, @required bool value}){
     switch (vendorType) {
@@ -200,4 +157,108 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
         break;
     }
   }
+
+
+  // add this to the current list u present from
+  // and add to another one to upload to db
+  addAvailableDayToTheList({@required vendorType}){
+
+    availableLists[vendorType].availabilityTimeList.add(
+      AvailabilityTimeList(
+      wdayDayName: 'saturday',
+      wdayFrom: '00:00',
+      wdayTo: '00:00',
+      wdayFrom2: '00:00',
+      wdayTo2: '00:00' ,
+    ));
+    switch (vendorType) {
+      case kVendorTypeClinic:
+        emit(DocAssistClinicSelectWeekDayState());
+        break;
+      case kVendorTypeVoice:
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeVideo:
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeSpot:
+        emit(DocAssistSpotSelectWeekDayState());
+        break;
+    }
+  }
+
+
+  removeThisDay({@required availableDayID, @required vendorType}){
+    if(availableLists[vendorType].availabilityTimeList.length == 1){
+      addAvailableDayToTheList(
+        vendorType: vendorType,
+      );
+    }
+    availableLists[vendorType].availabilityTimeList.removeAt(availableDayID);
+    switch (vendorType) {
+      case kVendorTypeClinic:
+        emit(DocAssistClinicSelectWeekDayState());
+        break;
+      case kVendorTypeVoice:
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeVideo:
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeSpot:
+        emit(DocAssistSpotSelectWeekDayState());
+        break;
+    }
+  }
+
+  Future<Null> selectTime({@required BuildContext context,@required int index,@required String type, @required vendorType}) async {
+    // get the current time
+    TimeOfDay timeOfDay = TimeOfDay.now();
+    // start the picker with the current time
+    timeOfDay = await showTimePicker(context: context, initialTime: timeOfDay);
+    String formattedDate = '${timeOfDay.hour}:${timeOfDay.minute}';
+
+    // save the picked time into the list
+    switch(type){
+      case kPickDateDayFrom:
+        availableLists[vendorType].availabilityTimeList[index].wdayFrom = formattedDate;
+        break;
+      case kPickDateDayTo:
+        availableLists[vendorType].availabilityTimeList[index].wdayTo = formattedDate;
+        break;
+      case kPickDateNightFrom:
+        availableLists[vendorType].availabilityTimeList[index].wdayFrom2 = formattedDate;
+        break;
+      case kPickDateNightTo:
+        availableLists[vendorType].availabilityTimeList[index].wdayTo2 = formattedDate;
+        break;
+    }
+    switch (vendorType) {
+      case kVendorTypeClinic:
+        emit(DocAssistClinicSelectWeekDayState());
+        break;
+      case kVendorTypeVoice:
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeVideo:
+        emit(DocAssistVoiceSelectWeekDayState());
+        break;
+      case kVendorTypeSpot:
+        emit(DocAssistSpotSelectWeekDayState());
+        break;
+    }
+
+    availableLists[vendorType].availabilityTimeList.map((day) {
+      print('=========================================');
+      print(day.wdayDayName);
+      print(day.wdayFrom);
+      print(day.wdayTo);
+      print(day.wdayFrom2);
+      print(day.wdayTo2);
+      print('=========================================');
+    }).toList();
+
+  }
+
+
 }
