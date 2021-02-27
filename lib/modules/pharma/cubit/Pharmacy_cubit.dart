@@ -50,6 +50,55 @@ class PharmacyCubit extends Cubit<PharmacyStates> {
     });
   }
 
+  updateData({
+    @required clinicDayListFirst,
+    @required clinicFromDayFirst,
+    @required clinicToDayFirst,
+    @required clinicFromNightFirst,
+    @required clinicToNightFirst,
+    @required clinicDayListSecond,
+    @required clinicFromDaySecond,
+    @required clinicToDaySecond,
+    @required clinicFromNightSecond,
+    @required clinicToNightSecond,
+    @required unavailableFrom,
+    @required unavailableTo,
+    @required discount,
+  }) {
+    emit(PharmacyLoadingState());
+
+    APIProvider.fetchData(
+        path: UPDATE_DOCTOR_END_POINT,
+        data: {
+          'access_key': 'Jd5522SA523aaaW2e25e5rk',
+          'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+          'userId': '721',
+          'clinicDays[0]': clinicDayListFirst,
+          'clinicFrom[0]': clinicFromDayFirst,
+          'clinicTo[0]': clinicToDayFirst,
+          'clinicFrom2[0]': clinicFromNightFirst,
+          'clinicTo2[0]': clinicToNightFirst,
+          'clinicDays[1]': clinicDayListSecond,
+          'clinicFrom[1]': clinicFromDaySecond,
+          'clinicTo[1]': clinicToDaySecond,
+          'clinicFrom2[1]': clinicFromNightSecond,
+          'clinicTo2[1]': clinicToNightSecond,
+          'unavailableFrom': unavailableFrom,
+          'unavailableTo': unavailableTo,
+          'discount': discount,
+
+        }
+    ).then((response) async{
+
+      print('\n=========================================================');
+      print(response.data);
+      print('=========================================================\n\n');
+      emit(PharmacySuccessState());
+    }).catchError((e) {
+      emit(PharmacyErrorState(e.toString()));
+    });
+  }
+
   toggleTheSwitch({@required value}) {
     buttonSwitch = value;
     emit(PharmacySwitchButtonState());
