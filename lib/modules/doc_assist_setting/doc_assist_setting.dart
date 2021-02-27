@@ -30,7 +30,6 @@ class DocAssistSetting extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
 
-        List<AvailabilityList> availableLists = DocAssistCubit.get(context).availableLists;
 
         return Scaffold(
           backgroundColor: kSecondaryColor,
@@ -39,7 +38,7 @@ class DocAssistSetting extends StatelessWidget {
             condition: state is! DocAssistLoadingState,
             builder: (context) {
 
-              addPriceClinicController.text = DocAssistCubit.get(context).clinicAddPriceInitialText ;
+              addPriceClinicController.text = DocAssistCubit.get(context).availableLists[kVendorTypeClinic].priceValue ;
               addPriceVoiceController.text = DocAssistCubit.get(context).voiceAddPriceInitialText;
               addPriceVideoController.text = DocAssistCubit.get(context).videoAddPriceInitialText;
               addPriceSpotController.text = DocAssistCubit.get(context).spotAddPriceInitialText;
@@ -66,7 +65,7 @@ class DocAssistSetting extends StatelessWidget {
                             return null;
                           },
                           list: ConditionalBuilder(
-                            condition: availableLists[kVendorTypeClinic].availabilityTimeList.length != 0,
+                            condition: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.length != 0,
                             builder: (context) => ListView.separated(
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) => Column(
@@ -100,7 +99,7 @@ class DocAssistSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom}' ??
+                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom}' ??
                                                     'from',
                                             leftOnTap: () {
                                               DocAssistCubit.get(context).selectTime(
@@ -111,7 +110,7 @@ class DocAssistSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo}' ??
+                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo}' ??
                                                     'to',
                                             rightOnTap: () {
                                               DocAssistCubit.get(context).selectTime(
@@ -136,7 +135,7 @@ class DocAssistSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom2}' ??
+                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom2}' ??
                                                     'from',
                                             leftOnTap: () {
                                               DocAssistCubit.get(context).selectTime(
@@ -147,7 +146,7 @@ class DocAssistSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo2}' ??
+                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo2}' ??
                                                     'to',
                                             rightOnTap: () {
                                               DocAssistCubit.get(context).selectTime(
@@ -178,7 +177,7 @@ class DocAssistSetting extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                itemCount: availableLists[kVendorTypeClinic].availabilityTimeList.length),
+                                itemCount: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.length),
                             fallback: (context) => Center(
                               child: writeText14(
                                   title:
@@ -191,21 +190,30 @@ class DocAssistSetting extends StatelessWidget {
                           },
                           buildButtonOnPressed: () {
                             if (_clinicFormKey.currentState.validate()) {
-
+                              DocAssistCubit.get(context).availableLists[kVendorTypeClinic].priceValue = addPriceClinicController.text;
                               DocAssistCubit.get(context).updateClinicData(
-                                  clinicPrice: 19,
-                                  clinicDayListFirst: 'friday',
-                                  clinicFromDayFirst: '23:00',
-                                  clinicToDayFirst: '23:00',
-                                  clinicFromNightFirst: '23:00',
-                                  clinicToNightFirst: '23:00',
-                                  clinicDayListSecond: 'monday',
-                                  clinicFromDaySecond: '23:00',
-                                  clinicToDaySecond: '23:00',
-                                  clinicFromNightSecond: '23:00',
-                                  clinicToNightSecond: '23:00'
+                                  clinicPrice: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].priceValue,
+                                  clinicDayListFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayDayName,
+                                  clinicFromDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayFrom,
+                                  clinicToDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayTo,
+                                  clinicFromNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayFrom,
+                                  clinicToNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayTo2,
+                                  clinicDayListSecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayDayName,
+                                  clinicFromDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayFrom,
+                                  clinicToDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayTo,
+                                  clinicFromNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayFrom2,
+                                  clinicToNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayTo2
                               );
-                              print('Saving dummy Data');
+                              showToast(message: 'First 2 Appointments Updated Successfully', error: false);
+                              DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.map((day) {
+                                print('=========================================');
+                                print(day.wdayDayName);
+                                print(day.wdayFrom);
+                                print(day.wdayTo);
+                                print(day.wdayFrom2);
+                                print(day.wdayTo2);
+                                print('=========================================');
+                              }).toList();
                             }
                           }),
                     ),

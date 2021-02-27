@@ -248,15 +248,15 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
         break;
     }
 
-    availableLists[vendorType].availabilityTimeList.map((day) {
-      print('=========================================');
-      print(day.wdayDayName);
-      print(day.wdayFrom);
-      print(day.wdayTo);
-      print(day.wdayFrom2);
-      print(day.wdayTo2);
-      print('=========================================');
-    }).toList();
+    // availableLists[vendorType].availabilityTimeList.map((day) {
+    //   print('=========================================');
+    //   print(day.wdayDayName);
+    //   print(day.wdayFrom);
+    //   print(day.wdayTo);
+    //   print(day.wdayFrom2);
+    //   print(day.wdayTo2);
+    //   print('=========================================');
+    // }).toList();
 
   }
 
