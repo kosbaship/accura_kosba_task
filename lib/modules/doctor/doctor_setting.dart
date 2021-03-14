@@ -7,8 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cubit/doc_assist_cubit.dart';
-import 'cubit/doc_assist_states.dart';
+import 'cubit/setting_cubit/doctor_setting_cubit.dart';
+import 'cubit/setting_cubit/doctor_setting_states.dart';
 
 class DoctorSetting extends StatelessWidget {
   final addPriceClinicController = TextEditingController();
@@ -24,8 +24,8 @@ class DoctorSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DocAssistCubit()..getData(),
-      child: BlocConsumer<DocAssistCubit, DocAssistStates>(
+      create: (context) => DoctorSettingCubit()..getData(),
+      child: BlocConsumer<DoctorSettingCubit, DoctorSettingStates>(
           listener: (context, state) {},
           builder: (context, state) {
 
@@ -34,13 +34,13 @@ class DoctorSetting extends StatelessWidget {
           backgroundColor: kSecondaryColor,
           appBar: drawAppBar(context: context),
           body: ConditionalBuilder(
-            condition: state is! DocAssistLoadingState,
+            condition: state is! DoctorSettingLoadingState,
             builder: (context) {
 
-              addPriceClinicController.text = DocAssistCubit.get(context).availableLists[kVendorTypeClinic].priceValue ;
-              addPriceVoiceController.text = DocAssistCubit.get(context).availableLists[kVendorTypeVoice].priceValue;
-              addPriceVideoController.text = DocAssistCubit.get(context).availableLists[kVendorTypeVideo].priceValue;
-              addPriceSpotController.text = DocAssistCubit.get(context).availableLists[kVendorTypeSpot].priceValue;
+              addPriceClinicController.text = DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].priceValue ;
+              addPriceVoiceController.text = DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].priceValue;
+              addPriceVideoController.text = DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].priceValue;
+              addPriceSpotController.text = DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].priceValue;
 
               return SingleChildScrollView(
                 child: Column(
@@ -49,12 +49,12 @@ class DoctorSetting extends StatelessWidget {
                       child: buildExpandedCard(
                           initiallyExpanded: true,
                           expansionTitle:
-                              '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].vendorAppointType}',
+                              '${DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].vendorAppointType}',
                           key: _clinicFormKey,
                           buildSwitchBtnValue:
-                              DocAssistCubit.get(context).clinicSwitch,
+                              DoctorSettingCubit.get(context).clinicSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeClinic, value: value);
+                            DoctorSettingCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeClinic, value: value);
                           },
                           buildTextFieldController: addPriceClinicController,
                           buildTextFieldValidator: (value) {
@@ -64,7 +64,7 @@ class DoctorSetting extends StatelessWidget {
                             return null;
                           },
                           list: ConditionalBuilder(
-                            condition: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.length != 0,
+                            condition: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.length != 0,
                             builder: (context) => ListView.separated(
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) => Column(
@@ -80,13 +80,13 @@ class DoctorSetting extends StatelessWidget {
                                             }).toList(),
                                             onChanged: (selectedItem) {
                                               print(selectedItem);
-                                              DocAssistCubit.get(context)
+                                              DoctorSettingCubit.get(context)
                                                   .selectAndSaveDay(
                                                       value: selectedItem,
                                                       vendorType: kVendorTypeClinic,
                                                       indexOfListLength: index);
                                             },
-                                            value: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayDayName,
+                                            value: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayDayName,
                                           ),
                                         SizedBox(
                                           height: 16.0,
@@ -98,10 +98,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayFrom,
@@ -109,10 +109,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayTo,
@@ -134,10 +134,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayFrom2}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightFrom,
@@ -145,10 +145,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[index].wdayTo2}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightTo,
@@ -161,7 +161,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         buildRemoveButton(
                                             onPressed: () {
-                                              DocAssistCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeClinic);
+                                              DoctorSettingCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeClinic);
                                             }, title: 'Remove This Day'),
                                       ],
                                     ),
@@ -176,7 +176,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                itemCount: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.length),
+                                itemCount: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.length),
                             fallback: (context) => Center(
                               child: writeText14(
                                   title:
@@ -185,26 +185,26 @@ class DoctorSetting extends StatelessWidget {
                             ),
                           ),
                           drawCircleIconOnTap: () {
-                            DocAssistCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeClinic);
+                            DoctorSettingCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeClinic);
                           },
                           buildButtonOnPressed: () {
                             if (_clinicFormKey.currentState.validate()) {
-                              DocAssistCubit.get(context).availableLists[kVendorTypeClinic].priceValue = addPriceClinicController.text;
-                              DocAssistCubit.get(context).updateClinicData(
-                                  clinicPrice: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].priceValue,
-                                  clinicDayListFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayDayName,
-                                  clinicFromDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayFrom,
-                                  clinicToDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayTo,
-                                  clinicFromNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayFrom,
-                                  clinicToNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayTo2,
-                                  clinicDayListSecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayDayName,
-                                  clinicFromDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayFrom,
-                                  clinicToDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayTo,
-                                  clinicFromNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayFrom2,
-                                  clinicToNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayTo2
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].priceValue = addPriceClinicController.text;
+                              DoctorSettingCubit.get(context).updateClinicData(
+                                  clinicPrice: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].priceValue,
+                                  clinicDayListFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayDayName,
+                                  clinicFromDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayFrom,
+                                  clinicToDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayTo,
+                                  clinicFromNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayFrom,
+                                  clinicToNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[0].wdayTo2,
+                                  clinicDayListSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayDayName,
+                                  clinicFromDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayFrom,
+                                  clinicToDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayTo,
+                                  clinicFromNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayFrom2,
+                                  clinicToNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList[1].wdayTo2
                               );
                               showToast(message: 'First 2 Appointments Updated Successfully', error: false);
-                              DocAssistCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.map((day) {
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeClinic].availabilityTimeList.map((day) {
                                 print('=========================================');
                                 print(day.wdayDayName);
                                 print(day.wdayFrom);
@@ -220,12 +220,12 @@ class DoctorSetting extends StatelessWidget {
                       child: buildExpandedCard(
                           initiallyExpanded: false,
                           expansionTitle:
-                              '${DocAssistCubit.get(context).availableLists[kVendorTypeVoice].vendorAppointType}',
+                              '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].vendorAppointType}',
                           key: _voiceFormKey,
                           buildSwitchBtnValue:
-                              DocAssistCubit.get(context).voiceSwitch,
+                              DoctorSettingCubit.get(context).voiceSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVoice, value: value);
+                            DoctorSettingCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVoice, value: value);
                           },
                           buildTextFieldController: addPriceVoiceController,
                           buildTextFieldValidator: (value) {
@@ -235,7 +235,7 @@ class DoctorSetting extends StatelessWidget {
                             return null;
                           },
                           list: ConditionalBuilder(
-                            condition: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList.length != 0,
+                            condition: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList.length != 0,
                             builder: (context) => ListView.separated(
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) => Column(
@@ -251,13 +251,13 @@ class DoctorSetting extends StatelessWidget {
                                             }).toList(),
                                             onChanged: (selectedItem) {
                                               print(selectedItem);
-                                              DocAssistCubit.get(context)
+                                              DoctorSettingCubit.get(context)
                                                   .selectAndSaveDay(
                                                       value: selectedItem,
                                                       vendorType: kVendorTypeVoice,
                                                       indexOfListLength: index);
                                             },
-                                            value: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayDayName,
+                                            value: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayDayName,
                                           ),
                                         SizedBox(
                                           height: 16.0,
@@ -269,10 +269,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayFrom}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayFrom}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayFrom,
@@ -280,10 +280,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayTo}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayTo}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayTo,
@@ -305,10 +305,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayFrom2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayFrom2}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightFrom,
@@ -316,10 +316,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayTo2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[index].wdayTo2}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightTo,
@@ -332,7 +332,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         buildRemoveButton(
                                             onPressed: () {
-                                              DocAssistCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeVoice);
+                                              DoctorSettingCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeVoice);
                                             }, title: 'Remove This Day'),
                                       ],
                                     ),
@@ -347,7 +347,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                itemCount: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList.length),
+                                itemCount: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList.length),
                             fallback: (context) => Center(
                               child: writeText14(
                                   title:
@@ -356,26 +356,26 @@ class DoctorSetting extends StatelessWidget {
                             ),
                           ),
                           drawCircleIconOnTap: () {
-                            DocAssistCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeVoice);
+                            DoctorSettingCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeVoice);
                           },
                           buildButtonOnPressed: () {
                             if (_voiceFormKey.currentState.validate()) {
-                              DocAssistCubit.get(context).availableLists[kVendorTypeVoice].priceValue = addPriceVoiceController.text;
-                              DocAssistCubit.get(context).updateVoiceData(
-                                  voicePrice: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].priceValue,
-                                  voiceDayListFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayDayName,
-                                  voiceFromDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayFrom,
-                                  voiceToDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayTo,
-                                  voiceFromNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayFrom,
-                                  voiceToNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayTo2,
-                                  // voiceDayListSecond: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayDayName,
-                                  // voiceFromDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayFrom,
-                                  // voiceToDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayTo,
-                                  // voiceFromNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayFrom2,
-                                  // voiceToNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayTo2
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].priceValue = addPriceVoiceController.text;
+                              DoctorSettingCubit.get(context).updateVoiceData(
+                                  voicePrice: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].priceValue,
+                                  voiceDayListFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayDayName,
+                                  voiceFromDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayFrom,
+                                  voiceToDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayTo,
+                                  voiceFromNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayFrom,
+                                  voiceToNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[0].wdayTo2,
+                                  // voiceDayListSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayDayName,
+                                  // voiceFromDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayFrom,
+                                  // voiceToDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayTo,
+                                  // voiceFromNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayFrom2,
+                                  // voiceToNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList[1].wdayTo2
                               );
                               showToast(message: 'First 2 Appointments Updated Successfully', error: false);
-                              DocAssistCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList.map((day) {
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeVoice].availabilityTimeList.map((day) {
                                 print('=========================================');
                                 print(day.wdayDayName);
                                 print(day.wdayFrom);
@@ -391,12 +391,12 @@ class DoctorSetting extends StatelessWidget {
                       child: buildExpandedCard(
                           initiallyExpanded: false,
                           expansionTitle:
-                              '${DocAssistCubit.get(context).availableLists[kVendorTypeVideo].vendorAppointType}',
+                              '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].vendorAppointType}',
                           key: _videoFormKey,
                           buildSwitchBtnValue:
-                              DocAssistCubit.get(context).videoSwitch,
+                              DoctorSettingCubit.get(context).videoSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVideo, value: value);
+                            DoctorSettingCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeVideo, value: value);
                           },
                           buildTextFieldController: addPriceVideoController,
                           buildTextFieldValidator: (value) {
@@ -406,7 +406,7 @@ class DoctorSetting extends StatelessWidget {
                             return null;
                           },
                           list: ConditionalBuilder(
-                            condition: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList.length != 0,
+                            condition: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList.length != 0,
                             builder: (context) => ListView.separated(
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) => Column(
@@ -422,13 +422,13 @@ class DoctorSetting extends StatelessWidget {
                                             }).toList(),
                                             onChanged: (selectedItem) {
                                               print(selectedItem);
-                                              DocAssistCubit.get(context)
+                                              DoctorSettingCubit.get(context)
                                                   .selectAndSaveDay(
                                                       value: selectedItem,
                                                       vendorType: kVendorTypeVideo,
                                                       indexOfListLength: index);
                                             },
-                                            value: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
+                                            value: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayDayName,
                                           ),
                                         SizedBox(
                                           height: 16.0,
@@ -440,10 +440,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayFrom}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayFrom}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayFrom,
@@ -451,10 +451,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayTo}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayTo}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayTo,
@@ -476,10 +476,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayFrom2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayFrom2}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightFrom,
@@ -487,10 +487,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayTo2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[index].wdayTo2}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightTo,
@@ -503,7 +503,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         buildRemoveButton(
                                             onPressed: () {
-                                              DocAssistCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeVideo);
+                                              DoctorSettingCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeVideo);
                                             }, title: 'Remove This Day'),
                                       ],
                                     ),
@@ -518,7 +518,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                itemCount: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList.length),
+                                itemCount: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList.length),
                             fallback: (context) => Center(
                               child: writeText14(
                                   title:
@@ -527,10 +527,10 @@ class DoctorSetting extends StatelessWidget {
                             ),
                           ),
                           drawCircleIconOnTap: () {
-                            DocAssistCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeVideo);
+                            DoctorSettingCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeVideo);
                           },
                           buildButtonOnPressed: () {
-                            DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList.map((day) {
+                            DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList.map((day) {
                               print('=========================================');
                               print(day.wdayDayName);
                               print(day.wdayFrom);
@@ -540,19 +540,19 @@ class DoctorSetting extends StatelessWidget {
                               print('=========================================');
                             }).toList();
                             if (_videoFormKey.currentState.validate()) {
-                              DocAssistCubit.get(context).availableLists[kVendorTypeVideo].priceValue = addPriceVideoController.text;
-                              DocAssistCubit.get(context).updateVideoData(
-                                  videoPrice: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].priceValue,
-                                  videoDayListFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayDayName,
-                                  videoFromDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayFrom,
-                                  videoToDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayTo,
-                                  videoFromNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayFrom,
-                                  videoToNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayTo2,
-                                  // videoDayListSecond: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayDayName,
-                                  // videoFromDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayFrom,
-                                  // videoToDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayTo,
-                                  // videoFromNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayFrom2,
-                                  // videoToNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayTo2
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].priceValue = addPriceVideoController.text;
+                              DoctorSettingCubit.get(context).updateVideoData(
+                                  videoPrice: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].priceValue,
+                                  videoDayListFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayDayName,
+                                  videoFromDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayFrom,
+                                  videoToDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayTo,
+                                  videoFromNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayFrom,
+                                  videoToNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[0].wdayTo2,
+                                  // videoDayListSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayDayName,
+                                  // videoFromDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayFrom,
+                                  // videoToDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayTo,
+                                  // videoFromNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayFrom2,
+                                  // videoToNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeVideo].availabilityTimeList[1].wdayTo2
                               );
                               showToast(message: 'First 2 Appointments Updated Successfully', error: false);
 
@@ -563,12 +563,12 @@ class DoctorSetting extends StatelessWidget {
                       child: buildExpandedCard(
                           initiallyExpanded: false,
                           expansionTitle:
-                              '${DocAssistCubit.get(context).availableLists[kVendorTypeSpot].vendorAppointType}',
+                              '${DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].vendorAppointType}',
                           key: _spotFormKey,
                           buildSwitchBtnValue:
-                              DocAssistCubit.get(context).spotSwitch,
+                              DoctorSettingCubit.get(context).spotSwitch,
                           buildSwitchBtnOnChange: (value) {
-                            DocAssistCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeSpot, value: value);
+                            DoctorSettingCubit.get(context).toggleAndSaveSwitch(vendorType: kVendorTypeSpot, value: value);
                           },
                           buildTextFieldController: addPriceSpotController,
                           buildTextFieldValidator: (value) {
@@ -578,7 +578,7 @@ class DoctorSetting extends StatelessWidget {
                             return null;
                           },
                           list: ConditionalBuilder(
-                            condition: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList.length != 0,
+                            condition: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList.length != 0,
                             builder: (context) => ListView.separated(
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) => Column(
@@ -594,13 +594,13 @@ class DoctorSetting extends StatelessWidget {
                                             }).toList(),
                                             onChanged: (selectedItem) {
                                               print(selectedItem);
-                                              DocAssistCubit.get(context)
+                                              DoctorSettingCubit.get(context)
                                                   .selectAndSaveDay(
                                                       value: selectedItem,
                                                       vendorType: kVendorTypeSpot,
                                                       indexOfListLength: index);
                                             },
-                                            value: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayDayName,
+                                            value: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayDayName,
                                           ),
                                         SizedBox(
                                           height: 16.0,
@@ -612,10 +612,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayFrom}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayFrom}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayFrom,
@@ -623,10 +623,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayTo}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayTo}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateDayTo,
@@ -648,10 +648,10 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         chooseDateRow(
                                             leftTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayFrom2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayFrom2}' ??
                                                     'from',
                                             leftOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightFrom,
@@ -659,10 +659,10 @@ class DoctorSetting extends StatelessWidget {
                                               );
                                             },
                                             rightTitle:
-                                                '${DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayTo2}' ??
+                                                '${DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[index].wdayTo2}' ??
                                                     'to',
                                             rightOnTap: () {
-                                              DocAssistCubit.get(context).selectTime(
+                                              DoctorSettingCubit.get(context).selectTime(
                                                   context: context,
                                                   index: index,
                                                   type: kPickDateNightTo,
@@ -675,7 +675,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                         buildRemoveButton(
                                             onPressed: () {
-                                              DocAssistCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeSpot);
+                                              DoctorSettingCubit.get(context).removeThisDay(availableDayID: index, vendorType: kVendorTypeSpot);
                                             }, title: 'Remove This Day'),
                                       ],
                                     ),
@@ -690,7 +690,7 @@ class DoctorSetting extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                itemCount: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList.length),
+                                itemCount: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList.length),
                             fallback: (context) => Center(
                               child: writeText14(
                                   title:
@@ -699,26 +699,26 @@ class DoctorSetting extends StatelessWidget {
                             ),
                           ),
                           drawCircleIconOnTap: () {
-                            DocAssistCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeSpot);
+                            DoctorSettingCubit.get(context).addAvailableDayToTheList(vendorType: kVendorTypeSpot);
                           },
                           buildButtonOnPressed: () {
                             if (_spotFormKey.currentState.validate()) {
-                              DocAssistCubit.get(context).availableLists[kVendorTypeSpot].priceValue = addPriceSpotController.text;
-                              DocAssistCubit.get(context).updateSpotData(
-                                  spotPrice: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].priceValue,
-                                  spotDayListFirst: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayDayName,
-                                  spotFromDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayFrom,
-                                  spotToDayFirst: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayTo,
-                                  spotFromNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayFrom,
-                                  spotToNightFirst: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayTo2,
-                                  // spotDayListSecond: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayDayName,
-                                  // spotFromDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayFrom,
-                                  // spotToDaySecond: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayTo,
-                                  // spotFromNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayFrom2,
-                                  // spotToNightSecond: DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayTo2
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].priceValue = addPriceSpotController.text;
+                              DoctorSettingCubit.get(context).updateSpotData(
+                                  spotPrice: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].priceValue,
+                                  spotDayListFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayDayName,
+                                  spotFromDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayFrom,
+                                  spotToDayFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayTo,
+                                  spotFromNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayFrom,
+                                  spotToNightFirst: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[0].wdayTo2,
+                                  // spotDayListSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayDayName,
+                                  // spotFromDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayFrom,
+                                  // spotToDaySecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayTo,
+                                  // spotFromNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayFrom2,
+                                  // spotToNightSecond: DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList[1].wdayTo2
                               );
                               showToast(message: 'First 2 Appointments Updated Successfully', error: false);
-                              DocAssistCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList.map((day) {
+                              DoctorSettingCubit.get(context).availableLists[kVendorTypeSpot].availabilityTimeList.map((day) {
                                 print('=========================================');
                                 print(day.wdayDayName);
                                 print(day.wdayFrom);

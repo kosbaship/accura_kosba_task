@@ -6,12 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'doc_assist_states.dart';
+import 'doctor_setting_states.dart';
 
-class DocAssistCubit extends Cubit<DocAssistStates> {
-  DocAssistCubit() : super(DocAssistInitialState());
+class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
+  DoctorSettingCubit() : super(DoctorSettingInitialState());
 
-  static DocAssistCubit get(context) => BlocProvider.of(context);
+  static DoctorSettingCubit get(context) => BlocProvider.of(context);
 
   DoctorData doctorData = DoctorData();
   List<AvailabilityList> availableLists = [];
@@ -27,7 +27,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
   bool spotSwitch = false;
 
   getData() {
-    emit(DocAssistLoadingState());
+    emit(DoctorSettingLoadingState());
 
     APIProvider.fetchData(
         path: GET_DOCTOR_END_POINT,
@@ -54,9 +54,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       spotAddPriceInitialText = availableLists[kVendorTypeSpot].priceValue;
 
 
-      emit(DocAssistSuccessState());
+      emit(DoctorSettingSuccessState());
     }).catchError((e) {
-      emit(DocAssistErrorState(e.toString()));
+      emit(DoctorSettingErrorState(e.toString()));
     });
   }
 
@@ -73,7 +73,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     @required clinicFromNightSecond,
     @required clinicToNightSecond,
   }) {
-    emit(DocAssistLoadingState());
+    emit(DoctorSettingLoadingState());
 
     APIProvider.fetchData(
         path: UPDATE_DOCTOR_END_POINT,
@@ -98,9 +98,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       print('\n=========================================================');
       print(response.data);
       print('=========================================================\n\n');
-      emit(DocAssistSuccessState());
+      emit(DoctorSettingSuccessState());
     }).catchError((e) {
-      emit(DocAssistErrorState(e.toString()));
+      emit(DoctorSettingErrorState(e.toString()));
     });
   }
 
@@ -117,7 +117,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     // @required voiceFromNightSecond,
     // @required voiceToNightSecond,
   }) {
-    emit(DocAssistLoadingState());
+    emit(DoctorSettingLoadingState());
 
     APIProvider.fetchData(
         path: UPDATE_DOCTOR_END_POINT,
@@ -142,9 +142,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       print('\n=========================================================');
       print(response.data);
       print('=========================================================\n\n');
-      emit(DocAssistSuccessState());
+      emit(DoctorSettingSuccessState());
     }).catchError((e) {
-      emit(DocAssistErrorState(e.toString()));
+      emit(DoctorSettingErrorState(e.toString()));
     });
   }
 
@@ -161,7 +161,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     // @required videoFromNightSecond,
     // @required videoToNightSecond,
   }) {
-    emit(DocAssistLoadingState());
+    emit(DoctorSettingLoadingState());
 
     APIProvider.fetchData(
         path: UPDATE_DOCTOR_END_POINT,
@@ -186,9 +186,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       print('\n=========================================================');
       print(response.data);
       print('=========================================================\n\n');
-      emit(DocAssistSuccessState());
+      emit(DoctorSettingSuccessState());
     }).catchError((e) {
-      emit(DocAssistErrorState(e.toString()));
+      emit(DoctorSettingErrorState(e.toString()));
     });
   }
 
@@ -205,7 +205,7 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     // @required spotFromNightSecond,
     // @required spotToNightSecond,
   }) {
-    emit(DocAssistLoadingState());
+    emit(DoctorSettingLoadingState());
 
     APIProvider.fetchData(
         path: UPDATE_DOCTOR_END_POINT,
@@ -230,9 +230,9 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
       print('\n=========================================================');
       print(response.data);
       print('=========================================================\n\n');
-      emit(DocAssistSuccessState());
+      emit(DoctorSettingSuccessState());
     }).catchError((e) {
-      emit(DocAssistErrorState(e.toString()));
+      emit(DoctorSettingErrorState(e.toString()));
     });
   }
  
@@ -255,26 +255,26 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
         spotSwitch ? availableLists[kVendorTypeSpot].isActive = 1 : availableLists[vendorType].isActive = 0;
         break;
     }
-    emit(DocAssistSwitchButtonState());
+    emit(DoctorSettingSwitchButtonState());
   }
 
   selectAndSaveDay({@required int vendorType, @required value, @required indexOfListLength}){
     switch (vendorType) {
       case kVendorTypeClinic:
         availableLists[kVendorTypeClinic].availabilityTimeList[indexOfListLength].wdayDayName = value;
-        emit(DocAssistClinicSelectWeekDayState());
+        emit(DoctorSettingClinicSelectWeekDayState());
         break;
       case kVendorTypeVoice:
         availableLists[kVendorTypeVoice].availabilityTimeList[indexOfListLength].wdayDayName = value;
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeVideo:
         availableLists[kVendorTypeVideo].availabilityTimeList[indexOfListLength].wdayDayName = value;
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeSpot:
         availableLists[kVendorTypeSpot].availabilityTimeList[indexOfListLength].wdayDayName = value;
-        emit(DocAssistSpotSelectWeekDayState());
+        emit(DoctorSettingSpotSelectWeekDayState());
         break;
     }
   }
@@ -294,16 +294,16 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     ));
     switch (vendorType) {
       case kVendorTypeClinic:
-        emit(DocAssistClinicSelectWeekDayState());
+        emit(DoctorSettingClinicSelectWeekDayState());
         break;
       case kVendorTypeVoice:
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeVideo:
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeSpot:
-        emit(DocAssistSpotSelectWeekDayState());
+        emit(DoctorSettingSpotSelectWeekDayState());
         break;
     }
   }
@@ -318,16 +318,16 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     availableLists[vendorType].availabilityTimeList.removeAt(availableDayID);
     switch (vendorType) {
       case kVendorTypeClinic:
-        emit(DocAssistClinicSelectWeekDayState());
+        emit(DoctorSettingClinicSelectWeekDayState());
         break;
       case kVendorTypeVoice:
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeVideo:
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeSpot:
-        emit(DocAssistSpotSelectWeekDayState());
+        emit(DoctorSettingSpotSelectWeekDayState());
         break;
     }
   }
@@ -356,16 +356,16 @@ class DocAssistCubit extends Cubit<DocAssistStates> {
     }
     switch (vendorType) {
       case kVendorTypeClinic:
-        emit(DocAssistClinicSelectWeekDayState());
+        emit(DoctorSettingClinicSelectWeekDayState());
         break;
       case kVendorTypeVoice:
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeVideo:
-        emit(DocAssistVoiceSelectWeekDayState());
+        emit(DoctorSettingVoiceSelectWeekDayState());
         break;
       case kVendorTypeSpot:
-        emit(DocAssistSpotSelectWeekDayState());
+        emit(DoctorSettingSpotSelectWeekDayState());
         break;
     }
 
