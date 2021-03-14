@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubit/doc_assist_cubit.dart';
 import 'cubit/doc_assist_states.dart';
 
-class DocAssistSetting extends StatelessWidget {
+class DoctorSetting extends StatelessWidget {
   final addPriceClinicController = TextEditingController();
   final addPriceVoiceController = TextEditingController();
   final addPriceVideoController = TextEditingController();

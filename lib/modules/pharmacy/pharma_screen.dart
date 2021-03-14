@@ -1,5 +1,3 @@
-import 'package:accura_kosba_task/modules/pharma/cubit/Pharmacy_cubit.dart';
-import 'package:accura_kosba_task/modules/pharma/cubit/Pharmacy_states.dart';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +7,8 @@ import '../../shared/colors.dart';
 import '../../shared/component.dart';
 import '../../shared/constants.dart';
 import '../../shared/styels.dart';
+import 'cubit/Pharmacy_cubit.dart';
+import 'cubit/Pharmacy_states.dart';
 
 class PharmacyScreen extends StatelessWidget {
   final discountController = TextEditingController();
