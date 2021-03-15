@@ -5,8 +5,8 @@ import 'package:accura_kosba_task/shared/styels.dart';
 import 'package:flutter/material.dart';
 
 class BuildPricingRow extends StatefulWidget {
-  final int index;
-  const BuildPricingRow({@required this.index});
+  final int appoinmentTypeIndex;
+  const BuildPricingRow({@required this.appoinmentTypeIndex});
   @override
   _BuildPricingRowState createState() => _BuildPricingRowState();
 }
@@ -19,7 +19,7 @@ class _BuildPricingRowState extends State<BuildPricingRow> {
     addPriceController.text = DoctorSettingCubit.get(context)
         .doctorData
         .result
-        .availabilityList[widget.index]
+        .availabilityList[widget.appoinmentTypeIndex]
         .priceValue;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,7 @@ class _BuildPricingRowState extends State<BuildPricingRow> {
                         setState(() => DoctorSettingCubit.get(context)
                             .doctorData
                             .result
-                            .availabilityList[widget.index]
+                            .availabilityList[widget.appoinmentTypeIndex]
                             .priceValue = value);
                       },
                     ),

@@ -39,7 +39,7 @@ class DoctorSetting extends StatelessWidget {
                         children: <Widget>[
                           ListView.builder(
                               itemCount: 4,
-                              itemBuilder: (context, index) {
+                              itemBuilder: (context, appoinmentTypeIndex) {
                                 return Column(
                                   children: [
                                     ExpansionTileCard(
@@ -54,7 +54,8 @@ class DoctorSetting extends StatelessWidget {
                                         DoctorSettingCubit.get(context)
                                             .doctorData
                                             .result
-                                            .availabilityList[index]
+                                            .availabilityList[
+                                                appoinmentTypeIndex]
                                             .vendorAppointType,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -79,7 +80,8 @@ class DoctorSetting extends StatelessWidget {
                                             children: [
                                               // actvation section
                                               BuildActivationRow(
-                                                index: index,
+                                                appoinmentTypeIndex:
+                                                    appoinmentTypeIndex,
                                               ),
                                               const SizedBox(
                                                 height: 16.0,
@@ -90,7 +92,8 @@ class DoctorSetting extends StatelessWidget {
                                               ),
                                               // pricing section
                                               BuildPricingRow(
-                                                index: index,
+                                                appoinmentTypeIndex:
+                                                    appoinmentTypeIndex,
                                               ),
                                               const SizedBox(
                                                 height: 16.0,
@@ -101,23 +104,17 @@ class DoctorSetting extends StatelessWidget {
                                               ),
                                               // available time section
                                               BuildAvailableTimeSection(
-                                                index: index,
+                                                appoinmentTypeIndex:
+                                                    appoinmentTypeIndex,
                                               ),
-                                              index == 3
-                                                  ? SizedBox(
-                                                      height: 70.0,
-                                                    )
-                                                  : SizedBox(
-                                                      height: 0.0,
-                                                    )
                                             ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                    index == 3
+                                    appoinmentTypeIndex == 3
                                         ? SizedBox(
-                                            height: 24,
+                                            height: 70,
                                           )
                                         : SizedBox(
                                             height: 0,
@@ -167,8 +164,8 @@ class DoctorSetting extends StatelessWidget {
 }
 
 class BuildAvailableTimeSection extends StatefulWidget {
-  final int index;
-  const BuildAvailableTimeSection({@required this.index});
+  final int appoinmentTypeIndex;
+  const BuildAvailableTimeSection({@required this.appoinmentTypeIndex});
   @override
   _BuildAvailableTimeSectionState createState() =>
       _BuildAvailableTimeSectionState();
@@ -183,7 +180,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
     listHeight = DoctorSettingCubit.get(context)
             .doctorData
             .result
-            .availabilityList[widget.index]
+            .availabilityList[widget.appoinmentTypeIndex]
             .availabilityTimeList
             .length
             .toDouble() *
@@ -198,8 +195,15 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
           overflow: TextOverflow.ellipsis,
           style: font14,
         ),
-        SizedBox(
-          height: 4.0,
+        const SizedBox(
+          height: 8.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 48),
+          child: DrawFancyDivider(),
+        ),
+        const SizedBox(
+          height: 8.0,
         ),
         SizedBox(
           height: listHeight,
@@ -208,10 +212,10 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
               itemCount: DoctorSettingCubit.get(context)
                   .doctorData
                   .result
-                  .availabilityList[widget.index]
+                  .availabilityList[widget.appoinmentTypeIndex]
                   .availabilityTimeList
                   .length,
-              itemBuilder: (context, index) {
+              itemBuilder: (context, availableTimeListIndex) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -225,8 +229,8 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                       DoctorSettingCubit.get(context)
                           .doctorData
                           .result
-                          .availabilityList[widget.index]
-                          .availabilityTimeList[index]
+                          .availabilityList[widget.appoinmentTypeIndex]
+                          .availabilityTimeList[availableTimeListIndex]
                           .wdayDayName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -275,9 +279,10 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                                 DoctorSettingCubit.get(context)
                                                         .doctorData
                                                         .result
-                                                        .availabilityList[
-                                                            widget.index]
-                                                        .availabilityTimeList[index]
+                                                        .availabilityList[widget
+                                                            .appoinmentTypeIndex]
+                                                        .availabilityTimeList[
+                                                            availableTimeListIndex]
                                                         .wdayFrom =
                                                     '${fullDatTime.hour}:${fullDatTime.minute}';
                                               });
@@ -309,8 +314,10 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                   DoctorSettingCubit.get(context)
                                           .doctorData
                                           .result
-                                          .availabilityList[widget.index]
-                                          .availabilityTimeList[index]
+                                          .availabilityList[
+                                              widget.appoinmentTypeIndex]
+                                          .availabilityTimeList[
+                                              availableTimeListIndex]
                                           .wdayFrom ??
                                       '09:00',
                                   style: TextStyle(color: Colors.black)),
@@ -364,9 +371,10 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                                 DoctorSettingCubit.get(context)
                                                         .doctorData
                                                         .result
-                                                        .availabilityList[
-                                                            widget.index]
-                                                        .availabilityTimeList[index]
+                                                        .availabilityList[widget
+                                                            .appoinmentTypeIndex]
+                                                        .availabilityTimeList[
+                                                            availableTimeListIndex]
                                                         .wdayTo =
                                                     '${fullDatTime.hour}:${fullDatTime.minute}';
                                               });
@@ -396,8 +404,10 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                   DoctorSettingCubit.get(context)
                                           .doctorData
                                           .result
-                                          .availabilityList[widget.index]
-                                          .availabilityTimeList[index]
+                                          .availabilityList[
+                                              widget.appoinmentTypeIndex]
+                                          .availabilityTimeList[
+                                              availableTimeListIndex]
                                           .wdayTo ??
                                       '17:00',
                                   style: TextStyle(color: Colors.black)),
@@ -413,9 +423,26 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 48),
+                      child: DrawFancyDivider(),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
                   ],
                 );
               }),
+        ),
+        const SizedBox(
+          height: 8.0,
+        ),
+        DrawFancyDivider(),
+        const SizedBox(
+          height: 8.0,
         ),
         SizedBox(
           height: 16.0,
@@ -443,7 +470,14 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                   width: 8,
                 ),
                 Text(
-                  'add day',
+                  DoctorSettingCubit.get(context)
+                          .doctorData
+                          .result
+                          .availabilityList[widget.appoinmentTypeIndex]
+                          .availabilityTimeList
+                          .isEmpty
+                      ? 'add available day'
+                      : 'add another day',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: font14,

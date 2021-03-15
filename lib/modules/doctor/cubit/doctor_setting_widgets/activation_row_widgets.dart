@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
  class BuildActivationRow extends StatefulWidget {
-  final int index;
-  const BuildActivationRow({@required this.index});
+  final int appoinmentTypeIndex;
+  const BuildActivationRow({@required this.appoinmentTypeIndex});
   @override
   _BuildActivationRowState createState() => _BuildActivationRowState();
 }
@@ -19,7 +19,7 @@ class _BuildActivationRowState extends State<BuildActivationRow> {
     switchCaseValue = DoctorSettingCubit.get(context)
                 .doctorData
                 .result
-                .availabilityList[widget.index]
+                .availabilityList[widget.appoinmentTypeIndex]
                 .isActive ==
             1
         ? true
@@ -54,7 +54,7 @@ class _BuildActivationRowState extends State<BuildActivationRow> {
                 setState(() => DoctorSettingCubit.get(context)
                     .doctorData
                     .result
-                    .availabilityList[widget.index]
+                    .availabilityList[widget.appoinmentTypeIndex]
                     .isActive = value == true ? 1 : 0);
                },
             ),
