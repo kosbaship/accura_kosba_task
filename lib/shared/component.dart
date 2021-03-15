@@ -181,26 +181,24 @@ Widget buildSaveButton({
   @required String title,
   @required Function onPressed,
 }) =>
-    Container(
-      height: 48,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: RawMaterialButton(
-          onPressed: onPressed,
-          fillColor: kExpansionTitleColor,
-          splashColor: kExpansionBorderColor,
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                  fontSize: 12.0,
-                  fontFamily: 'Poppins-Regular',
-                  color: kSecondaryColor),
-            ),
+    Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: RawMaterialButton(
+        onPressed: onPressed,
+        fillColor: kExpansionTitleColor,
+        splashColor: kExpansionBorderColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24),
+          child: Text(
+            title,
+            style: TextStyle(
+                fontSize: 12.0,
+                fontFamily: 'Poppins-Regular',
+                color: kSecondaryColor),
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:accura_kosba_task/shared/colors.dart';
-import 'package:accura_kosba_task/shared/component.dart'; 
+import 'package:accura_kosba_task/shared/component.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -28,7 +28,7 @@ class DoctorSetting extends StatelessWidget {
                 condition: state is! DoctorSettingLoadingState,
                 builder: (context) {
                   return SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height - 90,
                       child: Stack(
@@ -36,6 +36,7 @@ class DoctorSetting extends StatelessWidget {
                         fit: StackFit.expand,
                         children: <Widget>[
                           ListView.builder(
+                              physics: BouncingScrollPhysics(),
                               itemCount: 4,
                               itemBuilder: (context, appoinmentTypeIndex) {
                                 return Column(
@@ -160,4 +161,3 @@ class DoctorSetting extends StatelessWidget {
     );
   }
 }
-

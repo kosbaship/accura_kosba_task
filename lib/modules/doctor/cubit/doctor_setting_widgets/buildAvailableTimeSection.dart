@@ -18,7 +18,7 @@ class BuildAvailableTimeSection extends StatefulWidget {
 }
 
 class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
-  double listHeight = 50;
+  double listHeight;
   @override
   Widget build(BuildContext context) {
     // you can't generate list builder inside list builder without specefing the hight
@@ -30,7 +30,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
             .availabilityTimeList
             .length
             .toDouble() *
-        250.0;
+        290.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,6 +480,47 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                     const SizedBox(
                       height: 8.0,
                     ),
+
+                    /// remove day button
+                    Center(
+                      child: RawMaterialButton(
+                        elevation: 1,
+                        onPressed: () {},
+                        fillColor: kRemoveColor,
+                        splashColor: kMainColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 16),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: Icon(
+                                  Icons.close,
+                                  color: kSecondaryColor,
+                                  size: 40.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                'Remove this day',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: font14.copyWith(color: kSecondaryColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        shape: const StadiumBorder(),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 48),
                       child: DrawFancyDivider(),
@@ -501,6 +542,8 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
         const SizedBox(
           height: 16.0,
         ),
+
+        /// add day button
         RawMaterialButton(
           elevation: 1,
           onPressed: () {},
