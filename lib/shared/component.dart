@@ -13,11 +13,16 @@ void initApp() {
 }
 
 // divider
-Widget drawDivider() => Divider(
+class DrawFancyDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Divider(
       height: 2.0,
       color: kDividerColor,
       thickness: 2.0,
     );
+  }
+}
 
 Widget chooseDateRow(
         {@required Function leftOnTap,
@@ -27,7 +32,7 @@ Widget chooseDateRow(
     Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded (
+        Expanded(
           child: chooseDate(title: leftTitle, onTap: leftOnTap),
         ),
         SizedBox(
@@ -44,7 +49,7 @@ Widget writeText14({@required title, maxLines = 1}) => Text(
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
       style: font14,
-  textAlign: TextAlign.center,
+      textAlign: TextAlign.center,
     );
 
 Widget chooseDate({
@@ -125,44 +130,6 @@ Widget drawAppBar({@required BuildContext context}) => AppBar(
       centerTitle: true,
     );
 
-// card item
-// Widget buildList({@required list}) => ListView.separated(
-//       shrinkWrap: true,
-//       itemCount: list.length,
-//       itemBuilder: (BuildContext context, int index) {
-//         //=====================================================
-//         // here the trick we pass every list map with the index
-//         // to the model class
-//         return buildItem(Post(list[index]), context);
-//         //=====================================================
-//       },
-//       separatorBuilder: (context, index) => drawDivider(),
-//     );
-
-// // card item
-// Widget buildItem(Post post, BuildContext context) => Card(
-//       elevation: 0,
-//       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-//       color: kForthColor,
-//       child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           // this a good structure for a list item
-//           child: ListTile(
-//             // one
-//             leading: Text(
-//               post.id.toString(),
-//             ),
-//             //two
-//             title: Text(
-//               post.title,
-//               maxLines: 2,
-//               overflow: TextOverflow.ellipsis,
-//             ),
-//             //three
-//             subtitle: Text(post.id.toString()),
-//           )),
-//     );
-
 // toast
 showToast({@required String message, @required bool error}) =>
     Fluttertoast.showToast(
@@ -214,21 +181,27 @@ Widget buildSaveButton({
   @required String title,
   @required Function onPressed,
 }) =>
-    FlatButton(
-      onPressed: onPressed,
-      color: kExpansionTitleColor,
-      textColor: kSecondaryColor,
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 12.0,
-            fontFamily: 'Poppins-Regular',
+    Container(
+      height: 48,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: RawMaterialButton(
+          onPressed: onPressed,
+          fillColor: kExpansionTitleColor,
+          splashColor: kExpansionBorderColor,
+          child: Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontFamily: 'Poppins-Regular',
+                  color: kSecondaryColor),
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
           ),
         ),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
       ),
     );
 // button
@@ -237,7 +210,7 @@ Widget buildRemoveButton({
   @required Function onPressed,
 }) =>
     Padding(
-      padding: const EdgeInsets.symmetric( horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: FlatButton(
         onPressed: onPressed,
         color: kRemoveColor,
@@ -260,22 +233,11 @@ Widget buildRemoveButton({
       ),
     );
 
-Widget buildSwitchBtn({
-  @required bool value,
-  @required Function onChanged,
-}) =>
-    CupertinoSwitch(
-      activeColor: kExpansionTitleColor,
-      value: value,
-      onChanged: onChanged,
-    );
-
-Widget buildTextFormField(
+Widget buildPriceTextFormField(
         {@required TextEditingController controller,
         @required validator,
         keyboardType = TextInputType.number,
-        double startPadding = 10.0
-        }) =>
+        double startPadding = 10.0}) =>
     TextFormField(
       keyboardType: keyboardType,
       controller: controller,
@@ -324,67 +286,6 @@ Widget buildTDropdownButton({
       ),
     );
 
-// textField
-// Widget buildTextField({
-//   @required String title,
-//   @required IconData icon,
-//   TextInputType keyboardType = TextInputType.text,
-//   bool obscureText = false,
-//   TextEditingController controller,
-//   Function onChange,
-// }) =>
-
-// alertDialog (loading & error)
-// void buildAlertDialog(
-//         {@required BuildContext context,
-//         @required String title,
-//         error = false}) =>
-//     showDialog(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         contentPadding: EdgeInsets.all(8),
-//         backgroundColor: kMainColor,
-//         content: Container(
-//           color: kForthColor,
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 Row(
-//                   children: [
-//                     if (!error)
-//                       CircularProgressIndicator(
-//                         backgroundColor: kForthColor,
-//                       ),
-//                     if (!error)
-//                       SizedBox(
-//                         width: 20.0,
-//                       ),
-//                     Expanded(
-//                       child: Text(
-//                         title,
-//                         style: TextStyle(
-//                           fontSize: 18.0,
-//                           fontFamily: 'BoltRegular',
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 if (error) SizedBox(height: 20.0),
-//                 if (error)
-//                   buildButton(
-//                     onPressed: () => Navigator.pop(context),
-//                     title: "Cancel",
-//                   ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-
 // navigation
 void navigateTo({@required BuildContext context, @required Widget goTO}) =>
     Navigator.push(
@@ -427,11 +328,11 @@ Widget buildExpandedCard({
     Container(
       decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(
-              width: 1,
-              color: kExpansionBorderColor,
-            ),
-          )),
+        top: BorderSide(
+          width: 1,
+          color: kExpansionBorderColor,
+        ),
+      )),
       child: ExpansionTileCard(
         borderRadius: BorderRadius.all(Radius.circular(0)),
         finalPadding: EdgeInsets.zero,
@@ -456,137 +357,7 @@ Widget buildExpandedCard({
                   width: 1,
                   color: kExpansionBorderColor,
                 ))),
-            child: Form(
-              key: key,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // switch button
-                  Text(
-                    'Activation',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: font14,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        buildSwitchBtnValue ? 'on' : 'Off',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: font14.copyWith(
-                          color: kTitleGreyColor,
-                        ),
-                      ),
-                      buildSwitchBtn(
-                        value: buildSwitchBtnValue,
-                        onChanged: buildSwitchBtnOnChange,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  drawDivider(),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  // add price
-                  Text(
-                    'Pricing',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: font14,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'add price',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: font14.copyWith(color: kTitleGreyColor),
-                      ),
-                      Container(
-                        width: 110,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              right: 9,
-                              top: 8.5,
-                              child: Text(
-                                'EGP',
-                                style: font12,
-                              ),
-                            ),
-                            buildTextFormField(
-                              controller: buildTextFieldController,
-                              validator: buildTextFieldValidator,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  drawDivider(),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  // choose day
-                  Text(
-                    'Available',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: font14,
-                  ),
-                  SizedBox(
-                    height: 4.0,
-                  ),
-                  SizedBox(
-                    height: 315,
-                    child: list
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          drawCircleIcon(onTap: drawCircleIconOnTap ),
-                          InkWell(
-                            onTap: drawCircleIconOnTap,
-                            child: Text(
-                              ' add day',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: font14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 50.0,
-                        width: 150.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: kSecondaryColor,
-                        ),
-                        child: buildSaveButton(
-                            onPressed: buildButtonOnPressed, title: 'Save Settings'),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+            child: Container(),
           ),
         ],
       ),

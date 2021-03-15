@@ -53,13 +53,7 @@ class PharmacyScreen extends StatelessWidget {
                                 color: kTitleDarkColor,
                               ),
                             ),
-                            buildSwitchBtn(
-                              value: PharmacyCubit.get(context).buttonSwitch,
-                              onChanged: (value) {
-                                PharmacyCubit.get(context)
-                                    .toggleTheSwitch(value: value);
-                              },
-                            ),
+                            
                           ],
                         ),
                         SizedBox(
@@ -89,7 +83,7 @@ class PharmacyScreen extends StatelessWidget {
                                       style: font12,
                                     ),
                                   ),
-                                  buildTextFormField(
+                                  buildPriceTextFormField(
                                     startPadding: 25.0,
                                     controller: discountController,
                                     validator: (value) {
@@ -206,7 +200,6 @@ class PharmacyScreen extends StatelessWidget {
                               SizedBox(
                                 height: 8,
                               ),
-                              drawDivider(),
                               SizedBox(
                                 height: 16,
                               ),
