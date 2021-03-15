@@ -1,11 +1,14 @@
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
+import 'package:accura_kosba_task/shared/helper_class_config.dart';
+import 'package:accura_kosba_task/shared/helper_classes.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'cubit/doctor_setting_cubit/doctor_setting_cubit.dart';
 import 'cubit/doctor_setting_cubit/doctor_setting_states.dart';
@@ -37,77 +40,88 @@ class DoctorSetting extends StatelessWidget {
                           ListView.builder(
                               itemCount: 4,
                               itemBuilder: (context, index) {
-                                return ExpansionTileCard(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(0)),
-                                  finalPadding: EdgeInsets.zero,
-                                  baseColor: kExpansionBGColor,
-                                  expandedColor: kExpansionBGColor,
-                                  initiallyExpanded: false,
-                                  elevation: 0.0,
-                                  title: Text(
-                                    DoctorSettingCubit.get(context)
-                                        .doctorData
-                                        .result
-                                        .availabilityList[index]
-                                        .vendorAppointType,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: font18.copyWith(
-                                        color: kExpansionTitleColor),
-                                  ),
-                                  onExpansionChanged: (value) {},
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0, vertical: 14),
-                                      decoration: BoxDecoration(
-                                          color: kSecondaryColor,
-                                          border: Border(
-                                              top: BorderSide(
-                                            width: 1,
-                                            color: kExpansionBorderColor,
-                                          ))),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          // actvation section
-                                          BuildActivationRow(
-                                            index: index,
-                                          ),
-                                          const SizedBox(
-                                            height: 16.0,
-                                          ),
-                                          DrawFancyDivider(),
-                                          const SizedBox(
-                                            height: 16.0,
-                                          ),
-                                          // pricing section
-                                          BuildPricingRow(
-                                            index: index,
-                                          ),
-                                          const SizedBox(
-                                            height: 16.0,
-                                          ),
-                                          DrawFancyDivider(),
-                                          const SizedBox(
-                                            height: 16.0,
-                                          ),
-                                          // available time section
-                                          BuildAvailableTimeSection(
-                                            index: index,
-                                          ),
-                                          index == 3
-                                              ? SizedBox(
-                                                  height: 70.0,
-                                                )
-                                              : SizedBox(
-                                                  height: 0.0,
-                                                )
-                                        ],
+                                return Column(
+                                  children: [
+                                    ExpansionTileCard(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(0)),
+                                      finalPadding: EdgeInsets.zero,
+                                      baseColor: kExpansionBGColor,
+                                      expandedColor: kExpansionBGColor,
+                                      initiallyExpanded: false,
+                                      elevation: 0.0,
+                                      title: Text(
+                                        DoctorSettingCubit.get(context)
+                                            .doctorData
+                                            .result
+                                            .availabilityList[index]
+                                            .vendorAppointType,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: font18.copyWith(
+                                            color: kExpansionTitleColor),
                                       ),
+                                      onExpansionChanged: (value) {},
+                                      children: <Widget>[
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0, vertical: 14),
+                                          decoration: BoxDecoration(
+                                              color: kSecondaryColor,
+                                              border: Border(
+                                                  top: BorderSide(
+                                                width: 1,
+                                                color: kExpansionBorderColor,
+                                              ))),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // actvation section
+                                              BuildActivationRow(
+                                                index: index,
+                                              ),
+                                              const SizedBox(
+                                                height: 16.0,
+                                              ),
+                                              DrawFancyDivider(),
+                                              const SizedBox(
+                                                height: 16.0,
+                                              ),
+                                              // pricing section
+                                              BuildPricingRow(
+                                                index: index,
+                                              ),
+                                              const SizedBox(
+                                                height: 16.0,
+                                              ),
+                                              DrawFancyDivider(),
+                                              const SizedBox(
+                                                height: 16.0,
+                                              ),
+                                              // available time section
+                                              BuildAvailableTimeSection(
+                                                index: index,
+                                              ),
+                                              index == 3
+                                                  ? SizedBox(
+                                                      height: 70.0,
+                                                    )
+                                                  : SizedBox(
+                                                      height: 0.0,
+                                                    )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                    index == 3
+                                        ? SizedBox(
+                                            height: 24,
+                                          )
+                                        : SizedBox(
+                                            height: 0,
+                                          ),
                                   ],
                                 );
                               }),
@@ -161,7 +175,7 @@ class BuildAvailableTimeSection extends StatefulWidget {
 }
 
 class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
-  double listHeight;
+  double listHeight = 50;
   @override
   Widget build(BuildContext context) {
     // you can't generate list builder inside list builder without specefing the hight
@@ -173,7 +187,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
             .availabilityTimeList
             .length
             .toDouble() *
-        50.0;
+        250.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,12 +205,215 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
           height: listHeight,
           child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 4,
+              itemCount: DoctorSettingCubit.get(context)
+                  .doctorData
+                  .result
+                  .availabilityList[widget.index]
+                  .availabilityTimeList
+                  .length,
               itemBuilder: (context, index) {
-                return Container(
-                  height: 50,
-                  width: 50,
-                  color: index == 2 ? Colors.amber : Colors.red,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Day Shift',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: font14,
+                    ),
+                    Text(
+                      DoctorSettingCubit.get(context)
+                          .doctorData
+                          .result
+                          .availabilityList[widget.index]
+                          .availabilityTimeList[index]
+                          .wdayDayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: font14,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'from',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
+
+                            /// Day From Flat Button
+                            FlatButton(
+                              onPressed: () async {
+                                DateTime fullDatTime = DateTime.now();
+                                CommonAlertRFlutter
+                                    .onAlertWithCustomContentPressed(context,
+                                        title: 'Day Shift Start',
+                                        buttons: [
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() =>
+                                                  print('======== \$ Cancel'));
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.redColor,
+                                          ),
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                DoctorSettingCubit.get(context)
+                                                        .doctorData
+                                                        .result
+                                                        .availabilityList[
+                                                            widget.index]
+                                                        .availabilityTimeList[index]
+                                                        .wdayFrom =
+                                                    '${fullDatTime.hour}:${fullDatTime.minute}';
+                                              });
+
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Confirm',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.greenColor,
+                                          ),
+                                        ],
+                                        contentWidget: CommonAlertRFlutter
+                                            .showDatePickerWidget(
+                                          context,
+                                          90,
+                                          (dateTime) => setState(() {
+                                            fullDatTime = dateTime;
+                                          }),
+                                          CupertinoDatePickerMode.time,
+                                        ));
+                              },
+
+                              /// from button text
+                              child: Text(
+                                  DoctorSettingCubit.get(context)
+                                          .doctorData
+                                          .result
+                                          .availabilityList[widget.index]
+                                          .availabilityTimeList[index]
+                                          .wdayFrom ??
+                                      '09:00',
+                                  style: TextStyle(color: Colors.black)),
+                              textColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.5,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(20)),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'to',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
+
+                            /// Day To Flat Button
+                            FlatButton(
+                              onPressed: () async {
+                                DateTime fullDatTime = DateTime.now();
+                                CommonAlertRFlutter
+                                    .onAlertWithCustomContentPressed(context,
+                                        title: 'Day Shift End',
+                                        buttons: [
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() =>
+                                                  print('======== \$ Cancel'));
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.redColor,
+                                          ),
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                DoctorSettingCubit.get(context)
+                                                        .doctorData
+                                                        .result
+                                                        .availabilityList[
+                                                            widget.index]
+                                                        .availabilityTimeList[index]
+                                                        .wdayTo =
+                                                    '${fullDatTime.hour}:${fullDatTime.minute}';
+                                              });
+
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Confirm',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.greenColor,
+                                          ),
+                                        ],
+                                        contentWidget: CommonAlertRFlutter
+                                            .showDatePickerWidget(
+                                          context,
+                                          90,
+                                          (dateTime) => setState(() {
+                                            fullDatTime = dateTime;
+                                          }),
+                                          CupertinoDatePickerMode.time,
+                                        ));
+                              },
+                              child: Text(
+                                  DoctorSettingCubit.get(context)
+                                          .doctorData
+                                          .result
+                                          .availabilityList[widget.index]
+                                          .availabilityTimeList[index]
+                                          .wdayTo ??
+                                      '17:00',
+                                  style: TextStyle(color: Colors.black)),
+                              textColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.5,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(20)),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 );
               }),
         ),

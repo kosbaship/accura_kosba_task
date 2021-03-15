@@ -18,6 +18,8 @@ dependencies:
   conditional_builder: ^1.0.2
   dio: ^3.0.10
   expansion_tile_card: ^1.1.0
+  rflutter_alert: ^1.0.3
+
 
 dev_dependencies:
   flutter_test:
