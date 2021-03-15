@@ -40,13 +40,14 @@ class DoctorSetting extends StatelessWidget {
                                   finalPadding: EdgeInsets.zero,
                                   baseColor: kExpansionBGColor,
                                   expandedColor: kExpansionBGColor,
-
-                                  /// edit
                                   initiallyExpanded: false,
                                   elevation: 0.0,
                                   title: Text(
-                                    /// edit
-                                    'Clinic',
+                                    DoctorSettingCubit.get(context)
+                                        .doctorData
+                                        .result
+                                        .availabilityList[index]
+                                        .vendorAppointType,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: font18.copyWith(
@@ -69,7 +70,19 @@ class DoctorSetting extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           // edit
-                                          BuildSwitchButtonRow(),
+                                          BuildSwitchButtonRow(
+                                            index: index,
+                                            switchCaseInitalValue:
+                                                DoctorSettingCubit.get(context)
+                                                            .doctorData
+                                                            .result
+                                                            .availabilityList[
+                                                                index]
+                                                            .isActive ==
+                                                        0
+                                                    ? false
+                                                    : true,
+                                          ),
                                           const SizedBox(
                                             height: 16.0,
                                           ),
@@ -78,11 +91,20 @@ class DoctorSetting extends StatelessWidget {
                                             height: 16.0,
                                           ),
                                           // add price
-                                          BuildPricingRow(),
-                                          SizedBox(
+                                          BuildPricingRow(
+                                            index: index,
+                                            addPriceControllerInitalValue:
+                                                DoctorSettingCubit.get(context)
+                                                    .doctorData
+                                                    .result
+                                                    .availabilityList[index]
+                                                    .priceValue,
+                                          ),
+                                          const SizedBox(
                                             height: 16.0,
                                           ),
-                                          SizedBox(
+                                          DrawFancyDivider(),
+                                          const SizedBox(
                                             height: 16.0,
                                           ),
                                           // choose day
@@ -96,10 +118,7 @@ class DoctorSetting extends StatelessWidget {
                                             height: 4.0,
                                           ),
                                           SizedBox(
-
-                                              /// edit
-                                              height: 315,
-                                              child: Container()),
+                                              height: 315, child: Container()),
                                           SizedBox(
                                             height: 16.0,
                                           ),
@@ -163,7 +182,12 @@ class DoctorSetting extends StatelessWidget {
                               child: buildSaveButton(
 
                                   /// edit
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    print(
+                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[0].isActive}');
+                                    print(
+                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[0].priceValue}');
+                                  },
                                   title: 'Save Settings'),
                             ),
                           ),
@@ -183,14 +207,18 @@ class DoctorSetting extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class BuildSwitchButtonRow extends StatefulWidget {
+  bool switchCaseInitalValue;
+
+  final int index;
+  BuildSwitchButtonRow(
+      {@required this.switchCaseInitalValue, @required this.index});
   @override
   _BuildSwitchButtonRowState createState() => _BuildSwitchButtonRowState();
 }
 
 class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
-  bool switchCase = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -208,7 +236,7 @@ class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
           children: [
             /// edit
             Text(
-              switchCase ? 'On' : 'Off',
+              widget.switchCaseInitalValue ? 'On' : 'Off',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: font14.copyWith(
@@ -217,9 +245,17 @@ class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
             ),
             CupertinoSwitch(
               activeColor: kExpansionTitleColor,
-              value: switchCase,
+              value: widget.switchCaseInitalValue,
               onChanged: (value) {
-                setState(() => switchCase = value);
+                /// this is in charage of the ui
+                setState(() => widget.switchCaseInitalValue = value);
+
+                /// this is in charage of the End Saving
+                DoctorSettingCubit.get(context)
+                    .doctorData
+                    .result
+                    .availabilityList[widget.index]
+                    .isActive = value == true ? 1 : 0;
               },
             ),
           ],
@@ -229,16 +265,26 @@ class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
   }
 }
 
+// ignore: must_be_immutable
 class BuildPricingRow extends StatefulWidget {
+  String addPriceControllerInitalValue;
+  final int index;
+  BuildPricingRow(
+      {@required this.addPriceControllerInitalValue, @required this.index});
   @override
   _BuildPricingRowState createState() => _BuildPricingRowState();
 }
 
 class _BuildPricingRowState extends State<BuildPricingRow> {
-  var addPriceController = TextEditingController();
+  TextEditingController addPriceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    addPriceController.text = DoctorSettingCubit.get(context)
+        .doctorData
+        .result
+        .availabilityList[widget.index]
+        .priceValue;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -277,7 +323,13 @@ class _BuildPricingRowState extends State<BuildPricingRow> {
                     buildPriceTextFormField(
                       /// edit
                       controller: addPriceController,
-                      validator: (value) {},
+                      onChanged: (value) {
+                        setState(() => DoctorSettingCubit.get(context)
+                            .doctorData
+                            .result
+                            .availabilityList[widget.index]
+                            .priceValue = value);
+                      },
                     ),
                   ],
                 ),

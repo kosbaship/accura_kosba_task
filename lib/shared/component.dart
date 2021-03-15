@@ -235,13 +235,15 @@ Widget buildRemoveButton({
 
 Widget buildPriceTextFormField(
         {@required TextEditingController controller,
-        @required validator,
+        validator,
+        onChanged,
         keyboardType = TextInputType.number,
         double startPadding = 10.0}) =>
     TextFormField(
       keyboardType: keyboardType,
       controller: controller,
       validator: validator,
+      onChanged: onChanged,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(startPadding, 0.0, 47.0, 0.0),
         border: OutlineInputBorder(
