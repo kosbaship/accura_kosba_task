@@ -24,7 +24,4 @@ const String kPickDateDayTo = 'DayTo';
 const String kPickDateNightFrom = 'NightFrom';
 const String kPickDateNightTo = 'NightTo';
 
-const int kVendorTypeClinic = 0;
-const int kVendorTypeVoice = 1;
-const int kVendorTypeVideo = 2;
-const int kVendorTypeSpot = 3;
+ 

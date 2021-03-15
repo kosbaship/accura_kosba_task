@@ -91,7 +91,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                       'Day Shift',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: font14,
+                      style: font14.copyWith(color: kTitleGreyColor),
                     ),
 
                     /// day shift row
@@ -168,16 +168,17 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                         ));
                               },
                               child: Text(
-                                  DoctorSettingCubit.get(context)
-                                          .doctorData
-                                          .result
-                                          .availabilityList[
-                                              widget.appoinmentTypeIndex]
-                                          .availabilityTimeList[
-                                              availableTimeListIndex]
-                                          .wdayFrom ??
-                                      '09:00',
-                                  style: TextStyle(color: Colors.black)),
+                                DoctorSettingCubit.get(context)
+                                        .doctorData
+                                        .result
+                                        .availabilityList[
+                                            widget.appoinmentTypeIndex]
+                                        .availabilityTimeList[
+                                            availableTimeListIndex]
+                                        .wdayFrom ??
+                                    '09:00',
+                                style: font12.copyWith(color: kTitleGreyColor),
+                              ),
                               textColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(
@@ -258,16 +259,17 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                         ));
                               },
                               child: Text(
-                                  DoctorSettingCubit.get(context)
-                                          .doctorData
-                                          .result
-                                          .availabilityList[
-                                              widget.appoinmentTypeIndex]
-                                          .availabilityTimeList[
-                                              availableTimeListIndex]
-                                          .wdayTo ??
-                                      '17:00',
-                                  style: TextStyle(color: Colors.black)),
+                                DoctorSettingCubit.get(context)
+                                        .doctorData
+                                        .result
+                                        .availabilityList[
+                                            widget.appoinmentTypeIndex]
+                                        .availabilityTimeList[
+                                            availableTimeListIndex]
+                                        .wdayTo ??
+                                    '17:00',
+                                style: font12.copyWith(color: kTitleGreyColor),
+                              ),
                               textColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(
@@ -289,7 +291,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                       'Night Shift',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: font14,
+                      style: font14.copyWith(color: kTitleGreyColor),
                     ),
 
                     /// Night shift row
@@ -366,16 +368,17 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                         ));
                               },
                               child: Text(
-                                  DoctorSettingCubit.get(context)
-                                          .doctorData
-                                          .result
-                                          .availabilityList[
-                                              widget.appoinmentTypeIndex]
-                                          .availabilityTimeList[
-                                              availableTimeListIndex]
-                                          .wdayFrom2 ??
-                                      '09:00',
-                                  style: TextStyle(color: Colors.black)),
+                                DoctorSettingCubit.get(context)
+                                        .doctorData
+                                        .result
+                                        .availabilityList[
+                                            widget.appoinmentTypeIndex]
+                                        .availabilityTimeList[
+                                            availableTimeListIndex]
+                                        .wdayFrom2 ??
+                                    '09:00',
+                                style: font12.copyWith(color: kTitleGreyColor),
+                              ),
                               textColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(
@@ -456,16 +459,17 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                         ));
                               },
                               child: Text(
-                                  DoctorSettingCubit.get(context)
-                                          .doctorData
-                                          .result
-                                          .availabilityList[
-                                              widget.appoinmentTypeIndex]
-                                          .availabilityTimeList[
-                                              availableTimeListIndex]
-                                          .wdayTo2 ??
-                                      '17:00',
-                                  style: TextStyle(color: Colors.black)),
+                                DoctorSettingCubit.get(context)
+                                        .doctorData
+                                        .result
+                                        .availabilityList[
+                                            widget.appoinmentTypeIndex]
+                                        .availabilityTimeList[
+                                            availableTimeListIndex]
+                                        .wdayTo2 ??
+                                    '17:00',
+                                style: font12.copyWith(color: kTitleGreyColor),
+                              ),
                               textColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(
