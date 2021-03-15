@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
-TextStyle font14 = TextStyle(
+TextStyle font14 =  TextStyle(
   fontSize: 14.0,
   color: kTitleDarkColor,
   fontFamily: 'Poppins-Medium',

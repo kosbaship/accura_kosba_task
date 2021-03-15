@@ -25,116 +25,150 @@ class DoctorSetting extends StatelessWidget {
                 condition: state is! DoctorSettingLoadingState,
                 builder: (context) {
                   return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                            top: BorderSide(
-                              width: 1,
-                              color: kExpansionBorderColor,
-                            ),
-                          )),
-                          child: ExpansionTileCard(
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            finalPadding: EdgeInsets.zero,
-                            baseColor: kExpansionBGColor,
-                            expandedColor: kExpansionBGColor,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height - 90,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        fit: StackFit.expand,
+                        children: <Widget>[
+                          ListView.builder(
+                              itemCount: 4,
+                              itemBuilder: (context, index) {
+                                return ExpansionTileCard(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(0)),
+                                  finalPadding: EdgeInsets.zero,
+                                  baseColor: kExpansionBGColor,
+                                  expandedColor: kExpansionBGColor,
 
-                            /// edit
-                            initiallyExpanded: false,
-                            elevation: 0.0,
-                            title: Text(
-                              /// edit
-                              'Clinic',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                                  font18.copyWith(color: kExpansionTitleColor),
-                            ),
-                            onExpansionChanged: (value) {},
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 14),
-                                decoration: BoxDecoration(
-                                    color: kSecondaryColor,
-                                    border: Border(
-                                        top: BorderSide(
-                                      width: 1,
-                                      color: kExpansionBorderColor,
-                                    ))),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // edit
-                                    BuildSwitchButtonRow(),
-                                    const SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    DrawFancyDivider(),
-                                    const SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // add price
-                                    BuildPricingRow(),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    // choose day
-                                    Text(
-                                      'Available',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: font14,
-                                    ),
-                                    SizedBox(
-                                      height: 4.0,
-                                    ),
-                                    SizedBox(
+                                  /// edit
+                                  initiallyExpanded: false,
+                                  elevation: 0.0,
+                                  title: Text(
+                                    /// edit
+                                    'Clinic',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: font18.copyWith(
+                                        color: kExpansionTitleColor),
+                                  ),
+                                  onExpansionChanged: (value) {},
+                                  children: <Widget>[
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0, vertical: 14),
+                                      decoration: BoxDecoration(
+                                          color: kSecondaryColor,
+                                          border: Border(
+                                              top: BorderSide(
+                                            width: 1,
+                                            color: kExpansionBorderColor,
+                                          ))),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // edit
+                                          BuildSwitchButtonRow(),
+                                          const SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          DrawFancyDivider(),
+                                          const SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          // add price
+                                          BuildPricingRow(),
+                                          SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          // choose day
+                                          Text(
+                                            'Available',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: font14,
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          SizedBox(
 
-                                        /// edit
-                                        height: 315,
-                                        child: Container()),
-                                    SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            /// edit
-                                            drawCircleIcon(onTap: () {}),
-                                            InkWell(
                                               /// edit
-                                              onTap: () {},
-                                              child: Text(
-                                                ' add day',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: font14,
+                                              height: 315,
+                                              child: Container()),
+                                          SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          RawMaterialButton(
+                                            elevation: 1,
+                                            onPressed: () {},
+                                            fillColor: kSecondaryColor,
+                                            splashColor: kMainColor,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0,
+                                                      horizontal: 24),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 40,
+                                                    height: 40,
+                                                    child: Icon(
+                                                      Icons.add,
+                                                      color:
+                                                          kExpansionTitleColor,
+                                                      size: 40.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    'add day',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: font14,
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
+                                            shape: const StadiumBorder(),
+                                          ),
+                                          index == 3
+                                              ? SizedBox(
+                                                  height: 70.0,
+                                                )
+                                              : SizedBox(
+                                                  height: 0.0,
+                                                )
+                                        ],
+                                      ),
+                                    ),
                                   ],
-                                ),
-                              ),
-                            ],
+                                );
+                              }),
+                          Visibility(
+                            visible: true,
+                            child: Positioned(
+                              bottom: MediaQuery.of(context).size.height * 0.02,
+                              left: MediaQuery.of(context).size.width * 0.02,
+                              right: MediaQuery.of(context).size.width * 0.02,
+                              child: buildSaveButton(
+
+                                  /// edit
+                                  onPressed: () {},
+                                  title: 'Save Settings'),
+                            ),
                           ),
-                        ),
-                        buildSaveButton(
-                            /// edit
-                            onPressed: () {},
-                            title: 'Save Settings'),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
