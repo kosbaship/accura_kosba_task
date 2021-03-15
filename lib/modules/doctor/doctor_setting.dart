@@ -70,19 +70,7 @@ class DoctorSetting extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           // edit
-                                          BuildSwitchButtonRow(
-                                            index: index,
-                                            switchCaseInitalValue:
-                                                DoctorSettingCubit.get(context)
-                                                            .doctorData
-                                                            .result
-                                                            .availabilityList[
-                                                                index]
-                                                            .isActive ==
-                                                        0
-                                                    ? false
-                                                    : true,
-                                          ),
+                                          BuildSwitchButtonRow( index: index, ),
                                           const SizedBox(
                                             height: 16.0,
                                           ),
@@ -91,15 +79,7 @@ class DoctorSetting extends StatelessWidget {
                                             height: 16.0,
                                           ),
                                           // add price
-                                          BuildPricingRow(
-                                            index: index,
-                                            addPriceControllerInitalValue:
-                                                DoctorSettingCubit.get(context)
-                                                    .doctorData
-                                                    .result
-                                                    .availabilityList[index]
-                                                    .priceValue,
-                                          ),
+                                          BuildPricingRow(index: index,),
                                           const SizedBox(
                                             height: 16.0,
                                           ),
@@ -180,13 +160,13 @@ class DoctorSetting extends StatelessWidget {
                               left: MediaQuery.of(context).size.width * 0.02,
                               right: MediaQuery.of(context).size.width * 0.02,
                               child: buildSaveButton(
-
-                                  /// edit
                                   onPressed: () {
+                                    for (var i = 0; i < DoctorSettingCubit.get(context).doctorData.result.availabilityList.length; i++) {
+                                                                      print(
+                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].isActive}');
                                     print(
-                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[0].isActive}');
-                                    print(
-                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[0].priceValue}');
+                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].priceValue}');
+                                }
                                   },
                                   title: 'Save Settings'),
                             ),
@@ -207,20 +187,27 @@ class DoctorSetting extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
-class BuildSwitchButtonRow extends StatefulWidget {
-  bool switchCaseInitalValue;
-
+ class BuildSwitchButtonRow extends StatefulWidget {
   final int index;
-  BuildSwitchButtonRow(
-      {@required this.switchCaseInitalValue, @required this.index});
+  const BuildSwitchButtonRow({@required this.index});
   @override
   _BuildSwitchButtonRowState createState() => _BuildSwitchButtonRowState();
 }
 
 class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
+  bool switchCaseValue;
+
   @override
   Widget build(BuildContext context) {
+    switchCaseValue = DoctorSettingCubit.get(context)
+                .doctorData
+                .result
+                .availabilityList[widget.index]
+                .isActive ==
+            1
+        ? true
+        : false;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -236,7 +223,7 @@ class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
           children: [
             /// edit
             Text(
-              widget.switchCaseInitalValue ? 'On' : 'Off',
+              switchCaseValue ? 'On' : 'Off',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: font14.copyWith(
@@ -245,18 +232,14 @@ class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
             ),
             CupertinoSwitch(
               activeColor: kExpansionTitleColor,
-              value: widget.switchCaseInitalValue,
+              value: switchCaseValue,
               onChanged: (value) {
-                /// this is in charage of the ui
-                setState(() => widget.switchCaseInitalValue = value);
-
-                /// this is in charage of the End Saving
-                DoctorSettingCubit.get(context)
+                setState(() => DoctorSettingCubit.get(context)
                     .doctorData
                     .result
                     .availabilityList[widget.index]
-                    .isActive = value == true ? 1 : 0;
-              },
+                    .isActive = value == true ? 1 : 0);
+               },
             ),
           ],
         ),
@@ -265,12 +248,11 @@ class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
   }
 }
 
-// ignore: must_be_immutable
-class BuildPricingRow extends StatefulWidget {
-  String addPriceControllerInitalValue;
+ 
+class BuildPricingRow extends StatefulWidget { 
   final int index;
-  BuildPricingRow(
-      {@required this.addPriceControllerInitalValue, @required this.index});
+  const BuildPricingRow(
+      {  @required this.index});
   @override
   _BuildPricingRowState createState() => _BuildPricingRowState();
 }
