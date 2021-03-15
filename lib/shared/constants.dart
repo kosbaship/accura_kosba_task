@@ -9,7 +9,14 @@ const String kThursday = 'thursday';
 const String kFriday = 'friday';
 
 List<String> daysOfTheWeek = [
-  kDay, kSaturday, kSunday, kMonday, kTuesday, kWednesday, kThursday, kFriday
+  kDay,
+  kSaturday,
+  kSunday,
+  kMonday,
+  kTuesday,
+  kWednesday,
+  kThursday,
+  kFriday
 ];
 
 const String kPickDateDayFrom = 'DayFrom';

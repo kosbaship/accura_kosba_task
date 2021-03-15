@@ -1,3 +1,4 @@
+import 'package:accura_kosba_task/models/get_doctor.dart';
 import 'package:accura_kosba_task/modules/doctor/cubit/doctor_setting_cubit/doctor_setting_cubit.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
@@ -30,7 +31,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
             .availabilityTimeList
             .length
             .toDouble() *
-        290.0;
+        293.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -546,7 +547,30 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
         /// add day button
         RawMaterialButton(
           elevation: 1,
-          onPressed: () {},
+          onPressed: () {
+            if (DoctorSettingCubit.get(context)
+                    .doctorData
+                    .result
+                    .availabilityList[widget.appoinmentTypeIndex]
+                    .availabilityTimeList
+                    .length <
+                7) {
+              setState(() => DoctorSettingCubit.get(context)
+                  .doctorData
+                  .result
+                  .availabilityList[widget.appoinmentTypeIndex]
+                  .availabilityTimeList
+                  .add(AvailabilityTimeList(
+                      wdayDayName: daysOfTheWeek[0],
+                      wdayFrom: '08:00',
+                      wdayTo: '16:00',
+                      wdayFrom2: '00:00',
+                      wdayTo2: '08:00')));
+            } else {
+              showToast(
+                  message: 'You can\'t add more than a week', error: true);
+            }
+          },
           fillColor: kSecondaryColor,
           splashColor: kMainColor,
           child: Padding(
