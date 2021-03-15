@@ -11,22 +11,16 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
   static DoctorSettingCubit get(context) => BlocProvider.of(context);
 
   DoctorData doctorData = DoctorData();
-  bool switchCaseSaveValue = false;
-  String priceSaveValue = '';
 
   getData() {
     emit(DoctorSettingLoadingState());
 
-    APIProvider.fetchData(
-        path: GET_DOCTOR_END_POINT,
-        data: {
-        'access_key': 'Jd5522SA523aaaW2e25e5rk',
-        'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
-        'doctorId': '796',
-      }
-    ).then((response) async{
-      doctorData =  DoctorData.fromJson(response.data);
-
+    APIProvider.fetchData(path: GET_DOCTOR_END_POINT, data: {
+      'access_key': 'Jd5522SA523aaaW2e25e5rk',
+      'access_password': 'J52Df3e6Wrtt5F2eeeWq220',
+      'doctorId': '665',
+    }).then((response) async {
+      doctorData = DoctorData.fromJson(response.data);
 
       emit(DoctorSettingSuccessState());
     }).catchError((e) {
@@ -34,5 +28,3 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
     });
   }
 }
-
-
