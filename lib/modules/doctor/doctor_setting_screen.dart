@@ -27,6 +27,7 @@ class DoctorSetting extends StatelessWidget {
                 condition: state is! DoctorSettingLoadingState,
                 builder: (context) {
                   return SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height - 90,
                       child: Stack(
@@ -71,7 +72,7 @@ class DoctorSetting extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          // edit
+                                          // actvation section
                                           BuildActivationRow(
                                             index: index,
                                           ),
@@ -82,7 +83,7 @@ class DoctorSetting extends StatelessWidget {
                                           const SizedBox(
                                             height: 16.0,
                                           ),
-                                          // add price
+                                          // pricing section
                                           BuildPricingRow(
                                             index: index,
                                           ),
@@ -93,58 +94,9 @@ class DoctorSetting extends StatelessWidget {
                                           const SizedBox(
                                             height: 16.0,
                                           ),
-                                          // choose day
-                                          Text(
-                                            'Available',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: font14,
-                                          ),
-                                          SizedBox(
-                                            height: 4.0,
-                                          ),
-                                          SizedBox(
-                                              height: 315, child: Container()),
-                                          SizedBox(
-                                            height: 16.0,
-                                          ),
-                                          RawMaterialButton(
-                                            elevation: 1,
-                                            onPressed: () {},
-                                            fillColor: kSecondaryColor,
-                                            splashColor: kMainColor,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8.0,
-                                                      horizontal: 24),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(
-                                                    width: 40,
-                                                    height: 40,
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                          kExpansionTitleColor,
-                                                      size: 40.0,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Text(
-                                                    'add day',
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: font14,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            shape: const StadiumBorder(),
+                                          // available time section
+                                          BuildAvailableTimeSection(
+                                            index: index,
                                           ),
                                           index == 3
                                               ? SizedBox(
@@ -196,6 +148,95 @@ class DoctorSetting extends StatelessWidget {
               ),
             );
           }),
+    );
+  }
+}
+
+class BuildAvailableTimeSection extends StatefulWidget {
+  final int index;
+  const BuildAvailableTimeSection({@required this.index});
+  @override
+  _BuildAvailableTimeSectionState createState() =>
+      _BuildAvailableTimeSectionState();
+}
+
+class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
+  double listHeight;
+  @override
+  Widget build(BuildContext context) {
+    // you can't generate list builder inside list builder without specefing the hight
+    // so I thinking about making the height dynamic
+    listHeight = DoctorSettingCubit.get(context)
+            .doctorData
+            .result
+            .availabilityList[widget.index]
+            .availabilityTimeList
+            .length
+            .toDouble() *
+        50.0;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Available',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: font14,
+        ),
+        SizedBox(
+          height: 4.0,
+        ),
+        SizedBox(
+          height: listHeight,
+          child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 50,
+                  width: 50,
+                  color: index == 2 ? Colors.amber : Colors.red,
+                );
+              }),
+        ),
+        SizedBox(
+          height: 16.0,
+        ),
+        RawMaterialButton(
+          elevation: 1,
+          onPressed: () {},
+          fillColor: kSecondaryColor,
+          splashColor: kMainColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Icon(
+                    Icons.add,
+                    color: kExpansionTitleColor,
+                    size: 40.0,
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  'add day',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: font14,
+                ),
+              ],
+            ),
+          ),
+          shape: const StadiumBorder(),
+        ),
+      ],
     );
   }
 }
