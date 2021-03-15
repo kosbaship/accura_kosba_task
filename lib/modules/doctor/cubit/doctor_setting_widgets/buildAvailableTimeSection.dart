@@ -1,7 +1,7 @@
-
 import 'package:accura_kosba_task/modules/doctor/cubit/doctor_setting_cubit/doctor_setting_cubit.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
+import 'package:accura_kosba_task/shared/constants.dart';
 import 'package:accura_kosba_task/shared/helper_class_config.dart';
 import 'package:accura_kosba_task/shared/helper_classes.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
@@ -44,13 +44,6 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
         const SizedBox(
           height: 8.0,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 48),
-          child: DrawFancyDivider(),
-        ),
-        const SizedBox(
-          height: 8.0,
-        ),
         SizedBox(
           height: listHeight,
           child: ListView.builder(
@@ -65,20 +58,36 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// day shift title
-                    Text(
-                      'Day Shift',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: font14,
-                    ),
-                    Text(
-                      DoctorSettingCubit.get(context)
+                    /// drop down Button section
+                    buildTDropdownButton(
+                      items: daysOfTheWeek.map((day) {
+                        return DropdownMenuItem(
+                          value: day,
+                          child: Text(day),
+                        );
+                      }).toList(),
+                      onChanged: (selectedItem) {
+                        setState(() => DoctorSettingCubit.get(context)
+                            .doctorData
+                            .result
+                            .availabilityList[widget.appoinmentTypeIndex]
+                            .availabilityTimeList[availableTimeListIndex]
+                            .wdayDayName = selectedItem);
+                      },
+                      value: DoctorSettingCubit.get(context)
                           .doctorData
                           .result
                           .availabilityList[widget.appoinmentTypeIndex]
                           .availabilityTimeList[availableTimeListIndex]
                           .wdayDayName,
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+
+                    /// day shift title
+                    Text(
+                      'Day Shift',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: font14,
@@ -489,7 +498,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
         const SizedBox(
           height: 8.0,
         ),
-        SizedBox(
+        const SizedBox(
           height: 16.0,
         ),
         RawMaterialButton(
