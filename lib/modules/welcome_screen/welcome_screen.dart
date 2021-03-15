@@ -1,4 +1,4 @@
-import 'package:accura_kosba_task/modules/doctor/doctor_setting.dart';
+import 'package:accura_kosba_task/modules/doctor/doctor_setting_screen.dart';
 import 'package:accura_kosba_task/modules/pharmacy/pharma_screen.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';

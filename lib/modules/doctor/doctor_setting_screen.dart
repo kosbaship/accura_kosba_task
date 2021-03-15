@@ -7,8 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cubit/setting_cubit/doctor_setting_cubit.dart';
-import 'cubit/setting_cubit/doctor_setting_states.dart';
+import 'cubit/doctor_setting_cubit/doctor_setting_cubit.dart';
+import 'cubit/doctor_setting_cubit/doctor_setting_states.dart';
+import 'cubit/doctor_setting_widgets/activation_row_widgets.dart';
+import 'cubit/doctor_setting_widgets/pricing_row_widgets.dart';
 
 class DoctorSetting extends StatelessWidget {
   @override
@@ -70,7 +72,9 @@ class DoctorSetting extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           // edit
-                                          BuildSwitchButtonRow( index: index, ),
+                                          BuildActivationRow(
+                                            index: index,
+                                          ),
                                           const SizedBox(
                                             height: 16.0,
                                           ),
@@ -79,7 +83,9 @@ class DoctorSetting extends StatelessWidget {
                                             height: 16.0,
                                           ),
                                           // add price
-                                          BuildPricingRow(index: index,),
+                                          BuildPricingRow(
+                                            index: index,
+                                          ),
                                           const SizedBox(
                                             height: 16.0,
                                           ),
@@ -161,12 +167,19 @@ class DoctorSetting extends StatelessWidget {
                               right: MediaQuery.of(context).size.width * 0.02,
                               child: buildSaveButton(
                                   onPressed: () {
-                                    for (var i = 0; i < DoctorSettingCubit.get(context).doctorData.result.availabilityList.length; i++) {
-                                                                      print(
-                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].isActive}');
-                                    print(
-                                        '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].priceValue}');
-                                }
+                                    for (var i = 0;
+                                        i <
+                                            DoctorSettingCubit.get(context)
+                                                .doctorData
+                                                .result
+                                                .availabilityList
+                                                .length;
+                                        i++) {
+                                      print(
+                                          '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].isActive}');
+                                      print(
+                                          '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].priceValue}');
+                                    }
                                   },
                                   title: 'Save Settings'),
                             ),
@@ -183,143 +196,6 @@ class DoctorSetting extends StatelessWidget {
               ),
             );
           }),
-    );
-  }
-}
-
- class BuildSwitchButtonRow extends StatefulWidget {
-  final int index;
-  const BuildSwitchButtonRow({@required this.index});
-  @override
-  _BuildSwitchButtonRowState createState() => _BuildSwitchButtonRowState();
-}
-
-class _BuildSwitchButtonRowState extends State<BuildSwitchButtonRow> {
-  bool switchCaseValue;
-
-  @override
-  Widget build(BuildContext context) {
-    switchCaseValue = DoctorSettingCubit.get(context)
-                .doctorData
-                .result
-                .availabilityList[widget.index]
-                .isActive ==
-            1
-        ? true
-        : false;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Activation',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: font14,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            /// edit
-            Text(
-              switchCaseValue ? 'On' : 'Off',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: font14.copyWith(
-                color: kTitleGreyColor,
-              ),
-            ),
-            CupertinoSwitch(
-              activeColor: kExpansionTitleColor,
-              value: switchCaseValue,
-              onChanged: (value) {
-                setState(() => DoctorSettingCubit.get(context)
-                    .doctorData
-                    .result
-                    .availabilityList[widget.index]
-                    .isActive = value == true ? 1 : 0);
-               },
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
- 
-class BuildPricingRow extends StatefulWidget { 
-  final int index;
-  const BuildPricingRow(
-      {  @required this.index});
-  @override
-  _BuildPricingRowState createState() => _BuildPricingRowState();
-}
-
-class _BuildPricingRowState extends State<BuildPricingRow> {
-  TextEditingController addPriceController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    addPriceController.text = DoctorSettingCubit.get(context)
-        .doctorData
-        .result
-        .availabilityList[widget.index]
-        .priceValue;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Pricing',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: font14,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Text(
-                'add price',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: font14.copyWith(color: kTitleGreyColor),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Stack(
-                  children: [
-                    Positioned(
-                      right: 9,
-                      top: 8.5,
-                      child: Text(
-                        'EGP',
-                        style: font12,
-                      ),
-                    ),
-                    buildPriceTextFormField(
-                      /// edit
-                      controller: addPriceController,
-                      onChanged: (value) {
-                        setState(() => DoctorSettingCubit.get(context)
-                            .doctorData
-                            .result
-                            .availabilityList[widget.index]
-                            .priceValue = value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
