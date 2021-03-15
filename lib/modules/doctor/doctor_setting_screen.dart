@@ -219,6 +219,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /// day shift title
                     Text(
                       'Day Shift',
                       maxLines: 1,
@@ -236,6 +237,8 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                       overflow: TextOverflow.ellipsis,
                       style: font14,
                     ),
+
+                    /// day shift row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -251,7 +254,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                               width: MediaQuery.of(context).size.width * 0.02,
                             ),
 
-                            /// Day From Flat Button
+                            /// day shift from
                             FlatButton(
                               onPressed: () async {
                                 DateTime fullDatTime = DateTime.now();
@@ -308,8 +311,6 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                           CupertinoDatePickerMode.time,
                                         ));
                               },
-
-                              /// from button text
                               child: Text(
                                   DoctorSettingCubit.get(context)
                                           .doctorData
@@ -343,7 +344,7 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                               width: MediaQuery.of(context).size.width * 0.02,
                             ),
 
-                            /// Day To Flat Button
+                            /// day shift to
                             FlatButton(
                               onPressed: () async {
                                 DateTime fullDatTime = DateTime.now();
@@ -409,6 +410,204 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                                           .availabilityTimeList[
                                               availableTimeListIndex]
                                           .wdayTo ??
+                                      '17:00',
+                                  style: TextStyle(color: Colors.black)),
+                              textColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.5,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(20)),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+
+                    /// night shift title
+                    Text(
+                      'Night Shift',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: font14,
+                    ),
+
+                    /// Night shift row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'from',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
+
+                            /// Night shift from
+                            FlatButton(
+                              onPressed: () async {
+                                DateTime fullDatTime = DateTime.now();
+                                CommonAlertRFlutter
+                                    .onAlertWithCustomContentPressed(context,
+                                        title: 'Night Shift Start',
+                                        buttons: [
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() =>
+                                                  print('======== \$ Cancel'));
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.redColor,
+                                          ),
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                DoctorSettingCubit.get(context)
+                                                        .doctorData
+                                                        .result
+                                                        .availabilityList[widget
+                                                            .appoinmentTypeIndex]
+                                                        .availabilityTimeList[
+                                                            availableTimeListIndex]
+                                                        .wdayFrom2 =
+                                                    '${fullDatTime.hour}:${fullDatTime.minute}';
+                                              });
+
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Confirm',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.greenColor,
+                                          ),
+                                        ],
+                                        contentWidget: CommonAlertRFlutter
+                                            .showDatePickerWidget(
+                                          context,
+                                          90,
+                                          (dateTime) => setState(() {
+                                            fullDatTime = dateTime;
+                                          }),
+                                          CupertinoDatePickerMode.time,
+                                        ));
+                              },
+                              child: Text(
+                                  DoctorSettingCubit.get(context)
+                                          .doctorData
+                                          .result
+                                          .availabilityList[
+                                              widget.appoinmentTypeIndex]
+                                          .availabilityTimeList[
+                                              availableTimeListIndex]
+                                          .wdayFrom2 ??
+                                      '09:00',
+                                  style: TextStyle(color: Colors.black)),
+                              textColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.5,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(20)),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'to',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: font14,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
+
+                            /// Night shift to
+                            FlatButton(
+                              onPressed: () async {
+                                DateTime fullDatTime = DateTime.now();
+                                CommonAlertRFlutter
+                                    .onAlertWithCustomContentPressed(context,
+                                        title: 'Night Shift End',
+                                        buttons: [
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() =>
+                                                  print('======== \$ Cancel'));
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.redColor,
+                                          ),
+                                          DialogButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                DoctorSettingCubit.get(context)
+                                                        .doctorData
+                                                        .result
+                                                        .availabilityList[widget
+                                                            .appoinmentTypeIndex]
+                                                        .availabilityTimeList[
+                                                            availableTimeListIndex]
+                                                        .wdayTo2 =
+                                                    '${fullDatTime.hour}:${fullDatTime.minute}';
+                                              });
+
+                                              NavigatorUtil.popRoutePage(
+                                                  context);
+                                            },
+                                            child: Text(
+                                              'Confirm',
+                                              style: TextStyle(
+                                                  color: AppRepo.whiteColor),
+                                            ),
+                                            color: AppRepo.greenColor,
+                                          ),
+                                        ],
+                                        contentWidget: CommonAlertRFlutter
+                                            .showDatePickerWidget(
+                                          context,
+                                          90,
+                                          (dateTime) => setState(() {
+                                            fullDatTime = dateTime;
+                                          }),
+                                          CupertinoDatePickerMode.time,
+                                        ));
+                              },
+                              child: Text(
+                                  DoctorSettingCubit.get(context)
+                                          .doctorData
+                                          .result
+                                          .availabilityList[
+                                              widget.appoinmentTypeIndex]
+                                          .availabilityTimeList[
+                                              availableTimeListIndex]
+                                          .wdayTo2 ??
                                       '17:00',
                                   style: TextStyle(color: Colors.black)),
                               textColor: Colors.black,
