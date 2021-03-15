@@ -486,7 +486,14 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
                     Center(
                       child: RawMaterialButton(
                         elevation: 1,
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() => DoctorSettingCubit.get(context)
+                              .doctorData
+                              .result
+                              .availabilityList[widget.appoinmentTypeIndex]
+                              .availabilityTimeList
+                              .removeAt(availableTimeListIndex));
+                        },
                         fillColor: kRemoveColor,
                         splashColor: kMainColor,
                         child: Padding(
@@ -545,68 +552,72 @@ class _BuildAvailableTimeSectionState extends State<BuildAvailableTimeSection> {
         ),
 
         /// add day button
-        RawMaterialButton(
-          elevation: 1,
-          onPressed: () {
-            if (DoctorSettingCubit.get(context)
+        Center(
+          child: RawMaterialButton(
+            elevation: 3,
+            onPressed: () {
+              if (DoctorSettingCubit.get(context)
+                      .doctorData
+                      .result
+                      .availabilityList[widget.appoinmentTypeIndex]
+                      .availabilityTimeList
+                      .length <
+                  7) {
+                setState(() => DoctorSettingCubit.get(context)
                     .doctorData
                     .result
                     .availabilityList[widget.appoinmentTypeIndex]
                     .availabilityTimeList
-                    .length <
-                7) {
-              setState(() => DoctorSettingCubit.get(context)
-                  .doctorData
-                  .result
-                  .availabilityList[widget.appoinmentTypeIndex]
-                  .availabilityTimeList
-                  .add(AvailabilityTimeList(
-                      wdayDayName: daysOfTheWeek[0],
-                      wdayFrom: '08:00',
-                      wdayTo: '16:00',
-                      wdayFrom2: '00:00',
-                      wdayTo2: '08:00')));
-            } else {
-              showToast(
-                  message: 'You can\'t add more than a week', error: true);
-            }
-          },
-          fillColor: kSecondaryColor,
-          splashColor: kMainColor,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: Icon(
-                    Icons.add,
-                    color: kExpansionTitleColor,
-                    size: 40.0,
+                    .add(AvailabilityTimeList(
+                        wdayDayName: daysOfTheWeek[0],
+                        wdayFrom: '08:00',
+                        wdayTo: '16:00',
+                        wdayFrom2: '00:00',
+                        wdayTo2: '08:00')));
+              } else {
+                showToast(
+                    message: 'You can\'t add more than a week', error: true);
+              }
+            },
+            fillColor: kSecondaryColor,
+            splashColor: kMainColor,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Icons.add,
+                      color: kExpansionTitleColor,
+                      size: 40.0,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  DoctorSettingCubit.get(context)
-                          .doctorData
-                          .result
-                          .availabilityList[widget.appoinmentTypeIndex]
-                          .availabilityTimeList
-                          .isEmpty
-                      ? 'add available day'
-                      : 'add another day',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: font14,
-                ),
-              ],
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    DoctorSettingCubit.get(context)
+                                .doctorData
+                                .result
+                                .availabilityList[widget.appoinmentTypeIndex]
+                                .availabilityTimeList
+                                .length ==
+                            0
+                        ? 'add available day'
+                        : 'add another day',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: font14,
+                  ),
+                ],
+              ),
             ),
+            shape: const StadiumBorder(),
           ),
-          shape: const StadiumBorder(),
         ),
       ],
     );

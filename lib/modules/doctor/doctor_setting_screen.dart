@@ -1,3 +1,4 @@
+import 'package:accura_kosba_task/models/get_doctor.dart';
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
@@ -41,6 +42,10 @@ class DoctorSetting extends StatelessWidget {
                               itemBuilder: (context, appoinmentTypeIndex) {
                                 return Column(
                                   children: [
+                                    Container(
+                                      height: 1,
+                                      color: kExpansionBorderColor,
+                                    ),
                                     ExpansionTileCard(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(0)),
@@ -141,6 +146,23 @@ class DoctorSetting extends StatelessWidget {
                                           '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].isActive}');
                                       print(
                                           '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].priceValue}');
+                                      for (AvailabilityTimeList availableTime
+                                          in DoctorSettingCubit.get(context)
+                                              .doctorData
+                                              .result
+                                              .availabilityList[i]
+                                              .availabilityTimeList) {
+                                        print(
+                                            '----------- > ${availableTime.wdayDayName}');
+                                        print(
+                                            '----------- > ${availableTime.wdayFrom}');
+                                        print(
+                                            '----------- > ${availableTime.wdayTo}');
+                                        print(
+                                            '----------- > ${availableTime.wdayFrom2}');
+                                        print(
+                                            '----------- > ${availableTime.wdayTo2}');
+                                      }
                                     }
                                   },
                                   title: 'Save Settings'),
