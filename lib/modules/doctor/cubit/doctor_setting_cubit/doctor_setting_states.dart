@@ -5,12 +5,12 @@ class DoctorSettingInitialState extends DoctorSettingStates {}
 class DoctorSettingLoadingState extends DoctorSettingStates {}
 
 class DoctorSettingSuccessState extends DoctorSettingStates {
-  // final message;
+  final message;
 
-  // DoctorSettingSuccessState(this.message);
+  DoctorSettingSuccessState({this.message});
 }
 
 class DoctorSettingErrorState extends DoctorSettingStates {
   final error;
-  DoctorSettingErrorState(this.error);
+  DoctorSettingErrorState({this.error});
 }

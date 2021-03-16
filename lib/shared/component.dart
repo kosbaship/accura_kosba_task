@@ -1,4 +1,5 @@
 import 'package:accura_kosba_task/network/api_provider.dart';
+import 'package:accura_kosba_task/shared/helper_class_config.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -135,9 +136,9 @@ showToast({@required String message, @required bool error}) =>
     Fluttertoast.showToast(
         msg: " $message ",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        backgroundColor: error ? kSecondaryColor : kMainColor,
+        backgroundColor: error ? AppRepo.redColor : AppRepo.greenColor,
         textColor: kSecondaryColor,
         fontSize: 16.0);
 
@@ -360,5 +361,65 @@ Widget buildExpandedCard({
             child: Container(),
           ),
         ],
+      ),
+    );
+
+Widget buildDefaultButton(
+        {@required Function onPressed,
+        @required String text,
+        Color textColor = kMainColor,
+        Color backgroundColor = kSecondaryColor,
+        Color borderColor = kExpansionBorderColor}) =>
+    Container(
+      width: double.infinity,
+      height: 58.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: backgroundColor,
+          border: Border.all(
+            width: 3,
+            color: borderColor,
+          )),
+      child: FlatButton(
+        textColor: textColor,
+        onPressed: onPressed,
+        child: Text(
+          text.toUpperCase(),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            fontFamily: "MontserratRegular",
+          ),
+        ),
+      ),
+    );
+buildProgressDialog({context, text, error = false}) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                if (!error) CircularProgressIndicator(),
+                if (!error)
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                Expanded(
+                  child: Text(
+                    text,
+                  ),
+                ),
+              ],
+            ),
+            if (error) SizedBox(height: 20.0),
+            if (error)
+              buildDefaultButton(
+                onPressed: () => Navigator.pop(context),
+                text: "Cancel",
+              ),
+          ],
+        ),
       ),
     );

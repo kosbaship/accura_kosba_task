@@ -23,10 +23,9 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
       'doctorId': '665',
     }).then((response) async {
       doctorData = DoctorData.fromJson(response.data);
-
       emit(DoctorSettingSuccessState());
     }).catchError((e) {
-      emit(DoctorSettingErrorState(e.toString()));
+      emit(DoctorSettingErrorState(error: e.toString()));
     });
   }
 
@@ -48,7 +47,7 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
         i++) {
       _body.addAll({
         'disableClinic':
-            '${doctorData.result.availabilityList[CLINIC_INDEX].isActive}' ?? ''
+            '${doctorData.result.availabilityList[CLINIC_INDEX].isActive}' ?? '0'
       });
       _body.addAll({
         'clinicDays[$i]':
@@ -85,7 +84,7 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
         i++) {
       _body.addAll({
         'disableVoice':
-            '${doctorData.result.availabilityList[VOICE_INDEX].isActive}' ?? ''
+            '${doctorData.result.availabilityList[VOICE_INDEX].isActive}' ?? '0'
       });
       _body.addAll({
         'voiceDays[$i]':
@@ -122,7 +121,7 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
         i++) {
       _body.addAll({
         'disableVideo':
-            '${doctorData.result.availabilityList[VIDEO_INDEX].isActive}' ?? ''
+            '${doctorData.result.availabilityList[VIDEO_INDEX].isActive}' ?? '0'
       });
       _body.addAll({
         'videoDays[$i]':
@@ -159,7 +158,7 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
         i++) {
       _body.addAll({
         'disableSpot':
-            '${doctorData.result.availabilityList[SPOT_INDEX].isActive}' ?? ''
+            '${doctorData.result.availabilityList[SPOT_INDEX].isActive}' ?? '0'
       });
       _body.addAll({
         'spotDays[$i]':
@@ -188,14 +187,17 @@ class DoctorSettingCubit extends Cubit<DoctorSettingStates> {
       });
     }
     print(_body);
-    // FormData formData = FormData.fromMap(_body);
-    APIProvider.fetchData(path: UPDATE_DOCTOR_END_POINT, data: _body)
+    FormData formData = FormData.fromMap(_body);
+    APIProvider.fetchData(path: UPDATE_DOCTOR_END_POINT, data: formData)
         .then((response) async {
-      print('----------- > ${response.data}');
-      
-      emit(DoctorSettingSuccessState());
+      if (response.data['status'] == 200) {
+        emit(
+            DoctorSettingSuccessState(message: 'Settings Updated Successfuly'));
+      } else {
+        emit(DoctorSettingErrorState());
+      }
     }).catchError((e) {
-      emit(DoctorSettingErrorState(e.toString()));
+      emit(DoctorSettingErrorState(error: e.toString()));
     });
   }
 
