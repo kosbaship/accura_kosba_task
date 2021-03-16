@@ -4,4 +4,3 @@ const UPDATE_VENDOR_END_POINT = 'app_services/updatePharLabSettings';
 const GET_DOCTOR_END_POINT = 'app_services/getDoctorSettings2';
 const GET_VENDOR_END_POINT = 'app_services/getVendorSettings2';
 
-

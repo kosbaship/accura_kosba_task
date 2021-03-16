@@ -19,6 +19,11 @@ List<String> daysOfTheWeek = [
   kFriday
 ];
 
+const CLINIC_INDEX = 0;
+const VOICE_INDEX = 1;
+const VIDEO_INDEX = 2;
+const SPOT_INDEX = 3;
+
 const String kPickDateDayFrom = 'DayFrom';
 const String kPickDateDayTo = 'DayTo';
 const String kPickDateNightFrom = 'NightFrom';

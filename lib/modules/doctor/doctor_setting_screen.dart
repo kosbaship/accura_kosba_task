@@ -1,4 +1,4 @@
-import 'package:accura_kosba_task/models/get_doctor.dart';
+
 import 'package:accura_kosba_task/shared/colors.dart';
 import 'package:accura_kosba_task/shared/component.dart';
 import 'package:accura_kosba_task/shared/styels.dart';
@@ -18,7 +18,7 @@ class DoctorSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DoctorSettingCubit()..getData(),
+      create: (context) => DoctorSettingCubit()..getDoctorSettingsData(),
       child: BlocConsumer<DoctorSettingCubit, DoctorSettingStates>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -134,36 +134,38 @@ class DoctorSetting extends StatelessWidget {
                               right: MediaQuery.of(context).size.width * 0.02,
                               child: buildSaveButton(
                                   onPressed: () {
-                                    for (var i = 0;
-                                        i <
-                                            DoctorSettingCubit.get(context)
-                                                .doctorData
-                                                .result
-                                                .availabilityList
-                                                .length;
-                                        i++) {
-                                      print(
-                                          '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].isActive}');
-                                      print(
-                                          '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].priceValue}');
-                                      for (AvailabilityTimeList availableTime
-                                          in DoctorSettingCubit.get(context)
-                                              .doctorData
-                                              .result
-                                              .availabilityList[i]
-                                              .availabilityTimeList) {
-                                        print(
-                                            '----------- > ${availableTime.wdayDayName}');
-                                        print(
-                                            '----------- > ${availableTime.wdayFrom}');
-                                        print(
-                                            '----------- > ${availableTime.wdayTo}');
-                                        print(
-                                            '----------- > ${availableTime.wdayFrom2}');
-                                        print(
-                                            '----------- > ${availableTime.wdayTo2}');
-                                      }
-                                    }
+                                    DoctorSettingCubit.get(context)
+                                        .updateDoctorSettingsData();
+                                    // for (var i = 0;
+                                    //     i <
+                                    //         DoctorSettingCubit.get(context)
+                                    //             .doctorData
+                                    //             .result
+                                    //             .availabilityList
+                                    //             .length;
+                                    //     i++) {
+                                    //   print(
+                                    //       '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].isActive}');
+                                    //   print(
+                                    //       '----------- > ${DoctorSettingCubit.get(context).doctorData.result.availabilityList[i].priceValue}');
+                                    //   for (AvailabilityTimeList availableTime
+                                    //       in DoctorSettingCubit.get(context)
+                                    //           .doctorData
+                                    //           .result
+                                    //           .availabilityList[i]
+                                    //           .availabilityTimeList) {
+                                    //     print(
+                                    //         '----------- > ${availableTime.wdayDayName}');
+                                    //     print(
+                                    //         '----------- > ${availableTime.wdayFrom}');
+                                    //     print(
+                                    //         '----------- > ${availableTime.wdayTo}');
+                                    //     print(
+                                    //         '----------- > ${availableTime.wdayFrom2}');
+                                    //     print(
+                                    //         '----------- > ${availableTime.wdayTo2}');
+                                    //   }
+                                    // }
                                   },
                                   title: 'Save Settings'),
                             ),

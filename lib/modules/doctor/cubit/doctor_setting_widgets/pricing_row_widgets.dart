@@ -15,12 +15,17 @@ class _BuildPricingRowState extends State<BuildPricingRow> {
   TextEditingController addPriceController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     addPriceController.text = DoctorSettingCubit.get(context)
         .doctorData
         .result
         .availabilityList[widget.appoinmentTypeIndex]
         .priceValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
