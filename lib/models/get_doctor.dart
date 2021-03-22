@@ -36,7 +36,7 @@ class Return {
     vendorId = json['vendorId'];
     vendorType = json['vendorType'];
     if (json['availabilityList'] != null) {
-      availabilityList = new List<AvailabilityList>();
+      availabilityList =  <AvailabilityList>[];
       json['availabilityList'].forEach((v) {
         availabilityList.add(new AvailabilityList.fromJson(v));
       });
@@ -72,7 +72,7 @@ class AvailabilityList {
     isActive = json['isActive'];
     priceValue = json['priceValue'];
     if (json['availabilityTimeList'] != null) {
-      availabilityTimeList = new List<AvailabilityTimeList>();
+      availabilityTimeList = <AvailabilityTimeList>[];
       json['availabilityTimeList'].forEach((v) {
         availabilityTimeList.add(new AvailabilityTimeList.fromJson(v));
       });

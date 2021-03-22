@@ -51,7 +51,7 @@ class Return {
     workdaysType = json['workdaysType'];
     discount = json['discount'];
     if (json['availabilityList'] != null) {
-      availabilityList = new List<AvailabilityList>();
+      availabilityList = <AvailabilityList>[];
       json['availabilityList'].forEach((v) {
         availabilityList.add(new AvailabilityList.fromJson(v));
       });
